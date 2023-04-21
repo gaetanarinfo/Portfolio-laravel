@@ -11,12 +11,11 @@
 
 [class^="ti-"], [class*=" ti-"] {
 	font-family: 'themify';
-	speak: none;
 	font-style: normal;
 	font-weight: normal;
 	font-variant: normal;
 	text-transform: none;
-	line-height: 1;
+	line-height: 2.8;
 
 	/* Better Font Rendering =========== */
 	-webkit-font-smoothing: antialiased;

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8e6e7fe5fd9d19060838a2fee2857ca4",
+    "content-hash": "e7161c541727af7a8d7a21cdb2ffc701",
     "packages": [
         {
             "name": "brick/math",
@@ -2194,6 +2194,87 @@
                 }
             ],
             "time": "2023-02-08T01:06:31+00:00"
+        },
+        {
+            "name": "nwidart/laravel-modules",
+            "version": "v10.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/nWidart/laravel-modules.git",
+                "reference": "35e514f13cb8ae8dce093e9794785fea27319d81"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/nWidart/laravel-modules/zipball/35e514f13cb8ae8dce093e9794785fea27319d81",
+                "reference": "35e514f13cb8ae8dce093e9794785fea27319d81",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*",
+                "php": ">=8.1"
+            },
+            "require-dev": {
+                "friendsofphp/php-cs-fixer": "^3.6",
+                "laravel/framework": "^10.0",
+                "mockery/mockery": "^1.5",
+                "orchestra/testbench": "^8.0",
+                "phpstan/phpstan": "^1.4",
+                "phpunit/phpunit": "^10.0",
+                "spatie/phpunit-snapshot-assertions": "^5.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Nwidart\\Modules\\LaravelModulesServiceProvider"
+                    ],
+                    "aliases": {
+                        "Module": "Nwidart\\Modules\\Facades\\Module"
+                    }
+                },
+                "branch-alias": {
+                    "dev-master": "10.0-dev"
+                }
+            },
+            "autoload": {
+                "files": [
+                    "src/helpers.php"
+                ],
+                "psr-4": {
+                    "Nwidart\\Modules\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Nicolas Widart",
+                    "email": "n.widart@gmail.com",
+                    "homepage": "https://nicolaswidart.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Laravel Module management",
+            "keywords": [
+                "laravel",
+                "module",
+                "modules",
+                "nwidart",
+                "rad"
+            ],
+            "support": {
+                "issues": "https://github.com/nWidart/laravel-modules/issues",
+                "source": "https://github.com/nWidart/laravel-modules/tree/v10.0.0"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/nwidart",
+                    "type": "github"
+                }
+            ],
+            "time": "2023-02-16T11:08:15+00:00"
         },
         {
             "name": "phpoption/phpoption",
@@ -5182,6 +5263,78 @@
                 "source": "https://github.com/tijsverkoyen/CssToInlineStyles/tree/2.2.6"
             },
             "time": "2023-01-03T09:29:04+00:00"
+        },
+        {
+            "name": "ultrono/laravel-sitemap",
+            "version": "9.3.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ultrono/laravel-sitemap.git",
+                "reference": "713d24ea7cf4877c9fdfd3daaa887c6acdbb809f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ultrono/laravel-sitemap/zipball/713d24ea7cf4877c9fdfd3daaa887c6acdbb809f",
+                "reference": "713d24ea7cf4877c9fdfd3daaa887c6acdbb809f",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/filesystem": "^8.0 || ^9.0 || ^10.0",
+                "illuminate/support": "^8.0 || ^9.0 || ^10.0",
+                "php": "^8.0"
+            },
+            "require-dev": {
+                "laravel/framework": "^8.0 || ^9.0 || ^10.0",
+                "orchestra/testbench-core": "^6.0 || ^7.0 || ^8.0",
+                "php-coveralls/php-coveralls": "^2.2",
+                "phpunit/phpunit": "^9.3"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Ultrono\\Sitemap\\SitemapServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "Ultrono\\Sitemap": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Rumen Damyanov",
+                    "email": "r@alfamatter.com",
+                    "homepage": "https://darumen.com",
+                    "role": "Original Developer"
+                },
+                {
+                    "name": "Rob Allport",
+                    "email": "rob@f9web.co.uk",
+                    "homepage": "https://f9web.co.uk",
+                    "role": "Developer"
+                }
+            ],
+            "description": "PHP 8 sitemap generator for Laravel 8 and 9",
+            "keywords": [
+                "Sitemap",
+                "generator",
+                "google-news",
+                "html",
+                "laravel",
+                "php",
+                "xml"
+            ],
+            "support": {
+                "issues": "https://github.com/ultrono/laravel-sitemap/issues",
+                "source": "https://github.com/ultrono/laravel-sitemap"
+            },
+            "time": "2023-02-06T07:35:55+00:00"
         },
         {
             "name": "vlucas/phpdotenv",

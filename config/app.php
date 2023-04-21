@@ -192,11 +192,21 @@ return [
     |
     */
 
+    // Site internet
+    'title' => "Mon portefolio - Gaëtan Seigneur 🥳",
+    'description' => "Bienvenue sur mon portfolio, découvrez mes compétences, expériences professionnelles, télécharger mon cv, me contacter, n'hésitez pas à faire le tour. 💻🥐",
+
     // My profil
 
     'name_short' => "Dev72",
     'first_name' => "Gaëtan",
     'last_name' => "Seigneur",
     'organization' => "Développeur web",
-
+    'bio' => "Développeur web - NodeJs / VueJs / Php / Html / Jquery / JavaScript / TypeScript / Sass / CSS / MySql - MariaDb / MongoDB / Linux",
+    'city' => "Le Mans, France",
+    'age' => "31",
+    'genre' => "Homme",
+    'complete_adress' => "125 avenue Félix Geneslay, Le Mans 72100 France",
+    'latitude' => "47.97007369995117",
+    'longitude' => "0.2044624388217926",
 ];

@@ -1,0 +1,273 @@
+@media all and (max-width: 768px) {
+
+    h2, .h2 {
+        font-size: 1.4rem;
+    }
+
+    h3, .h3 {
+        font-size: 1.3rem;
+    }
+
+}
+
+.loader-form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    max-height: 450px;
+    min-height: 450px;
+}
+
+.loader-form.hidden {
+    display: none !important;
+}
+
+.loader-form img {
+    width: 100px;
+}
+
+@media all and (max-width: 768px) {
+    .loader-form {
+        min-height: 260px;
+    }
+}
+
+.error-text {
+    font-weight: 500;
+    font-size: 14px;
+}
+
+.toast-success {
+    background-color: #d6f0e0 !important;
+    color: #0d6831 !important;
+    border-color: #c0e7d0 !important;
+}
+
+.toast-success .title,
+.toast-success svg {
+    color: #0d6831 !important;
+}
+
+.toast-error {
+    background-color: #f0d6d6 !important;
+    color: #680d0d !important;
+    border-color: #e7c0c0 !important;
+}
+
+.toast-error .title,
+.toast-error svg {
+    color: #680d0d !important;
+}
+
+.toast-body {
+    font-weight: 700 !important;
+}
+
+#map {
+    z-index: 9 !important;
+}
+
+.gridder .price span {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    padding: 0.5rem;
+}
+
+/* Blog */
+
+.post-author {
+    font-weight: 600;
+}
+
+.post-date {
+    font-weight: 700;
+}
+
+.news .card {
+    max-width: 400px !important;
+}
+
+.news .img-place>img {
+    min-height: 100%;
+}
+
+.news .small_content {
+    font-weight: 500;
+}
+
+.empty-search {
+    margin: 5rem 0 0 0;
+}
+
+.empty-search-img img {
+    max-width: 120px;
+    margin-top: 2.5rem;
+    margin-right: 2rem;
+    display: block;
+}
+
+@media all and (max-width: 768px) {
+    .empty-search {
+        margin: 1.5rem 1.5rem 0 1.5rem;
+    }
+
+    .empty-search-img img {
+        margin-right: 0;
+        max-width: 200px;
+    }
+}
+
+.blog-badge .badge {
+    padding: 0.5rem 0.5rem;
+}
+
+.blog-title h1 {
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
+.blog-header span {
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.blog-header span .day {
+    text-transform: capitalize;
+}
+
+.blog-header i {
+    color: #0d6831;
+}
+
+
+/*** Author Box ***/
+
+.bk-author-box {
+    margin-top: 60px;
+    min-height: 165px;
+    padding: 20px 20px;
+    background-color: #f8f8f8;
+    border: 1px solid #ddd;
+}
+
+.bk-author-box {
+    margin: 0 0 1rem 0;
+}
+
+.fullwidth .bk-author-box {
+    margin-right: 0;
+}
+
+.bk-author-box .bk-author-avatar {
+    float: left;
+    z-index: 9;
+    position: relative;
+}
+
+.bk-author-box .author-info {
+    padding-left: 95px;
+    position: relative;
+    display: block;
+    min-height: 30px;
+    z-index: 1;
+}
+
+.bk-author-box .author-info h3 {
+    margin-top: 0;
+    font-size: 20px;
+    font-weight: 400;
+    letter-spacing: 2px;
+    color: #111;
+}
+
+.bk-author-box .author-info .bk-author-page-contact {
+    position: absolute;
+    bottom: -5rem;
+    right: 0;
+}
+
+.bk-author-box .author-info .bk-author-page-contact a {
+    display: inline-block;
+    margin: 0 8px;
+    color: #666;
+}
+
+.bk-author-box .author-info .bk-author-page-contact a:hover {
+    color: #ffb82b;
+}
+
+.bk-author-bio {
+    font-size: 13px;
+}
+
+.bk-author-name a {
+    font-size: 15px;
+    font-weight: 600;
+    color: black;
+}
+
+.bk-author-avatar img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+}
+
+.bk-author-avatar {
+    margin-right: 1rem;
+}
+
+.bk-author-avatar a {
+    position: relative;
+    display: block;
+    width: 100px;
+    height: 100px;
+}
+
+.source {
+    text-align: end;
+}
+
+.source p a {
+    text-decoration: none;
+    color: black;
+    font-weight: 500;
+}
+
+.share-article {
+    text-align: end;
+}
+
+.share-article .partage ul {
+    justify-content: flex-end;
+}
+
+@media all and (max-width: 768px) {
+
+    .bloc-header-blog {
+        display: block !important;
+    }
+
+    .bloc-header-blog .col-md-8 {
+        padding-right: 0;
+    }
+
+    .bloc-header-blog .col-md-4 {
+        padding: 0 0;
+        margin-top: 1rem;
+    }
+
+    .bk-author-box .author-info .bk-author-page-contact {
+        position: relative;
+        bottom: 0rem;
+        right: 0;
+    }
+
+    .bloc-content-blog {
+        padding-right: 0;
+    }
+
+    .entry-content iframe {
+        max-width: 100% !important;
+    }
+}

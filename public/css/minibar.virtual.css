@@ -153,7 +153,7 @@
         line-height: 28px;
         font-size: 21px;
     }
-    
+
     .main-menu .menu-link:hover .caption, .main-menu .active .menu-link .caption {
         opacity: 1;
         visibility: visible;
@@ -639,41 +639,41 @@
 
 /* Theme Blue */
 .theme-blue .topbar-nav .toggle-menu:hover {
-    color: #2960f7;
+    color: #419cca;
 }
 
 .theme-blue .main-menu .menu-link:hover,
 .theme-blue .main-menu .active .menu-link {
-    background-color: #2960f7;
+    background-color: #419cca;
 }
 
 .theme-blue .filterable-button .btn.selected,
 .theme-blue .filterable-button .btn:focus {
-    background-color: #2960f7;
+    background-color: #419cca;
     color: #fff;
-    box-shadow: 0 0 0 2px #fff, 0 0 0 4px #2960f7;
+    box-shadow: 0 0 0 2px #fff, 0 0 0 4px #419cca;
 }
 
 .theme-blue .timeline li:first-child .title {
-    background-color: #2960f7;
+    background-color: #419cca;
 }
 
 .theme-blue .timeline li:first-child::before {
-    background-color: #2960f7;
-    box-shadow: 0 0 0 2px #2960f7;
+    background-color: #419cca;
+    box-shadow: 0 0 0 2px #419cca;
 }
 
 .theme-blue .testi-carousel .item .iconic {
-    background-color: #2960f7;
+    background-color: #419cca;
 }
 
 .theme-blue .page-home .caption .tagline {
     background-color: #dae3fd;
-    color: #2960f7;
+    color: #419cca;
 }
 
 .theme-blue .post-grid .post-category {
-    color: #2960f7;
+    color: #419cca;
 }
 
 
