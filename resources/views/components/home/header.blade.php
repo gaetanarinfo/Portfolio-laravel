@@ -15,17 +15,35 @@
 
                 <ul class="navbar-nav ml-auto">
 
-                    <li class="nav-item active">
-                        <a href="/" class="nav-link font-weight-bold" data-animate="scrolling">Accueil</a>
+                    <li class="nav-item @if(Route::current()->getName() == "home") active @endif">
+                        <a href="/" class="nav-link font-weight-bold" data-animate="scrolling"><i class="mr-2 fa-solid fa-home"></i>Accueil</a>
                     </li>
 
                     <li class="nav-item">
-                        <a href="#about" class="nav-link font-weight-bold" data-animate="scrolling">À propos</a>
+                        <a href="#about" class="nav-link font-weight-bold" data-animate="scrolling"><i class="mr-2 fa-solid fa-adress-card"></i>À propos</a>
                     </li>
 
                     <li class="nav-item">
-                        <a href="#blog" class="nav-link font-weight-bold" data-animate="scrolling">Blog</a>
+                        <a href="#blog" class="nav-link font-weight-bold" data-animate="scrolling"><i class="mr-2 fa-solid fa-blog"></i>Blog</a>
                     </li>
+
+                    <li class="nav-item">
+                        <a href="#github" class="nav-link font-weight-bold" data-animate="scrolling"><i class="mr-2 fa-brands fa-github"></i>Github</a>
+                    </li>
+
+                    @if (Auth::check())
+                        <li class="nav-item">
+                            <a href="/logout" class="nav-link font-weight-bold" data-animate="scrolling"><i class="mr-2 fa-solid fa-arrow-right-from-bracket"></i>Logout</a>
+                        </li>
+                    @else
+                        <li class="nav-item @if(Route::current()->getName() == "register") active @endif">
+                            <a href="/register" class="nav-link font-weight-bold" data-animate="scrolling"><i class="mr-2 fa-solid fa-user-plus"></i>S'inscrire</a>
+                        </li>
+
+                        <li class="nav-item @if(Route::current()->getName() == "login") active @endif">
+                            <a href="/login" class="nav-link font-weight-bold" data-animate="scrolling"><i class="mr-2 fa-solid fa-user"></i>Se connecter</a>
+                        </li>
+                    @endif
 
                 </ul>
 

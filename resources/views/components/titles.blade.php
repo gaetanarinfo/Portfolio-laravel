@@ -9,6 +9,16 @@
         <meta name="description" content="{{ $article->small_content }}">
     @break
 
+    @case('login')
+        <title>Connexion utilisateur</title>
+        <meta name="description" content="{{ config('app.description') }}">
+    @break
+
+    @case('register')
+        <title>Inscription utilisateur</title>
+        <meta name="description" content="{{ config('app.description') }}">
+    @break
+
     @default
         <title>{{ config('app.title') }}</title>
         <meta name="description" content="{{ config('app.description') }}">

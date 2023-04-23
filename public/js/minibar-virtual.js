@@ -82,7 +82,7 @@ $(document).ready(function () {
         return false;
     });
 
-    var $grid = $('.gridder').isotope({
+    var $grid = $('.ridders-projects').isotope({
         itemSelector: '.grid-item',
         percentPosition: true
     });

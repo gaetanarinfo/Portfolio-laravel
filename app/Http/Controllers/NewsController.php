@@ -28,23 +28,29 @@ class NewsController extends Controller
     public function getNewsAll($slug)
     {
 
-        $limit = 9;
+        // Detection des caractère dans l'url
+        if (preg_match('#[0-9]#', $slug)) {
 
-        $news = News::where('active', 1)
-            ->orderBy('created_at', 'desc')
-            ->limit($limit)
-            ->offset(($slug - 1) * $limit)
-            ->get();
+            $limit = 9;
 
-        $maxPage = ceil((count($news) / 9) + 1);
-        $elements = array();
+            $news = News::where('active', 1)
+                ->orderBy('created_at', 'desc')
+                ->limit($limit)
+                ->offset(($slug - 1) * $limit)
+                ->get();
 
-        for ($i = 1; $i <= (count($news) / 9) + 1; $i++) {
-            array_push($elements, array($i => $i));
-        }
+            $maxPage = ceil((count($news) / 9) + 1);
+            $elements = array();
 
-        if (count($news) >= 1) {
-            return view('blog', compact('news', 'maxPage', 'elements'));
+            for ($i = 1; $i <= (count($news) / 9) + 1; $i++) {
+                array_push($elements, array($i => $i));
+            }
+
+            if (count($news) >= 1) {
+                return view('blog', compact('news', 'maxPage', 'elements'));
+            } else {
+                return redirect()->route('blog', ['slug' => 1]);
+            }
         } else {
             return redirect()->route('blog', ['slug' => 1]);
         }

@@ -1,10 +1,12 @@
 @media all and (max-width: 768px) {
 
-    h2, .h2 {
+    h2,
+    .h2 {
         font-size: 1.4rem;
     }
 
-    h3, .h3 {
+    h3,
+    .h3 {
         font-size: 1.3rem;
     }
 
@@ -145,7 +147,7 @@
 
 .bk-author-box {
     margin-top: 60px;
-    min-height: 165px;
+    min-height: 190px;
     padding: 20px 20px;
     background-color: #f8f8f8;
     border: 1px solid #ddd;
@@ -269,5 +271,297 @@
 
     .entry-content iframe {
         max-width: 100% !important;
+    }
+}
+
+.vg-footer .loader-form {
+    max-height: 70px;
+    min-height: 70px;
+}
+
+.vg-footer .loader-form img {
+    background: transparent;
+}
+
+.form-min-h {
+    min-height: 70px;
+}
+
+/* GitHub */
+
+.page-github .widget-grid {
+    display: none;
+}
+
+.page-github .card {
+    border-radius: 5px;
+    -webkit-box-shadow: 0 1px 20px 0 rgba(69, 90, 100, 0.08);
+    box-shadow: 0 1px 20px 0 rgba(69, 90, 100, 0.08);
+    border: none;
+    margin-bottom: 0;
+    max-width: 100%;
+}
+
+.page-github .user-card-full .user-profile {
+    border-radius: 5px 0 0 5px;
+}
+
+.page-github .bg-c-lite-green {
+    background: -webkit-gradient(linear, left top, right top, from(#f29263), to(#ee5a6f));
+    background: linear-gradient(to right, #ee5a6f, #f29263);
+}
+
+.page-github .user-profile {
+    padding: 20px 0;
+}
+
+.page-github .card-block {
+    padding: 1.25rem;
+}
+
+.page-github .m-b-25 {
+    margin-bottom: 25px;
+}
+
+.page-github .img-radius {
+    border-radius: 5px;
+}
+
+.page-github #avatar_url {
+    max-width: 100px;
+}
+
+.page-github h6 {
+    font-size: 14px;
+}
+
+.page-github .card .card-block p {
+    line-height: 25px;
+}
+
+@media only screen and (min-width: 1400px) {
+    .page-github p {
+        font-size: 14px;
+    }
+}
+
+.page-github .card-block {
+    padding: 1.25rem;
+}
+
+.page-github .b-b-default {
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.page-github .m-b-20 {
+    margin-bottom: 20px;
+}
+
+.page-github .p-b-5 {
+    padding-bottom: 5px !important;
+}
+
+.page-github .card .card-block p {
+    line-height: 20px;
+    font-weight: 500;
+}
+
+.page-github .m-b-10 {
+    margin-bottom: 10px;
+}
+
+.page-github .text-muted {
+    color: #919aa3 !important;
+}
+
+.page-github .b-b-default {
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.page-github .f-w-600 {
+    font-weight: 600;
+}
+
+.page-github .m-b-20 {
+    margin-bottom: 20px;
+}
+
+.page-github .m-t-40 {
+    margin-top: 20px;
+}
+
+.page-github .p-b-5 {
+    padding-bottom: 5px !important;
+}
+
+.page-github .m-b-10 {
+    margin-bottom: 10px;
+}
+
+.page-github .m-t-40 {
+    margin-top: 20px;
+}
+
+.page-github .user-card-full .social-link li {
+    display: inline-block;
+}
+
+.page-github .user-card-full .social-link li a {
+    font-size: 20px;
+    margin: 0 10px 0 0;
+    -webkit-transition: all 0.3s ease-in-out;
+    transition: all 0.3s ease-in-out;
+}
+
+.page-github #loader-github {
+    max-width: 100%;
+    min-height: 100%;
+    max-height: 100%;
+    width: 100%;
+}
+
+.page-github .bloc-user-github {
+    display: none;
+}
+
+.page-github .d-flex-t {
+    width: 100%;
+    min-height: 156px;
+    padding: 1rem 0;
+    justify-content: center;
+    display: flex;
+}
+
+.page-github .d-flex-p {
+    width: 100%;
+    height: auto;
+    padding: 1rem 0;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+
+.page-github #error-github {
+    display: none;
+    width: 100%;
+    max-width: 500px;
+    background: #ff8484;
+    border: 1px solid #ff00001f;
+    border-radius: 0.5rem;
+    box-shadow: 0 0 9px 0px #00000075;
+}
+
+.page-github #error-github .col-md-9:last-child {
+    width: 100%;
+    padding: 0 1rem 0 0;
+}
+
+.page-github #error-github .col-md-9:last-child p {
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 1.2;
+    color: black;
+    margin-bottom: 0;
+}
+
+.page-github #error-github .col-md-3 img {
+    max-width: 90px;
+}
+
+.page-github .timeline-none li {
+    position: relative;
+    display: block;
+    font-size: 15px;
+    font-weight: 500;
+    padding-left: 0;
+    margin-bottom: 0.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid #bdbdbd;
+}
+
+.page-github .timeline-none li:first-child::before {
+    background-color: transparent !important;
+    box-shadow: none;
+    border: 0;
+    position: relative;
+}
+
+.page-github .timeline-none li::before {
+    list-style-type: none;
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 0;
+    background-color: none;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+}
+
+.page-github .timeline .title {
+    text-transform: capitalize;
+}
+
+.page-github .timeline a {
+    text-decoration: none;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+}
+
+.page-github .timeline::before {
+    height: 99.4%;
+}
+
+.page-github .widget-grid {
+    justify-content: flex-end;
+}
+
+.page-github .page-login.hidden {
+    display: none !important;
+}
+
+.page-github .nice-select .list {
+    right: 0;
+    left: auto;
+}
+
+.page-login .vg-page {
+    overflow: visible;
+}
+
+@media all and (max-width : 768px) {
+
+    .vg-page {
+        padding: 1rem 0;
+    }
+
+    .page-github .d-flex-t {
+        display: block;
+    }
+
+    .vg-page .page-login {
+        margin: 0 1rem;
+    }
+
+    .page-login .col-md-8 {
+        margin-top: 1rem;
+        padding-top: 0;
+        padding-bottom: 0;
+    }
+
+    .page-login .d-flex-t .bloc-user-github {
+        padding: 0;
+    }
+
+    .page-login .user-profile {
+        padding: 0 1.25rem;
+    }
+
+    .page-contact .zoomIn {
+        margin: 0 0 !important;
+        padding: 0 1rem !important;
     }
 }

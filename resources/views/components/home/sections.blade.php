@@ -409,6 +409,173 @@
 </div>
 <!-- End blog -->
 
+<!-- Github -->
+<div class="vg-page page-github" id="github">
+
+    <div class="container">
+
+        <div class="text-center">
+
+            <div class="badge badge-subhead wow fadeInUp">Mon GitHub (API)</div>
+        </div>
+
+        <h1 class="text-center fw-normal wow fadeInUp">Arborescence de Github</h1>
+
+        <div class="row" id="bloc-github">
+
+            <div class="loader-form mt-5" id="loader-github">
+                <img src="{{ URL::asset('img/loader.svg') }}" alt="">
+            </div>
+
+            <div class="vg-page hidden page-blog mt-4 p-0">
+
+                <div class="row widget-grid">
+
+                    <div class="col-lg-4">
+
+                        <div class="d-flex py-2 mx-n2">
+
+                            <div class="input-group px-2">
+
+                                <select id="select-trie" class="vg-select">
+                                    <option value="">Trier par</option>
+                                    <option value="Les plus récent">Les plus récent</option>
+                                    <option value="Les plus ancien">Les plus ancien</option>
+                                </select>
+
+                            </div>
+
+                        </div>
+
+
+                    </div>
+
+                </div>
+
+                <div class="d-flex-t mt-0">
+
+                    <div id="error-github">
+
+                        <div class="d-flex-p">
+
+                            <div class="col-md-3">
+
+                                <img src="{{ URL::asset('img') }}/error-github.png" alt="">
+
+                            </div>
+
+                            <div class="col-md-9">
+                                <p class="error-message"></p>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="col-lg-6 bloc-user-github">
+
+                        <div class="card user-card-full">
+
+                            <div class="row m-l-0 m-r-0">
+
+                                <div class="col-sm-4 bg-c-lite-green user-profile">
+
+                                    <div class="card-block text-center text-white">
+
+                                        <div class="m-b-25">
+
+                                            <img src="" class="img-radius" id="avatar_url"
+                                                alt="User-Profile-Image">
+                                        </div>
+
+                                        <h6 class="f-w-600 name"></h6>
+
+                                        <p class="bio"></p>
+
+                                        <i class="mdi mdi-square-edit-outline feather icon-edit m-t-10 f-16"></i>
+
+                                    </div>
+
+                                </div>
+
+                                <div class="col-md-8">
+
+                                    <div class="card-block">
+
+                                        <h6 class="m-b-20 p-b-5 b-b-default f-w-600">Information</h6>
+
+                                        <div class="row">
+
+                                            <div class="col-sm-6">
+                                                <p class="m-b-10 f-w-600">Dépôt (Public)</p>
+                                                <h6 class="text-muted f-w-400 public_repos"></h6>
+                                            </div>
+
+                                            <div class="col-sm-6">
+                                                <p class="m-b-10 f-w-600">Followers</p>
+                                                <h6 class="text-muted f-w-400 followers"></h6>
+                                            </div>
+                                        </div>
+
+
+                                        <div class="row">
+
+                                            <div class="col-sm-6">
+                                                <p class="m-b-10 f-w-600">Following</p>
+                                                <h6 class="text-muted f-w-400 following"></h6>
+                                            </div>
+
+                                            <div class="col-sm-6">
+                                                <p class="m-b-10 f-w-600">Localisation</p>
+                                                <h6 class="text-muted f-w-400 localisation"></h6>
+                                            </div>
+
+                                        </div>
+
+                                        <div class="row">
+
+                                            <div class="col-sm-6">
+                                                <p class="m-b-10 f-w-600">Crée le</p>
+                                                <h6 class="text-muted f-w-400 created_at"></h6>
+                                            </div>
+
+                                            <div class="col-sm-6">
+                                                <p class="m-b-10 f-w-600">Mise à jour le</p>
+                                                <h6 class="text-muted f-w-400 updated_at"></h6>
+                                            </div>
+
+                                        </div>
+
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="col-lg-6 bloc-user-github-2 pr-0">
+
+                        <ul class="timeline mt-4 timeline-list">
+
+                        </ul>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+<!-- End github -->
+
 <!-- Contact -->
 <div class="vg-page page-contact">
 
@@ -503,30 +670,6 @@
 
 </div>
 <!-- End Contact -->
-
-<!-- Toast -->
-<div aria-live="polite" aria-atomic="true" style="position: relative;">
-
-    <div class="toast toast-form-contact" style="position: fixed;bottom: 5rem;right: 1rem;z-index: 999;">
-
-        <div class="toast-header">
-
-            <div class="svg"></div>
-
-            <strong class="title mr-auto"></strong>
-
-            <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-
-        </div>
-
-        <div class="toast-body">
-
-        </div>
-    </div>
-
-</div>
 
 <!-- Map -->
 

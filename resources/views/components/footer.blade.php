@@ -1,3 +1,27 @@
+<!-- Toast -->
+<div aria-live="polite" aria-atomic="true" style="position: relative;">
+
+    <div class="toast toast-form-contact" style="position: fixed;bottom: 1rem;right: 1rem;z-index: 999;">
+
+        <div class="toast-header">
+
+            <div class="svg"></div>
+
+            <strong class="title mr-auto"></strong>
+
+            <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+
+        </div>
+
+        <div class="toast-body">
+
+        </div>
+    </div>
+
+</div>
+
 <!-- Footer -->
 <div class="vg-footer">
 
@@ -65,14 +89,26 @@
                 <h3 class="fw-normal text-center">S'abonner</h3>
             </div>
 
-            <div class="col-lg-6">
+            <div class="col-lg-6 form-min-h">
 
-                <form class="mb-3">
+                <div class="loader-form hidden">
+                    <img width="70" height="70" src="{{ URL::asset('img/loader-2.svg') }}" alt="">
+                </div>
+
+                <form id="newsletter-form" class="mb-3" method="POST" action="{{ route('newsletter.create') }}">
+
+                    <input type="hidden" name="token" value="{{ csrf_token() }}" />
 
                     <div class="input-group">
-                        <input type="text" class="form-control" placeholder="Adresse email">
+
+                        <input type="text" class="form-control" name="email" id="email"
+                            placeholder="Adresse email">
+
                         <input type="submit" class="btn btn-theme no-shadow" value="S'abonner">
+
                     </div>
+
+                    <div><span class="error-text text-danger email_error_newsletter"></span></div>
 
                 </form>
 

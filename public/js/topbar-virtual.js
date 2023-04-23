@@ -1,14 +1,4 @@
 $(function () {
-    var $grid = $('.gridder').isotope({
-        itemSelector: '.grid-item',
-        percentPosition: true
-    });
-
-    // filter items on button click
-    $('.filterable-button').on('click', 'button', function () {
-        var filterValue = $(this).attr('data-filter');
-        $grid.isotope({ filter: filterValue });
-    });
 
     $('.testi-carousel').owlCarousel({
         margin: 0,
@@ -116,16 +106,6 @@ $(document).ready(function () {
                 stickyPosition = 'absolute';
                 self.$sticky.removeClass('floating');
 
-            } else {
-
-                for (var i = self.offsets.length; i--;) {
-                    if (windowTop >= self.offsets[i] - 2 && (self.offsets[i + 1] === undefined || windowTop <= self.offsets[i + 1] + 2)) {
-                        currentIndex = i;
-
-                        break;
-                    }
-                }
-
             }
 
             self.$sticky.css({ 'position': stickyPosition });
@@ -137,7 +117,6 @@ $(document).ready(function () {
                 self.$sticky.addClass('floating');
             }
 
-            $stickyLinks.eq(currentIndex).addClass('active');
         },
 
         init: function () {

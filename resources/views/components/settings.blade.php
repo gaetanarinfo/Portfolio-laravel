@@ -30,6 +30,7 @@
          <select class="custom-select d-block my-2" id="change-page">
              <option value="">Choisir la page</option>
              <option value="/">Accueil</option>
+             <option value="/blog/1">Mon blog</option>
          </select>
 
      </div>

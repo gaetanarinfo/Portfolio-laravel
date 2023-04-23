@@ -9,6 +9,7 @@
 <script src="{{ URL::asset('vendor/animateNumber/jquery.animateNumber.min.js') }}"></script>
 <script src="{{ URL::asset('vendor/waypoints/jquery.waypoints.min.js') }}"></script>
 <script src="{{ URL::asset('js/topbar-virtual.js') }}"></script>
+<script src="{{ URL::asset('js/moment-with-locales.js') }}"></script>
 <script src="{{ URL::asset('js/app.js') }}"></script>
 <script src="{{ URL::asset('js/6650c3fdcf.js') }}"></script>
 
@@ -33,8 +34,7 @@
     window.dataLayer = window.dataLayer || [];
 
     function gtag() {
-        d
-ataLayer.push(arguments);
+        dataLayer.push(arguments);
     }
     gtag('js', new Date());
 

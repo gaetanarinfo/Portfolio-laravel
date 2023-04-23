@@ -11,16 +11,17 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('projets', function (Blueprint $table) {
+        Schema::create('users', function (Blueprint $table) {
             $table->id()->unique();
-            $table->string('categorie');
-            $table->string('title');
-            $table->string('image');
-            $table->string('url');
-            $table->float('prix', 10, 2);
-            $table->integer('active')->default(1);
+            $table->string('lastname');
+            $table->string('firstname');
+            $table->string('email')->unique();
+            $table->string('password');
+            $table->string('token')->nullable();
+            $table->string('active')->default(1);
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->nullable(true);
+            $table->timestamp('logged_at')->nullable(true);
         });
     }
 
@@ -29,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('projets');
+        Schema::dropIfExists('users');
     }
 };

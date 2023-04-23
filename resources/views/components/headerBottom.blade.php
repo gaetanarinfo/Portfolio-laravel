@@ -12,5 +12,4 @@
  </div>
  <!-- End Caption header -->
 
- <div class="floating-button"><span class="ti-mouse"></span></div
->
+ <div class="floating-button"><span class="ti-mouse"></span></div>
