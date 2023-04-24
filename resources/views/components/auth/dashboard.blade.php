@@ -1,12 +1,17 @@
-<div class="vg-page page-login">
+<!-- Begin Page Content -->
+<div class="container-fluid">
 
-    <div class="container">
+<!-- Page Heading -->
+<div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <h1 class="h2 mb-0 text-gray-900 font-weight-bold">Tableau de bord</h1>
+</div>
 
-        <div class="alert alert-success">
-            You are logged in!
-        </div>
+<!-- Content Row -->
+<div class="row">
 
-    </div>
 
 </div>
 
+
+</div>
+<!-- /.container-fluid -->

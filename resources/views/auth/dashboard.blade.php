@@ -9,25 +9,43 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}" />
 
-    @include('components/titles')
+    @include('components/auth/dashboard/titles')
 
     @include('components/icons')
 
-    @include('components/styles')
+    @include('components/auth/dashboard/styles')
 
 </head>
 
-<body @if (Cookie::get('theme') !== null) class="{{ Cookie::get('theme') }}" @else class="theme-red" @endif>
+<body id="page-top">
 
-    @include('components/settings')
+    <!-- Page Wrapper -->
+    <div id="wrapper">
 
-    @include('components/header')
+        @include('components/auth/dashboard/header')
 
-    @include('components/auth/dashboard')
+        <!-- Content Wrapper -->
+        <div id="content-wrapper" class="d-flex flex-column">
 
-    @include('components/footer')
+            <!-- Main Content -->
+            <div id="content">
 
-    @include('components/scripts')
+                @include('components/auth/dashboard/topbar')
+
+                @include('components/auth/dashboard')
+
+            </div>
+            <!-- End of Main Content -->
+
+        </div>
+        <!-- End of Content Wrapper -->
+
+    </div>
+    <!-- End of Page Wrapper -->
+
+    @include('components/auth/dashboard/footer')
+
+    @include('components/auth/dashboard/scripts')
 
 </body>
 

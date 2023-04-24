@@ -13,6 +13,10 @@
 <script src="{{ URL::asset('js/app.js') }}"></script>
 <script src="{{ URL::asset('js/6650c3fdcf.js') }}"></script>
 
+@if (Route::current()->getName() == 'dashboard')
+    <script src="{{ URL::asset('js/dashboard.min.js') }}"></script>
+@endif
+
 <script>
     window.axeptioSettings = {
         clientId: "64425b9659b38af48ea5cab7",

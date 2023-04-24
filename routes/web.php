@@ -5,7 +5,9 @@ use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\Auth\LoginRegisterController;
+use App\Http\Controllers\Auth\Users;
 use App\Http\Controllers\GithubController;
+use App\Http\Controllers\YoutubeController;
 use App\Http\Controllers\ProjetsController;
 use App\Http\Controllers\ContactsController;
 use App\Http\Controllers\NewsletterController;
@@ -79,7 +81,6 @@ Route::get('/sitemap', function () {
     // generate (format, filename)
     // sitemap.xml is stored within the public folder
     $sitemap->store('xml', 'sitemap');
-
 });
 
 // Newsletter
@@ -97,11 +98,35 @@ Route::post('/github-api', [GithubController::class, 'showGitProjets']);
 Route::get('/login', [LoginController::class, 'index'])->name('user.login');
 Route::post('/login', [LoginController::class, 'index'])->name('user.login');
 
-Route::controller(LoginRegisterController::class)->group(function() {
+Route::controller(LoginRegisterController::class)->group(function () {
     Route::get('/register', 'register')->name('register');
     Route::post('/store', 'store')->name('store');
     Route::get('/login', 'login')->name('login');
     Route::post('/authenticate', 'authenticate')->name('authenticate');
-    Route::get('/dashboard', 'dashboard')->name('dashboard');
     Route::get('/logout', 'logout')->name('logout');
+    Route::get('/dashboard', 'dashboard')->name('dashboard');
+    Route::get('/forgot-password/{token}', 'forgot_password')->name('forgot-password');
+    Route::post('/forgot-password', 'forgot_password_change')->name('forgot_password_change');
+    Route::get('/forgot-new-password', 'forgot_password_new')->name('forgot_not_user');
+    Route::post('/forgot-new-password', 'forgot_password_new')->name('forgot_not_user');
+    Route::get('/show-article', 'dashboard')->name('show-article');
+    Route::get('/add-article', 'dashboard')->name('add-article');
 });
+
+Route::controller(Users::class)->group(function () {
+    // Utilisateurs
+    Route::get('/show-users', 'show_users')->name('show-users');
+    Route::post('/show-users/delete', 'delete_user')->name('delete-user');
+    Route::post('/show-users/edit', 'edit_user')->name('edit-user');
+    Route::post('/show-users/add', 'add_user')->name('add-user');
+
+    // Projets
+    Route::get('/show-projets', 'show_projets')->name('show-projets');
+    Route::post('/show-projets/delete', 'delete_projet')->name('delete-projet');
+    Route::post('/show-projets/edit', 'edit_projet')->name('edit-projet');
+    Route::post('/show-projets/add', 'add_projet')->name('add-projet');
+});
+
+// Github
+
+Route::get('/youtube-api', [YoutubeController::class, 'showYoutubeProfil']);

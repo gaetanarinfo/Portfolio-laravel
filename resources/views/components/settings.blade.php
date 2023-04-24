@@ -1,5 +1,6 @@
  <!-- Back to top button -->
- <div @if (Cookie::get('theme') !== null) class="btn-back_to_top {{ Cookie::get('theme') }}" @else class="theme-red btn-back_to_top" @endif>
+ <div
+     @if (Cookie::get('theme') !== null) class="btn-back_to_top {{ Cookie::get('theme') }}" @else class="theme-red btn-back_to_top" @endif>
      <span class="ti-arrow-up font-weight-bold"></span>
  </div>
 
@@ -31,6 +32,12 @@
              <option value="">Choisir la page</option>
              <option value="/">Accueil</option>
              <option value="/blog/1">Mon blog</option>
+             @if (Auth::check())
+                 <option value="/logout">Déconnexion</option>
+             @else
+                 <option value="/register">S'inscrire</option>
+                 <option value="/login">Se connecter</option>
+             @endif
          </select>
 
      </div>

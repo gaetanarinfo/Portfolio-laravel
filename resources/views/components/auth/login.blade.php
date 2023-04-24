@@ -1,6 +1,12 @@
+@php
+    $token = md5(rand(1, 10) . microtime());
+@endphp
+
 <div class="vg-page page-login">
 
     <div class="container">
+
+        <h1 class="mb-5">Connexion</h1>
 
         <div class="card card-container">
 
@@ -14,7 +20,8 @@
 
                 <input type="hidden" name="token" value="{{ csrf_token() }}" />
 
-                <input type="text" id="email" name="email" class="form-control" placeholder="Adresse email" autofocus>
+                <input type="text" id="email" name="email" class="form-control" placeholder="Adresse email"
+                    autofocus>
 
                 <span class="error-text text-danger email_error"></span>
 
@@ -31,6 +38,19 @@
                 </div>
 
                 <button type="submit" class="btn btn-theme mt-3 mb-3 ml-0 mr-0">Se connecter</button>
+
+            </form>
+
+            <form id="form-forgot-new" class="form-signin mt-3" action="{{ route('forgot_not_user') }}" method="post">
+
+                <input type="hidden" name="tokens" id="tokens" value="{{ $token }}">
+
+                <input type="text" id="emailForgot" name="emailForgot" class="form-control"
+                    placeholder="Adresse email" autofocus>
+
+                <span class="error-text text-danger email_error"></span>
+
+                <button type="submit" class="btn btn-theme mt-3 mb-3 ml-0 mr-0">Valider</button>
 
             </form>
             <!-- /form -->

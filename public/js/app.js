@@ -76,7 +76,7 @@ $('#submit-contact').on('submit', function (e) {
                 $('.toast-form-contact .svg').html(data.icone)
                 $('.toast-form-contact .title').html(data.title);
                 $('.toast-form-contact .toast-body').html(data.msg)
-                $('.toast-form-contact').addClass(data.toast);
+                $('.toast-form-contact').removeClass('toast-success').removeClass('toast-error').addClass(data.toast);
 
                 $('.toast-form-contact').toast({
                     delay: 10000
@@ -102,7 +102,7 @@ $('#submit-contact').on('submit', function (e) {
                     $('.toast-form-contact .svg').html(data.icone)
                     $('.toast-form-contact .title').html(data.title);
                     $('.toast-form-contact .toast-body').html(data.msg)
-                    $('.toast-form-contact').addClass(data.toast);
+                    $('.toast-form-contact').removeClass('toast-success').removeClass('toast-error').addClass(data.toast);
 
                     $('.toast-form-contact').toast({
                         delay: 10000
@@ -325,7 +325,7 @@ $('#newsletter-form').on('submit', function (e) {
                 $('.toast-form-contact .svg').html(data.icone)
                 $('.toast-form-contact .title').html(data.title);
                 $('.toast-form-contact .toast-body').html(data.msg)
-                $('.toast-form-contact').addClass(data.toast);
+                $('.toast-form-contact').removeClass('toast-success').removeClass('toast-error').addClass(data.toast);
 
                 $('.toast-form-contact').toast({
                     delay: 10000
@@ -351,7 +351,7 @@ $('#newsletter-form').on('submit', function (e) {
                     $('.toast-form-contact .svg').html(data.icone)
                     $('.toast-form-contact .title').html(data.title);
                     $('.toast-form-contact .toast-body').html(data.msg)
-                    $('.toast-form-contact').addClass(data.toast);
+                    $('.toast-form-contact').removeClass('toast-success').removeClass('toast-error').addClass(data.toast);
 
                     $('.toast-form-contact').toast({
                         delay: 10000
@@ -633,7 +633,7 @@ $('#form-login').on('submit', function (e) {
                 $('.toast-form-contact .svg').html(data.icone)
                 $('.toast-form-contact .title').html(data.title);
                 $('.toast-form-contact .toast-body').html(data.msg)
-                $('.toast-form-contact').addClass(data.toast);
+                $('.toast-form-contact').removeClass('toast-success').removeClass('toast-error').addClass(data.toast);
 
                 $('.toast-form-contact').toast({
                     delay: 10000
@@ -644,15 +644,15 @@ $('#form-login').on('submit', function (e) {
             } else {
                 $('#form-login')[0].reset();
 
-                $('#form-login').fadeOut(600);
-                $('.forgot-password').fadeOut(600)
+                $('#form-login').fadeOut(100);
+                $('.forgot-password').fadeOut(100)
 
                 setTimeout(() => {
                     $('.page-login #loader-login').removeClass('hidden');
                     $('.toast-form-contact .svg').html(data.icone)
                     $('.toast-form-contact .title').html(data.title);
                     $('.toast-form-contact .toast-body').html(data.msg)
-                    $('.toast-form-contact').addClass(data.toast);
+                    $('.toast-form-contact').removeClass('toast-success').removeClass('toast-error').addClass(data.toast);
 
                     $('.toast-form-contact').toast({
                         delay: 10000
@@ -660,7 +660,7 @@ $('#form-login').on('submit', function (e) {
 
                     $('.toast-form-contact').toast('show');
 
-                }, 600);
+                }, 100);
 
                 setTimeout(() => {
                     location.href = '/dashboard';
@@ -704,7 +704,7 @@ $('#form-register').on('submit', function (e) {
                 $('.toast-form-contact .svg').html(data.icone)
                 $('.toast-form-contact .title').html(data.title);
                 $('.toast-form-contact .toast-body').html(data.msg)
-                $('.toast-form-contact').addClass(data.toast);
+                $('.toast-form-contact').removeClass('toast-success').removeClass('toast-error').addClass(data.toast);
 
                 $('.toast-form-contact').toast({
                     delay: 10000
@@ -715,23 +715,20 @@ $('#form-register').on('submit', function (e) {
             } else {
                 $('#form-register')[0].reset();
 
-                $('#form-register').fadeOut(600);
+                $('#form-register').fadeOut(100);
 
-                setTimeout(() => {
-                    $('.page-register #loader-register').removeClass('hidden');
+                $('.page-register #loader-register').removeClass('hidden');
 
-                    $('.toast-form-contact .svg').html(data.icone)
-                    $('.toast-form-contact .title').html(data.title);
-                    $('.toast-form-contact .toast-body').html(data.msg)
-                    $('.toast-form-contact').addClass(data.toast);
+                $('.toast-form-contact .svg').html(data.icone)
+                $('.toast-form-contact .title').html(data.title);
+                $('.toast-form-contact .toast-body').html(data.msg)
+                $('.toast-form-contact').removeClass('toast-success').removeClass('toast-error').addClass(data.toast);
 
-                    $('.toast-form-contact').toast({
-                        delay: 10000
-                    });
+                $('.toast-form-contact').toast({
+                    delay: 10000
+                });
 
-                    $('.toast-form-contact').toast('show');
-
-                }, 750);
+                $('.toast-form-contact').toast('show');
 
                 setTimeout(() => {
                     location.href = '/dashboard';
@@ -746,5 +743,170 @@ $('#form-register').on('submit', function (e) {
 
 })
 
+$('.page-register #checkProtection').click(function () {
+
+    var checked = $(this).is(':checked');
+
+    if(checked) {
+        $('.page-register  #checkProtection').prop('checked', true);
+        $('.page-register  #checkProtection').val('true');
+        $('.page-register .btn').removeClass('disabled');
+    }else{
+        $('.page-register  #checkProtection').prop('checked', false);
+        $('.page-register  #checkProtection').val('false');
+        $('.page-register .btn').addClass('disabled');
+    }
+
+});
+
+// ------------ //
+
+// Forgot password
+
+$('#form-forgot').on('submit', function (e) {
+
+    e.preventDefault();
+
+    $.ajax({
+        url: $(this).attr('action'),
+        method: $(this).attr('method'),
+        data: new FormData(this),
+        processData: false,
+        dataType: 'json',
+        contentType: false,
+        beforeSend: function (e) {
+            $(document).find('.error-text').text('');
+        },
+        success: function (data) {
+
+            if (data.status == 0) {
+
+                $.each(data.error, function (prefix, val) {
+                    $('.' + prefix + '_error').text(val[0]);
+                });
+
+                $('.toast-form-contact .svg').html(data.icone)
+                $('.toast-form-contact .title').html(data.title);
+                $('.toast-form-contact .toast-body').html(data.msg)
+                $('.toast-form-contact').removeClass('toast-success').removeClass('toast-error').addClass(data.toast);
+
+                $('.toast-form-contact').toast({
+                    delay: 10000
+                });
+
+                $('.toast-form-contact').toast('show');
+
+            } else {
+                $('#form-forgot')[0].reset();
+
+                $('#form-forgot').fadeOut(600);
+
+                setTimeout(() => {
+                    $('.page-forgot #loader-forgot').removeClass('hidden');
+
+                    $('.toast-form-contact .svg').html(data.icone)
+                    $('.toast-form-contact .title').html(data.title);
+                    $('.toast-form-contact .toast-body').html(data.msg)
+                    $('.toast-form-contact').removeClass('toast-success').removeClass('toast-error').addClass(data.toast);
+
+                    $('.toast-form-contact').toast({
+                        delay: 10000
+                    });
+
+                    $('.toast-form-contact').toast('show');
+
+                }, 600);
+
+                setTimeout(() => {
+                    location.href = '/login';
+                }, 2300);
+
+            }
+        },
+        error: function (e) {
+            console.log(e);
+        }
+    });
+
+})
+
+$(document).on('click', '.forgot-password', function (e) {
+
+    e.preventDefault();
+
+    $('#form-login').fadeOut(300);
+
+    setTimeout(() => {
+        $('#form-forgot-new').fadeIn();
+    }, 300);
+
+})
+
+$('#form-forgot-new').on('submit', function (e) {
+
+    e.preventDefault();
+
+    $.ajax({
+        url: $(this).attr('action'),
+        method: $(this).attr('method'),
+        data: new FormData(this),
+        processData: false,
+        dataType: 'json',
+        contentType: false,
+        beforeSend: function (e) {
+            $(document).find('.error-text').text('');
+        },
+        success: function (data) {
+
+            if (data.status == 0) {
+
+                $.each(data.error, function (prefix, val) {
+                    $('.' + prefix + '_error').text(val[0]);
+                });
+
+                $('.toast-form-contact .svg').html(data.icone)
+                $('.toast-form-contact .title').html(data.title);
+                $('.toast-form-contact .toast-body').html(data.msg)
+                $('.toast-form-contact').removeClass('toast-success').removeClass('toast-error').addClass(data.toast);
+
+                $('.toast-form-contact').toast({
+                    delay: 10000
+                });
+
+                $('.toast-form-contact').toast('show');
+
+            } else {
+                $('#form-forgot-new')[0].reset();
+
+                $('#form-forgot-new').fadeOut(300);
+
+                setTimeout(() => {
+                    $('.page-login #loader-login').removeClass('hidden');
+
+                    $('.toast-form-contact .svg').html(data.icone)
+                    $('.toast-form-contact .title').html(data.title);
+                    $('.toast-form-contact .toast-body').html(data.msg)
+                    $('.toast-form-contact').removeClass('toast-success').removeClass('toast-error').addClass(data.toast);
+
+                    $('.toast-form-contact').toast({
+                        delay: 10000
+                    });
+
+                    $('.toast-form-contact').toast('show');
+
+                }, 400);
+
+                setTimeout(() => {
+                    location.href = '/';
+                }, 2300);
+
+            }
+        },
+        error: function (e) {
+            console.log(e);
+        }
+    });
+
+})
 
 // ------------ //

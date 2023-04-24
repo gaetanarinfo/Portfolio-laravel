@@ -35,7 +35,7 @@
                 @if (Auth::check())
                     <li class="nav-item">
                         <a href="/logout" class="nav-link font-weight-bold" data-animate="scrolling"><i
-                                class="mr-2 fa-solid fa-arrow-right-from-bracket"></i>Logout</a>
+                                class="mr-2 fa-solid fa-arrow-right-from-bracket"></i>Déconnexion</a>
                     </li>
                 @else
                     <li class="nav-item @if (Route::current()->getName() == 'register') active @endif">

@@ -18,6 +18,10 @@
     <link rel="stylesheet" type="text/css" href="{{ URL::asset('css/register.css') }}">
     @endif
 
+    @if(Route::current()->getName() == "forgot-password")
+    <link rel="stylesheet" type="text/css" href="{{ URL::asset('css/forgot-password.css') }}">
+    @endif
+
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,600&display=swap" rel="stylesheet" />

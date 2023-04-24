@@ -329,6 +329,7 @@
 
 .page-github #avatar_url {
     max-width: 100px;
+    border-radius: 50%;
 }
 
 .page-github h6 {
@@ -564,4 +565,8 @@
         margin: 0 0 !important;
         padding: 0 1rem !important;
     }
+}
+
+.disabled {
+    pointer-events: none !important;
 }

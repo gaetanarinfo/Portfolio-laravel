@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id()->unique();
             $table->string('categorie');
             $table->string('title');
-            $table->string('image');
+            $table->string('image')->default('default.png');
             $table->string('url');
             $table->float('prix', 10, 2);
             $table->integer('active')->default(1);
