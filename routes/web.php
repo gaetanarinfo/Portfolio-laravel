@@ -1,16 +1,18 @@
 <?php
 
+use App\Models\Projets;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\URL;
+use App\Http\Controllers\Auth\Users;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\NewsController;
-use App\Http\Controllers\Auth\LoginRegisterController;
-use App\Http\Controllers\Auth\Users;
 use App\Http\Controllers\GithubController;
 use App\Http\Controllers\YoutubeController;
-use App\Http\Controllers\ProjetsController;
 use App\Http\Controllers\ContactsController;
+use App\Http\Controllers\GoogleController;
 use App\Http\Controllers\NewsletterController;
+use App\Http\Controllers\Auth\LoginRegisterController;
+use App\Http\Controllers\NewsScrappingController;
 
 /*
 |--------------------------------------------------------------------------
@@ -26,28 +28,44 @@ use App\Http\Controllers\NewsletterController;
 // Home
 
 Route::get('/', function () {
-    return view('home');
+
+    $projets = Projets::orderBy('created_at', 'DESC')
+    ->get();
+
+    return view('home', compact('projets'));
+
 })->name('home');
 
 Route::get('/home', function () {
-    return view('home');
+
+    $projets = Projets::orderBy('created_at', 'DESC')
+    ->get();
+
+    return view('home', compact('projets'));
+
 })->name('home');
 
 // Home (Projets) + (Artcile -> 6)
 
-Route::get('/projetsAll', [
-    ProjetsController::class, 'getProjetsAll',
-])->name('projets');
-
 Route::get('/newsAll', [
     NewsController::class, 'getNewsSmall',
 ])->name('news');
+
+Route::get('/cgu', function () {
+    return view('cgu');
+})->name('cgu');
+
+Route::get('/politique-confidentialite', function () {
+    return view('politiques');
+})->name('politique-confidentialite');
 
 // Blog + article
 
 Route::get('/blog/{slug}', [NewsController::class, 'getNewsAll'])->name('blog');
 Route::post('/search-blog', [NewsController::class, 'getNewsSerch'])->name('search');
 Route::get('/article/{slug}', [NewsController::class, 'getNewsOne'])->name('article');
+Route::get('/news-scrapping', [NewsScrappingController::class, 'getNewsAll'])->name('article');
+
 
 // Contact + Projets + News
 // Insert App.js
@@ -93,6 +111,10 @@ Route::post('/newsletter', [NewsletterController::class, 'store'])->name('newsle
 Route::get('/github-api', [GithubController::class, 'showGitProjets']);
 Route::post('/github-api', [GithubController::class, 'showGitProjets']);
 
+//Youtube
+
+Route::post('/google-api', [GoogleController::class, 'showGoogleProjets']);
+
 // User
 
 Route::get('/login', [LoginController::class, 'index'])->name('user.login');
@@ -104,7 +126,11 @@ Route::controller(LoginRegisterController::class)->group(function () {
     Route::get('/login', 'login')->name('login');
     Route::post('/authenticate', 'authenticate')->name('authenticate');
     Route::get('/logout', 'logout')->name('logout');
+
     Route::get('/dashboard', 'dashboard')->name('dashboard');
+
+    Route::get('/dashboard/{year}', 'dashboard')->name('dashboard');
+
     Route::get('/forgot-password/{token}', 'forgot_password')->name('forgot-password');
     Route::post('/forgot-password', 'forgot_password_change')->name('forgot_password_change');
     Route::get('/forgot-new-password', 'forgot_password_new')->name('forgot_not_user');
@@ -125,8 +151,23 @@ Route::controller(Users::class)->group(function () {
     Route::post('/show-projets/delete', 'delete_projet')->name('delete-projet');
     Route::post('/show-projets/edit', 'edit_projet')->name('edit-projet');
     Route::post('/show-projets/add', 'add_projet')->name('add-projet');
+
+    // Blog
+    Route::get('/show-blog', 'show_blog')->name('show-blog');
+    Route::post('/show-blog/delete', 'delete_article')->name('delete-article');
+    Route::get('/show-blog/update/{slug}', 'edit_article')->name('edit-article');
+    Route::post('/show-blog/update/{slug}', 'edit_article_post')->name('edit-article-post');
+    Route::get('/show-blog/add', 'add_article')->name('add-article');
+    Route::post('/show-blog/add', 'add_article_post')->name('add-article-post');
+
+    // Orders
+    Route::get('/show-orders-google', 'show_orders_google')->name('show-orders-google');
+
+    // Mail
+    Route::post('/mail/archive', 'archive_mail')->name('archive-mail');
+
 });
 
-// Github
+// Youtube
 
 Route::get('/youtube-api', [YoutubeController::class, 'showYoutubeProfil']);

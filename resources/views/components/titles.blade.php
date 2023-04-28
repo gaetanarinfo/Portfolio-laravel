@@ -19,6 +19,16 @@
         <meta name="description" content="{{ config('app.description') }}">
     @break
 
+    @case('cgu')
+        <title>Conditions générales d'utilisation</title>
+        <meta name="description" content="{{ config('app.description') }}">
+    @break
+
+    @case('politique-confidentialite')
+        <title>Politique de confidentialité</title>
+        <meta name="description" content="{{ config('app.description') }}">
+    @break
+
     @default
         <title>{{ config('app.title') }}</title>
         <meta name="description" content="{{ config('app.description') }}">

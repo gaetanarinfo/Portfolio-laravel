@@ -45,34 +45,43 @@
                 <div class="bg-white py-2 collapse-inner rounded">
 
                     <h6 class="collapse-header">Blog :</h6>
-                    <a class="collapse-item @if (Route::current()->getName() == 'show-article') active @endif"
-                        href="/show-article">Mes
+                    <a class="collapse-item @if (Route::current()->getName() == 'show-blog') active @endif" href="/show-blog">Mes
                         articles</a>
-                    <a class="collapse-item @if (Route::current()->getName() == 'add-article') active @endif"
-                        href="/add-article">Crée un
+                    <a class="collapse-item @if (Route::current()->getName() == 'add-article') active @endif" href="/show-blog/add">Crée
+                        un
                         article</a>
                     <div class="collapse-divider"></div>
 
                     <h6 class="collapse-header">Utilisateurs :</h6>
-                    <a class="collapse-item @if (Route::current()->getName() == 'show-users') active @endif"
-                        href="/show-users">Voir les
+                    <a class="collapse-item @if (Route::current()->getName() == 'show-users') active @endif" href="/show-users">Voir les
                         utilisateurs</a>
-                    <a class="collapse-item @if (Route::current()->getName() == 'show-users') active @endif"
-                        href="/show-users">Crée un
+                    <a class="collapse-item @if (Route::current()->getName() == 'show-users') active @endif" href="/show-users">Crée un
                         utilisateur</a>
 
                     <h6 class="collapse-header">Projets :</h6>
-                    <a class="collapse-item @if (Route::current()->getName() == 'show-projets') active @endif"
-                        href="/show-projets">Voir les
+                    <a class="collapse-item @if (Route::current()->getName() == 'show-projets') active @endif" href="/show-projets">Voir
+                        les
                         projets</a>
-                    <a class="collapse-item @if (Route::current()->getName() == 'show-projets') active @endif"
-                        href="/show-projets">Crée un
+                    <a class="collapse-item @if (Route::current()->getName() == 'show-projets') active @endif" href="/show-projets">Crée
+                        un
                         projet</a>
 
                 </div>
 
             </div>
 
+        </li>
+
+        <!-- Heading -->
+        <div class="sidebar-heading">
+            Mes applications
+        </div>
+
+        <li class="nav-item @if (Route::current()->getName() == 'show-orders-google') active @endif">
+            <a class="nav-link" href="/show-orders-google">
+                <i class="fa-brands fa-google-play"></i>
+                <span>Commandes clients</span>
+            </a>
         </li>
     @endif
 

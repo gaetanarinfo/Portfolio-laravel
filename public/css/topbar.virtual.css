@@ -55,7 +55,7 @@
 .vg-page {
     position: relative;
     display: block;
-    padding: 80px 0;
+    padding: 40px 0;
     width: 100%;
     overflow: hidden;
 }
@@ -87,6 +87,14 @@
     padding-bottom: 6px;
     background-color: rgba(104, 102, 102, 0.8);
     z-index: 99;
+}
+
+@media all and (max-width: 768px) {
+    .page-home .navbar {
+    position: fixed !important;
+    top: 0;
+    background: rgba(104, 102, 102, 0.8);
+}
 }
 
 .page-home .navbar.floating {

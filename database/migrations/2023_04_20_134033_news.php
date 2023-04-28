@@ -23,10 +23,10 @@ return new class extends Migration
             $table->string('author');
             $table->string('author_content');
             $table->string('author_link');
-            $table->string('source');
-            $table->string('avatar');
-            $table->integer('views');
-            $table->integer('active');
+            $table->string('source')->nullable(true);
+            $table->string('avatar')->nullable(true);
+            $table->integer('views')->default(1);
+            $table->integer('active')->default(1);
             $table->string('url_fb')->nullable(true);
             $table->string('url_linkedin')->nullable(true);
             $table->string('url_twitter')->nullable(true);

@@ -7,7 +7,7 @@
  <!-- Custom styles for this template-->
  <link href="{{ URL::asset('css/dashboard.min.css') }}" rel="stylesheet">
 
- <link href="{{ URL::asset('vendor/datatables/dataTables.bootstrap4.min.css') }}" rel="stylesheet">
+ <link href="https://unpkg.com/bootstrap-table@1.21.4/dist/bootstrap-table.min.css" rel="stylesheet">
 
  <style>
      .topbar.navbar-light .navbar-nav .nav-item .nav-link {
@@ -30,6 +30,10 @@
      table tfoot tr th:last-child,
      table tbody tr td:last-child {
          text-align: end
+     }
+
+     .orders thead tr th:last-child {
+         pointer-events: all !important;
      }
 
      table thead tr th:first-child,
@@ -133,4 +137,166 @@
      #image_input.disabled {
          pointer-events: none;
      }
+
+     .card-body .card-img img {
+         max-width: 350px;
+     }
+
+     .card-body .card-img {
+         text-align: center;
+         margin: 0 0 1.5rem 0;
+     }
+
+     .card-body .categorie {
+         color: #419cca;
+         font-weight: 700;
+     }
+
+     .card-body .post-author {
+         font-weight: 700;
+     }
+
+     .card-body .post-date {
+         font-size: 13px;
+         color: #777;
+         font-weight: 600;
+     }
+
+     .grid-article {
+         width: 100%;
+         display: flex;
+         justify-content: center;
+     }
+
+     .image-article-bloc {
+         max-width: 560px;
+         width: 100%;
+         margin-bottom: 1.5rem;
+         margin-top: 1rem;
+         text-align: center;
+     }
+
+     .image-article-bloc img {
+         border-radius: 1rem
+     }
+
+     .delete-image-article {
+         display: none;
+         margin-top: 1rem;
+         text-align: center;
+         color: red;
+         font-size: 1.50rem;
+     }
+
+     .delete-image-article i {
+         cursor: pointer;
+     }
+
+     .bandeau-article-bloc {
+         max-width: 560px;
+         width: 100%;
+         margin-bottom: 1.5rem;
+         margin-top: 1rem;
+         text-align: center;
+     }
+
+     .bandeau-article-bloc img {
+         border-radius: 1rem
+     }
+
+     .delete-bandeau-article {
+         display: none;
+         margin-top: 1rem;
+         text-align: center;
+         color: red;
+         font-size: 1.50rem;
+     }
+
+     .delete-bandeau-article i {
+         cursor: pointer;
+     }
+
+     .author-article-bloc {
+         margin-bottom: 1.5rem;
+         margin-top: 1rem;
+         text-align: center;
+     }
+
+     .author-article-bloc img {
+         max-width: 100px;
+         width: 100%;
+     }
+
+     .author-article-bloc img {
+         border-radius: 50%
+     }
+
+     .delete-author-article {
+         display: none;
+         margin-top: 1rem;
+         text-align: center;
+         color: red;
+         font-size: 1.50rem;
+     }
+
+     .delete-author-article i {
+         cursor: pointer;
+     }
+
+     #mailModal .modal-body .d-flex {
+         width: 100%;
+         border: 0.15rem solid #cccccc78;
+         padding: 1rem;
+         border-radius: 0.5rem;
+     }
+
+     #mailModal .modal-body .d-flex .col-md-3 {
+         border-right: 0.15rem solid #cccccc78;
+         padding-right: 7rem;
+     }
+
+     #mailModal .modal-avatar {
+         border-radius: 50%;
+     }
+
+     #mailModal .modal-message {
+         font-size: 1rem;
+         font-weight: 600;
+     }
+
+     #mailModal .modal-date {
+         margin-top: 1rem;
+         padding: 0 1rem;
+         font-size: 13px;
+         font-weight: 600;
+         text-align: end;
+     }
+
+     #mailModal .modal-name {
+         margin-top: 1rem;
+         padding: 0 1rem;
+         font-size: 13px;
+         font-weight: 800;
+         text-align: start;
+     }
+
+     #mailModal .modal-info {
+         display: flex;
+         justify-content: center;
+         flex-wrap: nowrap;
+     }
+
+     .message-mail {
+         padding: 1rem;
+         font-weight: bold;
+     }
+
+     .icon-app {
+         border-radius: 20%;
+         padding: 0;
+         background: white;
+         box-shadow: 0 1px 2px 0 rgba(60, 64, 67, .3), 0 1px 3px 1px rgba(60, 64, 67, .15);
+     }
  </style>
+
+ <script src="{{ URL::asset('js/jquery-sb/jquery.min.js') }}"></script>

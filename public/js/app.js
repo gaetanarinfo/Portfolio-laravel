@@ -1,3 +1,5 @@
+$('[data-toggle="popover"]').popover()
+
 // Download CV
 
 $('#download-cv').on('click', function (e) {
@@ -126,30 +128,20 @@ $('#submit-contact').on('submit', function (e) {
 
 // Methode Get Pages Routes
 
-$.ajax({
-    url: '/projetsAll',
-    type: 'GET',
-    data: {},
-    success: function (data) {
+setTimeout(() => {
+    var $grid = $('.gridder').isotope({
+        itemSelector: '.grid-item',
+        percentPosition: true
+    });
 
-        $('.gridder').html(data);
-
-        var $grid = $('.gridder').isotope({
-            itemSelector: '.grid-item',
-            percentPosition: true
+    // filter items on button click
+    $('.filterable-button').on('click', 'button', function () {
+        var filterValue = $(this).attr('data-filter');
+        $grid.isotope({
+            filter: filterValue
         });
-
-        // filter items on button click
-        $('.filterable-button').on('click', 'button', function () {
-            var filterValue = $(this).attr('data-filter');
-            $grid.isotope({
-                filter: filterValue
-            });
-        });
-
-    },
-    error: function (error) { console.log(error); }
-})
+    });
+}, 600);
 
 $.ajax({
     url: '/newsAll',
@@ -187,7 +179,7 @@ $(document).on('click', '.d-flex .input-group:first-child .nice-select ul li.opt
 
             if (data != "") {
 
-                $('#blog-news-search').html('<div class="loader-form"><img src="../img/loader.svg" alt=""></div>');
+                $('#blog-news-search').html('<div class="post-grid"><div class="loader-form"><img src="../img/loader.svg" alt=""></div></div>');
 
                 setTimeout(() => {
                     $('#blog-news-search').html(data);
@@ -195,7 +187,7 @@ $(document).on('click', '.d-flex .input-group:first-child .nice-select ul li.opt
 
             } else {
 
-                $('#blog-news-search').html('<div class="loader-form"><img src="../img/loader.svg" alt=""></div>');
+                $('#blog-news-search').html('<div class="post-grid"><div class="loader-form"><img src="../img/loader.svg" alt=""></div></div>');
 
                 setTimeout(() => {
                     $('#blog-news-search').html('<div class="empty-search-img"><img src="../img/4076402.png" /></div><div class="empty-search text-danger"><h3>Désolé, aucun article ne correspond à votre recherche !</h3></div>');
@@ -236,7 +228,7 @@ $(document).on('click', '.d-flex .input-group:last-child .nice-select ul li.opti
 
             if (data != "") {
 
-                $('#blog-news-search').html('<div class="loader-form"><img src="../img/loader.svg" alt=""></div>');
+                $('#blog-news-search').html('<div class="post-grid"><div class="loader-form"><img src="../img/loader.svg" alt=""></div></div>');
 
                 setTimeout(() => {
                     $('#blog-news-search').html(data);
@@ -244,7 +236,7 @@ $(document).on('click', '.d-flex .input-group:last-child .nice-select ul li.opti
 
             } else {
 
-                $('#blog-news-search').html('<div class="loader-form"><img src="../img/loader.svg" alt=""></div>');
+                $('#blog-news-search').html('<div class="post-grid"><div class="loader-form"><img src="../img/loader.svg" alt=""></div></div>');
 
                 setTimeout(() => {
                     $('#blog-news-search').html('<div class="empty-search-img"><img src="../img/4076402.png" /></div><div class="empty-search text-danger"><h3>Désolé, aucun article ne correspond à votre recherche !</h3></div>');
@@ -277,7 +269,7 @@ $(document).on('keyup', '#search-blog', function (e) {
 
             if (data != "") {
 
-                $('#blog-news-search').html('<div class="loader-form"><img src="../img/loader.svg" alt=""></div>');
+                $('#blog-news-search').html('<div class="post-grid"><div class="loader-form"><img src="../img/loader.svg" alt=""></div></div>');
 
                 setTimeout(() => {
                     $('#blog-news-search').html(data);
@@ -285,7 +277,7 @@ $(document).on('keyup', '#search-blog', function (e) {
 
             } else {
 
-                $('#blog-news-search').html('<div class="loader-form"><img src="../img/loader.svg" alt=""></div>');
+                $('#blog-news-search').html('<div class="post-grid"><div class="loader-form"><img src="../img/loader.svg" alt=""></div></div>');
 
                 setTimeout(() => {
                     $('#blog-news-search').html('<div class="empty-search-img"><img src="../img/4076402.png" /></div><div class="empty-search text-danger"><h3>Désolé, aucun article ne correspond à votre recherche !</h3></div>');
@@ -428,10 +420,13 @@ $.ajax({
 
                 var projets = false,
                     color_projet = "text-danger",
-                    icone_projet = "fa-xmark"
+                    icone_projet = "fa-xmark",
+                    projet_name = ""
 
 
                 $.each(arrays, function (key, value) {
+
+                    projet_name = value.name;
 
                     if (value.visibility != "public") {
                         projets = "Privé";
@@ -443,13 +438,40 @@ $.ajax({
                         icone_projet = "fa-check";
                     }
 
-                    $('.timeline-list').append('<li><div class="title"><i class="fa-solid fa-chevron-right mr-2"></i>' + value.name + '</div><div class="details"><small class="fg-theme"><i class="fa-solid fa-code mr-2 text-success"></i> Langage utilisé ' + value.language + '</small><ul class="timeline-none mt-2 pr-md-5"><li><i class="fa-solid ' + icone_projet + ' ' + color_projet + ' mr-2"></i><span class="' + color_projet + '">Projets ' + projets + '</span></li><li><i class="fa-solid fa-eye mr-2 text-warning"></i>' + value.watchers_count + ' vues</li><li><i class="fa-solid fa-code-branch mr-2 text-primary"></i>' + value.forks + ' forks</li><li><i class="fa-solid fa-code-branch mr-2 text-primary"></i>Branch default <b>' + value.default_branch + '</b></li><li><a class="text-danger" target="_blank" href="https://github.com/' + value.full_name + '#readme"><i class="fa-solid fa-book-open mr-2 text-danger"></i>Readme</a></li><li><i class="fa-solid fa-clock text-info mr-2"></i> Crée le ' + moment(value.created_at).format('DD/MM/YYYY à HH:mm') + '</li><li><i class="fa-solid fa-arrows-rotate text-info mr-2"></i> Modifier le ' + moment(value.updated_at).format('DD/MM/YYYY à HH:mm') + '</li><li><i class="fa-solid fa-arrows-rotate text-info mr-2"></i> Dernier push ' + moment(value.pushed_at).format('DD/MM/YYYY à HH:mm') + '</li></ul><div style="text-align: center;"><a target="_blank" href="https://github.com/' + value.full_name + '" class="btn btn-theme mt-3">Voir le dépôt</a></div></div></li>');
+                    $('.timeline-list').append('<li><div class="title"><i class="fa-solid fa-chevron-right mr-2"></i>' + value.name + '</div><div class="details"><small class="fg-theme"><i class="fa-solid fa-code mr-2 text-success"></i> Langage utilisé ' + value.language + '</small><ul class="timeline-none mt-2 pr-md-5"><li><i class="fa-solid ' + icone_projet + ' ' + color_projet + ' mr-2"></i><span class="' + color_projet + '">Projets ' + projets + '</span></li><li><i class="fa-solid fa-eye mr-2 text-warning"></i>' + value.watchers_count + ' vues</li><li><i class="fa-solid fa-code-branch mr-2 text-primary"></i>' + value.forks + ' forks</li><li><i class="fa-solid fa-code-branch mr-2 text-primary"></i>Branch default <b>' + value.default_branch + '</b></li><li><a class="text-danger" target="_blank" href="https://github.com/' + value.full_name + '#readme"><i class="fa-solid fa-book-open mr-2 text-danger"></i>Readme</a></li><li><i class="fa-solid fa-clock text-info mr-2"></i> Crée le ' + moment(value.created_at).format('DD/MM/YYYY à HH:mm') + '</li><li><i class="fa-solid fa-arrows-rotate text-info mr-2"></i> Modifier le ' + moment(value.updated_at).format('DD/MM/YYYY à HH:mm') + '</li><li><i class="fa-solid fa-arrows-rotate text-info mr-2"></i> Dernier push ' + moment(value.pushed_at).format('DD/MM/YYYY à HH:mm') + '</li></ul><div style="text-align: center;"><a target="_blank" href="https://github.com/' + value.full_name + '" class="btn btn-theme mt-3 mr-3">Voir le dépôt</a><a role="button" data-toggle="modal" data-target="#codeModal" class="btn btn-modal-code btn-theme mt-3" data-https="https://github.com/' + value.full_name + '" data-name="' + value.name + '">Code</a></div></div></li>');
                 })
 
                 $('#loader-github').addClass('hidden');
                 $('.page-github .page-blog').removeClass('hidden');
                 $('.bloc-user-github').fadeIn(300);
                 $('.page-github .widget-grid').fadeIn(300);
+
+                $(document).on('click', '#codeModal .footer-content', function (e) {
+
+                    e.preventDefault();
+
+                    location.href = 'https://github.com/gaetanarinfo/' + projet_name + '/archive/refs/heads/main.zip';
+
+                })
+
+                $(document).on('click', '.btn-modal-code', function (e) {
+
+                    e.preventDefault();
+
+                    var https = $(this).data('https'),
+                        name = $(this).data('name'),
+                        title = $(this).data('name')
+
+                    $('#codeModal .modal-title .title').html(title);
+                    $('#codeModal #httpsSpan').html(https);
+                    $('#codeModal #cliSpan').html('gh repo clone gaetanarinfo/' + name);
+                    $('#codeModal #inputHttps').val(https);
+                    $('#codeModal #inputCli').val('gh repo clone gaetanarinfo/' + name);
+
+                    $('.input-group-text-https').find('i').removeClass('fa-solid').removeClass('fa-check').addClass('fa-regular').addClass('fa-clipboard');
+                    $('.input-group-text-cli').find('i').removeClass('fa-solid').removeClass('fa-check').addClass('fa-regular').addClass('fa-clipboard');
+
+                })
 
             }, 2500);
 
@@ -550,13 +572,32 @@ $(document).on('click', '.page-github .nice-select ul li.option', function (e) {
                             icone_projet = "fa-check";
                         }
 
-                        $('.timeline-list').append('<li><div class="title"><i class="fa-solid fa-chevron-right mr-2"></i>' + value.name + '</div><div class="details"><small class="fg-theme"><i class="fa-solid fa-code mr-2 text-success"></i> Langage utilisé ' + value.language + '</small><ul class="timeline-none mt-2 pr-md-5"><li><i class="fa-solid ' + icone_projet + ' ' + color_projet + ' mr-2"></i><span class="' + color_projet + '">Projets ' + projets + '</span></li><li><i class="fa-solid fa-eye mr-2 text-warning"></i>' + value.watchers_count + ' vues</li><li><i class="fa-solid fa-code-branch mr-2 text-primary"></i>' + value.forks + ' forks</li><li><i class="fa-solid fa-code-branch mr-2 text-primary"></i>Branch default <b>' + value.default_branch + '</b></li><li><a class="text-danger" target="_blank" href="https://github.com/' + value.full_name + '#readme"><i class="fa-solid fa-book-open mr-2 text-danger"></i>Readme</a></li><li><i class="fa-solid fa-clock text-info mr-2"></i> Crée le ' + moment(value.created_at).format('DD/MM/YYYY à HH:mm') + '</li><li><i class="fa-solid fa-arrows-rotate text-info mr-2"></i> Modifier le ' + moment(value.updated_at).format('DD/MM/YYYY à HH:mm') + '</li><li><i class="fa-solid fa-arrows-rotate text-info mr-2"></i> Dernier push ' + moment(value.pushed_at).format('DD/MM/YYYY à HH:mm') + '</li></ul><div style="text-align: center;"><a target="_blank" href="https://github.com/' + value.full_name + '" class="btn btn-theme mt-3">Voir le dépôt</a></div></div></li>');
+                        $('.timeline-list').append('<li><div class="title"><i class="fa-solid fa-chevron-right mr-2"></i>' + value.name + '</div><div class="details"><small class="fg-theme"><i class="fa-solid fa-code mr-2 text-success"></i> Langage utilisé ' + value.language + '</small><ul class="timeline-none mt-2 pr-md-5"><li><i class="fa-solid ' + icone_projet + ' ' + color_projet + ' mr-2"></i><span class="' + color_projet + '">Projets ' + projets + '</span></li><li><i class="fa-solid fa-eye mr-2 text-warning"></i>' + value.watchers_count + ' vues</li><li><i class="fa-solid fa-code-branch mr-2 text-primary"></i>' + value.forks + ' forks</li><li><i class="fa-solid fa-code-branch mr-2 text-primary"></i>Branch default <b>' + value.default_branch + '</b></li><li><a class="text-danger" target="_blank" href="https://github.com/' + value.full_name + '#readme"><i class="fa-solid fa-book-open mr-2 text-danger"></i>Readme</a></li><li><i class="fa-solid fa-clock text-info mr-2"></i> Crée le ' + moment(value.created_at).format('DD/MM/YYYY à HH:mm') + '</li><li><i class="fa-solid fa-arrows-rotate text-info mr-2"></i> Modifier le ' + moment(value.updated_at).format('DD/MM/YYYY à HH:mm') + '</li><li><i class="fa-solid fa-arrows-rotate text-info mr-2"></i> Dernier push ' + moment(value.pushed_at).format('DD/MM/YYYY à HH:mm') + '</li></ul><div style="text-align: center;"><a target="_blank" href="https://github.com/' + value.full_name + '" class="btn btn-theme mt-3 mr-3">Voir le dépôt</a><a role="button" data-toggle="modal" data-target="#codeModal" class="btn btn-modal-code btn-theme mt-3" data-https="https://github.com/' + value.full_name + '" data-name="' + value.name + '">Code</a></div></div></li>');
                     })
 
                     $('#loader-github').addClass('hidden');
                     $('.page-github .page-blog').removeClass('hidden');
                     $('.bloc-user-github').fadeIn(300);
                     $('.page-github .widget-grid').fadeIn(300);
+
+                    $(document).on('click', '.btn-modal-code', function (e) {
+
+                        e.preventDefault();
+
+                        var https = $(this).data('https'),
+                            name = $(this).data('name'),
+                            title = $(this).data('name')
+
+                        $('#codeModal .modal-title .title').html(title);
+                        $('#codeModal #httpsSpan').html(https);
+                        $('#codeModal #cliSpan').html('gh repo clone gaetanarinfo/' + name);
+                        $('#codeModal #inputHttps').val(https);
+                        $('#codeModal #inputCli').val('gh repo clone gaetanarinfo/' + name);
+
+                        $('.input-group-text-https').find('i').removeClass('fa-solid').removeClass('fa-check').addClass('fa-regular').addClass('fa-clipboard');
+                        $('.input-group-text-cli').find('i').removeClass('fa-solid').removeClass('fa-check').addClass('fa-regular').addClass('fa-clipboard');
+
+                    })
 
                 }, 1500);
 
@@ -747,11 +788,11 @@ $('.page-register #checkProtection').click(function () {
 
     var checked = $(this).is(':checked');
 
-    if(checked) {
+    if (checked) {
         $('.page-register  #checkProtection').prop('checked', true);
         $('.page-register  #checkProtection').val('true');
         $('.page-register .btn').removeClass('disabled');
-    }else{
+    } else {
         $('.page-register  #checkProtection').prop('checked', false);
         $('.page-register  #checkProtection').val('false');
         $('.page-register .btn').addClass('disabled');
@@ -909,4 +950,89 @@ $('#form-forgot-new').on('submit', function (e) {
 
 })
 
+// Google api
+
+$.ajax({
+    url: '/google-api',
+    type: 'POST',
+    data: {
+        youtubeur: 'bennco',
+        section: 'youtube'
+    },
+    success: function (data) {
+
+        var liste = data.latest_from_ben_n_co
+
+        setTimeout(() => {
+
+            $.each(liste, function (prefix, value) {
+
+                var views = value.views,
+                    viewsK = '',
+                    published_date = value.published_date
+
+                    published_date = published_date.replace(['days ago'], ['jours'])
+                    published_date = published_date.replace(['weeks ago'], ['semaines'])
+                    published_date = published_date.replace(['month ago'], ['mois'])
+
+                if (parseInt(views) >= 1000) {
+                    viewsK = 'k';
+                    views = views.toString().substr(3)
+                }else{
+                    viewsK = '';
+                    views = views
+                }
+
+                $('.youtube-api').append('<div class="d-flex bloc-flex"><div class="col" data-href="' + value.link + '"><img src="' + value.thumbnail.static + '" alt="' + value.title + '"class="fluid thumbnail-youtube"><span class="length">' + value.length + '</span></div><div class="col"><div><h5>' + value.title + '</h5></div><div class="video-info"><span class="views">' + views + viewsK + ' vues - </span><span class="published_date">' + published_date + '</span></div><div class="youtubeur-info"><a href="' + value.channel.link + '" target="_blank"><span class="thumbnail"><img src="' + value.channel.thumbnail + '" alt="' + value.channel.name + '"></span><span class="name">' + value.channel.name + '</span></a></div><p class="description">' + value.description + '</p></div>')
+
+                $(document).on('click', '.bloc-flex .col:first-child', function (e) {
+
+                    e.preventDefault();
+
+                    var url = $(this).data('href');
+
+                    window.open(url);
+
+                 })
+
+                $('#loader-youtube').addClass('hidden');
+                $('.page-youtube .youtube-api').fadeIn(300);
+            })
+
+        }, 1500);
+
+    },
+    error: function (error) { console.log(error); }
+})
+
+$(document).on('click', '.input-group-text-https', function (e) {
+
+    e.preventDefault();
+
+    $(this).find('i').removeClass('fa-regular').removeClass('fa-clipboard').addClass('fa-solid').addClass('fa-check');
+
+})
+
+$(document).on('click', '.input-group-text-cli', function (e) {
+
+    e.preventDefault();
+
+    $(this).find('i').removeClass('fa-regular').removeClass('fa-clipboard').addClass('fa-solid').addClass('fa-check');
+
+})
+
+
 // ------------ //
+
+function copyToClipboard(element_id) {
+
+    var aux = document.createElement("div");
+    aux.setAttribute("contentEditable", true);
+    aux.innerHTML = document.getElementById(element_id).innerHTML;
+    aux.setAttribute("onfocus", "document.execCommand('selectAll',false,null)");
+    document.body.appendChild(aux);
+    aux.focus();
+    document.execCommand("copy");
+    document.body.removeChild(aux);
+
+}

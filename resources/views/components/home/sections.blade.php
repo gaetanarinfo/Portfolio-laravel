@@ -15,7 +15,7 @@
 
             <div class="col-lg-6 offset-lg-1 wow fadeInRight">
 
-                <h1 class="fw-light">{{ config('app.first_name') }} {{ config('app.last_name') }}</h1>
+                <h3 class="h1 fw-light">{{ config('app.first_name') }} {{ config('app.last_name') }}</h3>
 
                 <h5 class="fg-theme mb-3">{{ config('app.organization') }}</h5>
 
@@ -38,7 +38,7 @@
 
     <div class="container py-5">
 
-        <h1 class="text-center fw-normal wow fadeIn">Mes compétences</h1>
+        <h3 class="h1 text-center fw-normal wow fadeIn">Mes compétences</h3>
 
         <div class="row py-3">
 
@@ -165,9 +165,9 @@
                 <ul class="timeline mt-4 pr-md-5">
 
                     <li>
-                        <div class="title">2010</div>
+                        <div class="title">2019</div>
                         <div class="details">
-                            <h5>Développeur web et web mobile (Titre Professionnel niv VI)</h5>
+                            <h5>Développeur web et web mobile (Titre Professionnel niv V)</h5>
                             <small class="fg-theme">ARINFO, Le Mans</small>
                         </div>
                     </li>
@@ -255,7 +255,7 @@
             <div class="badge badge-subhead">Services</div>
         </div>
 
-        <h1 class="fw-normal text-center wow fadeInUp">Que puis-je faire ?</h1>
+        <h3 class="h1 fw-normal text-center wow fadeInUp">Que puis-je faire ?</h3>
 
         <div class="row mt-5">
 
@@ -343,12 +343,12 @@
         <div class="row section-counter">
 
             <div class="col-md-6 col-lg-6 py-4 wow fadeIn">
-                <h1 class="number" data-number="14">14</h1>
+                <h3 class="h1 number" data-number="{{ count($projets) }}">{{ count($projets) }}</h3>
                 <span>Projet terminé</span>
             </div>
 
             <div class="col-md-6 col-lg-6 py-4 wow fadeIn">
-                <h1 class="number" data-number="2">2</h1>
+                <h3 class="h1 number" data-number="1">1</h3>
                 <span>Projet en cours</span>
             </div>
 
@@ -367,7 +367,7 @@
             <div class="badge badge-subhead">Portfolio</div>
         </div>
 
-        <h1 class="text-center fw-normal wow fadeInUp">Voir mon travail</h1>
+        <h3 class="h1 text-center fw-normal wow fadeInUp">Voir mon travail</h3>
 
         <div class="filterable-button py-3 wow fadeInUp" data-toggle="selected">
             <button class="btn btn-theme-outline selected" data-filter="*">Tous</button>
@@ -378,6 +378,40 @@
 
         <div class="gridder my-3">
 
+            @foreach ($projets as $data)
+                <div class="grid-item {{ $data->categorie }}">
+
+                    <div class="img-place"
+                        @if ($data->categorie == 'template') data-src="{{ URL::asset('img/projets') }}/lg-{{ $data->image }}"
+                        data-fancybox
+                        data-caption="<h5 class='fg-theme'>{{ $data->title }}</h5> <p class='text-capitalize'>{{ $data->categorie }}</p>" @endif>
+
+                        <img src="{{ URL::asset('img/projets') }}/{{ $data->image }}" alt="{{ $data->title }}">
+
+                        <div class="img-caption">
+
+                            <h5 class="fg-theme text-capitalize">{{ $data->categorie }}</h5>
+
+                            <p class="font-weight-bold"">{{ $data->title }}</p>
+
+                            <div class="mt-2">
+                                <a @if ($data->active == 1) href="{{ $data->url }}" target="_blank" @endif
+                                    class="btn btn-success btn-small font-weight-bold @if ($data->active != 1) disabled @endif">Voir
+                                    le projet</a>
+                            </div>
+
+                            @if ($data->prix != 0)
+                                <div class="price">
+                                    <span class="badge badge-info">{{ str_replace('.', ',', $data->prix) }} €</span>
+                                </div>
+                            @endif
+
+                        </div>
+
+                    </div>
+
+                </div>
+            @endforeach
 
 
         </div>
@@ -398,10 +432,14 @@
             <div class="badge badge-subhead wow fadeInUp">Blog</div>
         </div>
 
-        <h1 class="text-center fw-normal wow fadeInUp">Dernières actualités</h1>
+        <h3 class="h1 text-center fw-normal wow fadeInUp mb-4">Dernières actualités</h3>
 
         <div class="row post-grid" id="blog-grid">
 
+        </div>
+
+        <div class="col-12 text-center py-3 wow fadeInUp">
+            <a href="/blog/1" class="btn btn-theme">Tout afficher</a>
         </div>
 
     </div>
@@ -415,11 +453,10 @@
     <div class="container">
 
         <div class="text-center">
-
             <div class="badge badge-subhead wow fadeInUp">Mon GitHub (API)</div>
         </div>
 
-        <h1 class="text-center fw-normal wow fadeInUp">Arborescence de Github</h1>
+        <h3 class="h1 text-center fw-normal wow fadeInUp">Arborescence de Github</h3>
 
         <div class="row" id="bloc-github">
 
@@ -576,6 +613,34 @@
 </div>
 <!-- End github -->
 
+<!-- Youtube -->
+<div class="vg-page page-youtube" id="youtube">
+
+    <div class="container">
+
+        <div class="text-center">
+            <div class="badge badge-subhead wow fadeInUp">Mon youtubeur préféré (API)</div>
+        </div>
+
+        <h3 class="h1 text-center fw-normal wow fadeInUp">Youtube</h3>
+
+        <div class="row" id="bloc-youtube">
+
+            <div class="loader-form mt-5" id="loader-youtube">
+                <img src="{{ URL::asset('img/loader.svg') }}" alt="">
+            </div>
+
+            <div class="youtube-api">
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+<!-- End youtube -->
+
 <!-- Contact -->
 <div class="vg-page page-contact">
 
@@ -585,7 +650,7 @@
             <div class="badge badge-subhead">Contact</div>
         </div>
 
-        <h1 class="text-center fw-normal wow fadeInUp">Me contacter</h1>
+        <h3 class="h1 text-center fw-normal wow fadeInUp">Me contacter</h3>
 
         <div class="row py-5 form-contact">
 

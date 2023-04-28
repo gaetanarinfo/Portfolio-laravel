@@ -67,7 +67,7 @@ class NewsController extends Controller
 
             case 'Les plus récent':
                 $order = "DESC";
-                $views = "DESC";
+                $views = "";
                 break;
 
             case 'Populaire':
@@ -77,21 +77,30 @@ class NewsController extends Controller
 
             case 'Les plus ancien':
                 $order = "ASC";
-                $views = "DESC";
+                $views = "";
                 break;
 
             default:
                 $order = "DESC";
-                $views = "DESC";
+                $views = "";
                 break;
         }
 
-        $news = News::where('title', 'LIKE', '%' . $search . '%')
-            ->where('categorie', 'LIKE', '%' . $categorie . '%')
-            ->where('active', 1)
-            ->orderBy('views', $views)
-            ->orderBy('created_at', $order)
-            ->get();
+        if (empty($views)) {
+
+            $news = News::where('title', 'LIKE', '%' . $search . '%')
+                ->where('categorie', 'LIKE', '%' . $categorie . '%')
+                ->where('active', 1)
+                ->orderBy('created_at', $order)
+                ->get();
+        } else {
+            $news = News::where('title', 'LIKE', '%' . $search . '%')
+                ->where('categorie', 'LIKE', '%' . $categorie . '%')
+                ->where('active', 1)
+                ->orderBy('views', $views)
+                ->orderBy('created_at', $order)
+                ->get();
+        }
 
         if (count($news) >= 1) {
             return view('components.blog.search', compact('news'));

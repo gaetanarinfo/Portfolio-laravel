@@ -34,7 +34,7 @@
 
                         <div class="col-auto">
 
-                            <i class="fas fa-user fa-2x text-gray-300"></i>
+                            <i class="fa-solid fa-diagram-project fa-2x text-gray-300"></i>
 
                         </div>
 
@@ -64,7 +64,7 @@
 
                         <div class="col-auto">
 
-                            <i class="fas fa-user-xmark fa-2x text-gray-300"></i>
+                            <i class="fa-solid fa-diagram-project fa-2x text-gray-300"></i>
 
                         </div>
 
@@ -88,19 +88,24 @@
 
             <div class="table-responsive">
 
-                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0"
+                    data-click-to-select="true" data-custom-sort="customSort" data-checkbox-header="false"
+                    data-page-size="25" data-locale="fr-FR" data-show-fullscreen="true" data-show-export="true"
+                    data-show-refresh="true" data-click-to-select="true" data-detail-formatter="detailFormatter"
+                    data-pagination="true" data-search="true" data-sortable="true" data-toggle="table"
+                    data-show-columns="true">
 
                     <thead>
 
                         <tr>
-                            <th data-sortable="false"></th>
-                            <th>Titre</th>
-                            <th>Catégorie</th>
-                            <th>Url</th>
-                            <th class="text-center">Statut du projet</th>
-                            <th>Prix</th>
-                            <th>Date de création</th>
-                            <th>Date de modification</th>
+                            <th data-field="state" data-checkbox="true"></th>
+                            <th data-searchable="false" data-switchable="false" data-sortable="false"></th>
+                            <th data-sortable="true">Catégorie</th>
+                            <th data-sortable="false">Url</th>
+                            <th data-sortable="false" class="text-center">Statut du projet</th>
+                            <th data-sortable="true">Prix</th>
+                            <th data-sortable="true">Date de création</th>
+                            <th data-sortable="true">Dernière mise à jour</th>
                             <th data-sortable="false">Action</th>
                         </tr>
 
@@ -110,13 +115,13 @@
 
                         <tr>
                             <th></th>
-                            <th>Titre</th>
+                            <th></th>
                             <th>Catégorie</th>
                             <th>Url</th>
                             <th class="text-center">Statut du projet</th>
                             <th>Prix</th>
                             <th>Date de création</th>
-                            <th>Date de modification</th>
+                            <th>Dernière mise à jour</th>
                             <th>Action</th>
                         </tr>
 
@@ -127,12 +132,21 @@
                         @foreach ($projets as $data)
                             <tr id="td_projet_{{ $data->id }}">
 
-                                <td class="text-center">
-                                    <img src="{{ URL::asset('img/projets/' . $data->image) }}" class="img-fluid"
-                                        style="max-width: 50px;width: 50px;">
-                                </td>
+                                <td></td>
 
-                                <td>{{ $data->title }}</td>
+                                <td class="text-start">
+                                    <div class="d-flex" style="align-items: center;">
+                                        <div class="col ml-0 mr-0 pl-0 pr-0 text-center">
+                                            <img src="@if (!empty($data->app)) {{ URL::asset('img/projets/icons/' . $data->icone) }} @else {{ URL::asset('img/projets/lg-' . $data->image) }} @endif"
+                                                width="56"
+                                                class="img-fluid @if (!empty($data->icone)) icon-app @endif">
+                                        </div>
+                                        <div class="col-md-9">
+                                            <div class="font-weight-bold text-gray-600">{{ $data->title }}</div>
+                                            <div class="font-weight-bold text-gray-600">{{ $data->app }}</div>
+                                        </div>
+                                    </div>
+                                </td>
 
                                 <td>{{ $data->categorie }}</td>
 
@@ -164,11 +178,7 @@
                                 <td>{{ date('d/m/Y à H:i', strtotime($data->created_at)) }}</td>
 
                                 <td>
-                                    @if ($data->updated_at != null)
-                                        {{ date('d/m/Y à H:i', strtotime($data->updated_at)) }}
-                                    @else
-                                        /
-                                    @endif
+                                    /
                                 </td>
 
                                 <td>
@@ -211,3 +221,24 @@
 
 </div>
 <!-- /.container-fluid -->
+
+<script>
+    $(function() {
+        $('#dataTable').bootstrapTable()
+    })
+
+    function customSort(sortName, sortOrder, data) {
+        var order = sortOrder === 'desc' ? -1 : 1
+        data.sort(function(a, b) {
+            var aa = +((a[sortName] + '').replace(/[^\d]/g, ''))
+            var bb = +((b[sortName] + '').replace(/[^\d]/g, ''))
+            if (aa < bb) {
+                return order * -1
+            }
+            if (aa > bb) {
+                return order
+            }
+            return 0
+        })
+    }
+</script>

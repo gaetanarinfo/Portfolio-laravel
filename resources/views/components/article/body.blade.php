@@ -27,7 +27,7 @@
 
             <div class="col-md-8 pl-0">
 
-                <img src="{{ URL::asset('img/news') }}/{{ $article->image_bandeau }}" class="img-fluid"
+                <img src="{{ $article->image_bandeau }}" class="img-fluid"
                     alt="{{ $article->title }}">
 
             </div>
@@ -40,7 +40,7 @@
 
                         <a target="_blank" href="{{ $article->author_link }}">
                             <img alt="{{ $article->author }}"
-                                src="{{ URL::asset('img/news/avatar') }}/{{ $article->avatar }}"
+                                src="{{ $article->avatar }}"
                                 class="avatar avatar-75 photo" height="100" width="100" />
                         </a>
 

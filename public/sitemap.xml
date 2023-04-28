@@ -4,25 +4,73 @@
 	<url>
 	<loc>https://portfolio-gaetan.fr</loc>
 		<priority>1.0</priority>
-		<lastmod>2023-04-21T15:41:04+02:00</lastmod>
+		<lastmod>2023-04-29T01:09:04+02:00</lastmod>
+		<changefreq>daily</changefreq>
+	</url>
+	<url>
+	<loc>https://portfolio-gaetan.fr/login</loc>
+		<priority>1.0</priority>
+		<lastmod>2023-04-29T01:09:04+02:00</lastmod>
+		<changefreq>daily</changefreq>
+	</url>
+	<url>
+	<loc>https://portfolio-gaetan.fr/register</loc>
+		<priority>1.0</priority>
+		<lastmod>2023-04-29T01:09:04+02:00</lastmod>
 		<changefreq>daily</changefreq>
 	</url>
 	<url>
 	<loc>https://portfolio-gaetan.fr/blog/1</loc>
 		<priority>1.0</priority>
-		<lastmod>2023-04-21T15:41:04+02:00</lastmod>
+		<lastmod>2023-04-29T01:09:04+02:00</lastmod>
 		<changefreq>daily</changefreq>
 	</url>
 	<url>
 	<loc>https://portfolio-gaetan.fr/blog/2</loc>
 		<priority>1.0</priority>
-		<lastmod>2023-04-21T15:41:04+02:00</lastmod>
+		<lastmod>2023-04-29T01:09:04+02:00</lastmod>
+		<changefreq>daily</changefreq>
+	</url>
+	<url>
+	<loc>https://portfolio-gaetan.fr/article/sophia-summit-2023-lancement-des-appels-de-soumissions-pour-le-rdv-deurope-sur-lia</loc>
+		<priority>1.0</priority>
+		<lastmod>2023-04-29T01:09:04+02:00</lastmod>
+		<changefreq>daily</changefreq>
+	</url>
+	<url>
+	<loc>https://portfolio-gaetan.fr/article/evenement-effervescence-le-futur-des-sciences-de-la-vie</loc>
+		<priority>1.0</priority>
+		<lastmod>2023-04-29T01:09:04+02:00</lastmod>
+		<changefreq>daily</changefreq>
+	</url>
+	<url>
+	<loc>https://portfolio-gaetan.fr/article/portrait-farah-alibay-une-perseverance-hors-de-ce-monde</loc>
+		<priority>1.0</priority>
+		<lastmod>2023-04-29T01:09:04+02:00</lastmod>
+		<changefreq>daily</changefreq>
+	</url>
+	<url>
+	<loc>https://portfolio-gaetan.fr/article/intelligence-artificielle-un-sommet-a-montreal-qui-boude-le-francais</loc>
+		<priority>1.0</priority>
+		<lastmod>2023-04-29T01:09:04+02:00</lastmod>
+		<changefreq>daily</changefreq>
+	</url>
+	<url>
+	<loc>https://portfolio-gaetan.fr/article/retour-sur-le-world-summit-ai-americas-entre-benefices-et-inquietudes</loc>
+		<priority>1.0</priority>
+		<lastmod>2023-04-29T01:09:04+02:00</lastmod>
+		<changefreq>daily</changefreq>
+	</url>
+	<url>
+	<loc>https://portfolio-gaetan.fr/article/le-quebec-dans-la-course-mondiale-a-la-communication-quantique-et-a-la-cybersecurite</loc>
+		<priority>1.0</priority>
+		<lastmod>2023-04-29T01:09:04+02:00</lastmod>
 		<changefreq>daily</changefreq>
 	</url>
 	<url>
 	<loc>https://portfolio-gaetan.fr/article/cybereco-veut-que-vous-fassiez-partie-de-la-solution</loc>
 		<priority>1.0</priority>
-		<lastmod>2023-04-21T15:41:04+02:00</lastmod>
+		<lastmod>2023-04-29T01:09:04+02:00</lastmod>
 		<changefreq>daily</changefreq>
 	</url>
 </urlset>

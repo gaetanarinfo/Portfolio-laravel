@@ -1,3 +1,7 @@
+@php
+    use Carbon\Carbon;
+@endphp
+
 <!-- Topbar -->
 <nav class="navbar navbar-expand navbar-light text-white bg-info topbar mb-4 static-top shadow">
 
@@ -42,7 +46,7 @@
                 <i class="fas fa-envelope fa-fw"></i>
 
                 <!-- Counter - Messages -->
-                <span class="badge badge-danger badge-counter">0</span>
+                <span class="badge badge-danger badge-counter">{{ count($contacts) }}</span>
 
             </a>
 
@@ -50,10 +54,49 @@
             <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
                 aria-labelledby="messagesDropdown">
 
-                <h6 class="dropdown-header">
+                <h6 class="dropdown-header bg-success">
                     Boite de réception
                 </h6>
 
+                @if (count($contacts) >= 1)
+
+                    @foreach ($contacts as $data)
+                        @php
+                            $post_date = $data->created_at;
+                        @endphp
+
+                        <a class="dropdown-item d-flex align-items-center btn-modal-mail" href="#"
+                            id="mail_{{ $data->id }}" data-toggle="modal" data-target="#mailModal"
+                            data-name="{{ $data->name }}" data-date="{{ $data->created_at->diffForHumans() }}"
+                            data-sujet="{{ $data->sujet }}" data-email="{{ $data->email }}"
+                            data-message="{{ $data->message }}" data-avatar="{{ $data->avatar }}"
+                            data-id="{{ $data->id }}">
+
+                            <div class="dropdown-list-image mr-3">
+                                <img class="rounded-circle"
+                                    src="@if (!empty($data->avatar)) {{ URL::asset('/img/profil/' . $data->avatar) }} @else {{ URL::asset('/img/profil/dzfault.svg') }} @endif" />
+                                <div class="status-indicator bg-success"></div>
+                            </div>
+
+                            <div class="font-weight-bold">
+                                <div class="text-truncate">{{ $data->sujet }}</div>
+                                <div class="small text-dark-500 font-weight-bold">{{ $data->name }} ·
+                                    {{ $data->created_at->diffForHumans() }}
+                                </div>
+                            </div>
+
+                        </a>
+                    @endforeach
+                @else
+
+                    <div class="text-warning message-mail">Vous n'avez aucun message</div>
+
+                @endif
+
+                @if (count($contacts) >= 7)
+                    <a class="dropdown-item text-center small text-dark-500 font-weight-bold" href="#">Voir les
+                        autres messages</a>
+                @endif
             </div>
 
         </li>
@@ -73,7 +116,7 @@
                     class="mr-2 d-none d-lg-inline text-light font-weight-bold">{{ $user->firstname . ' ' . $user->lastname }}</span>
 
                 <img class="img-profile rounded-circle"
-                    src="@if (!empty($user->avatar)) {{ 'img/profil/' . $user->avatar }} @else {{ URL::asset('img/profil/default.svg') }} @endif">
+                    src="@if (!empty($user->avatar)) {{ '/img/profil/' . $user->avatar }} @else {{ URL::asset('img/profil/default.svg') }} @endif">
 
             </a>
 

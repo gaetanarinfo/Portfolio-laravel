@@ -2,6 +2,8 @@
 
     <div class="container">
 
+        <img src="{{ URL::asset('img/logo.png') }}" class="img-fuild logo">
+
         <a href="/" class="navbar-brand">{{ config('app.name_short') }}</a>
 
         <button class="navbar-toggler" data-toggle="collapse" data-target="#main-navbar" aria-expanded="true">
@@ -12,27 +14,37 @@
 
             <ul class="navbar-nav ml-auto">
 
-                <li class="nav-item @if(Route::current()->getName() == "home") active @endif">
+                <li class="nav-item @if (Route::current()->getName() == 'home') active @endif">
                     <a href="/" class="nav-link font-weight-bold" data-animate="scrolling"><i
                             class="mr-2 fa-solid fa-home"></i>Accueil</a>
                 </li>
 
                 <li class="nav-item">
-                    <a href="#about" class="nav-link font-weight-bold" data-animate="scrolling"><i
+                    <a href="/#about" class="nav-link font-weight-bold" data-animate="scrolling"><i
                             class="mr-2 fa-solid fa-adress-card"></i>À propos</a>
                 </li>
 
                 <li class="nav-item">
-                    <a href="#blog" class="nav-link font-weight-bold" data-animate="scrolling"><i
+                    <a href="/blog/1" class="nav-link font-weight-bold" data-animate="scrolling"><i
                             class="mr-2 fa-solid fa-blog"></i>Blog</a>
                 </li>
 
                 <li class="nav-item">
-                    <a href="#github" class="nav-link font-weight-bold" data-animate="scrolling"><i
+                    <a href="/#github" class="nav-link font-weight-bold" data-animate="scrolling"><i
                             class="mr-2 fa-brands fa-github"></i>Github</a>
                 </li>
 
+                <li class="nav-item">
+                    <a href="/#youtube" class="nav-link font-weight-bold" data-animate="scrolling"><i
+                            class="mr-2 fa-solid fa-heart text-danger"></i>Youtube</a>
+                </li>
+
                 @if (Auth::check())
+                    <li class="nav-item @if (Route::current()->getName() == 'dashboard') active @endif">
+                        <a href="/dashboard" class="nav-link font-weight-bold" data-animate="scrolling"><i
+                                class="mr-2 fa-solid fa-dashboard"></i>Dashboard</a>
+                    </li>
+
                     <li class="nav-item">
                         <a href="/logout" class="nav-link font-weight-bold" data-animate="scrolling"><i
                                 class="mr-2 fa-solid fa-arrow-right-from-bracket"></i>Déconnexion</a>

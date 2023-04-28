@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use Validator;
 use App\Models\User;
 use App\Mail\Register;
+use App\Models\Contact;
 use App\Mail\ForgotPassword;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -23,7 +24,6 @@ class LoginRegisterController extends Controller
         $this->middleware('guest')->except([
             'logout', 'dashboard'
         ]);
-
     }
 
     /**
@@ -196,16 +196,79 @@ class LoginRegisterController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function dashboard()
+    public function dashboard(int $year = null)
     {
 
         if (Auth::check()) {
 
             $user = User::where('active', 1)
-            ->where('id', Auth::id())
-            ->first();
+                ->where('id', Auth::id())
+                ->first();
 
-            return view('auth.dashboard', compact('user'));
+            $contacts = Contact::where('archive', 0)
+                ->join('users', 'users.email', '=', 'contacts.to_mail')
+                ->where('contacts.to_mail', $user->email)
+            ->orderBy('contacts.created_at', 'DESC')
+            ->limit(6)
+                ->get();
+
+            if ($user->admin == 1) {
+
+                $months = DB::table('months')->get();
+
+                // Données du graph de total
+                $commandes_graph = array();
+                $commandes_refund_graph = array();
+
+                foreach ($months as $month) {
+
+                    if (empty($year)) {
+                        $start_date_graph = date('Y') . "-" . $month->id . "-01";
+                        $end_date_graph = date('Y') . "-" . $month->id . "-30";
+                    } else {
+                        $start_date_graph = $year . "-" . $month->id . "-01";
+                        $end_date_graph = $year . "-" . $month->id . "-30";
+                    }
+
+                    $from = $start_date_graph;
+                    $to = $end_date_graph;
+
+                    $commande_chiffres = DB::table('google_play_orders')
+                        ->select(DB::raw("COUNT(Item_Price) as total"))
+                        ->where('Financial_Status', 'Charged')
+                        ->whereBetween('Order_Charged_Date', [$from, $to])
+                        ->first();
+
+                    $commande_chiffres_refund = DB::table('google_play_orders')
+                        ->select(DB::raw("COUNT(Item_Price) as total"))
+                        ->where('Financial_Status', 'Refund')
+                        ->whereBetween('Order_Charged_Date', [$from, $to])
+                        ->first();
+
+                    if ($commande_chiffres->total == "") $commandes_graph[] = '0';
+                    else $commandes_graph[] = $commande_chiffres->total;
+
+                    if ($commande_chiffres_refund->total == "") $commandes_graph_refund[] = '0';
+                    else $commandes_graph_refund[] = $commande_chiffres_refund->total;
+                }
+
+                $commandes_graph = implode(',', $commandes_graph);
+                $commandes_graph_refund = implode(',', $commandes_graph_refund);
+
+                $total_commandes = DB::table('google_play_orders')
+                    ->where('Financial_Status', 'Charged')
+                    ->sum('Item_Price');
+
+                $totals_commandes = DB::table('google_play_orders')
+                    ->orderBy('Order_Charged_Date', 'DESC')
+                    ->get();
+
+                $total_commandes_refund = DB::table('google_play_orders')
+                    ->where('Financial_Status', 'Refund')
+                    ->sum('Item_Price');
+            }
+
+            return view('auth.dashboard', compact('user', 'commandes_graph', 'commandes_graph_refund', 'year', 'total_commandes', 'totals_commandes', 'total_commandes_refund', 'contacts'));
         }
 
         return redirect()->route('login');
@@ -326,5 +389,4 @@ class LoginRegisterController extends Controller
             }
         }
     }
-
 }

@@ -88,11 +88,33 @@
 
             <div class="table-responsive">
 
-                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0"
+                    data-click-to-select="true" data-custom-sort="customSort" data-checkbox-header="false"
+                    data-page-size="25" data-locale="fr-FR" data-show-fullscreen="true" data-show-export="true"
+                    data-show-refresh="true" data-click-to-select="true" data-detail-formatter="detailFormatter"
+                    data-pagination="true" data-search="true" data-sortable="true" data-toggle="table"
+                    data-show-columns="true">
 
                     <thead>
 
                         <tr>
+                            <th data-field="state" data-checkbox="true"></th>
+                            <th></th>
+                            <th data-sortable="true">Nom</th>
+                            <th data-sortable="true">Prénom</th>
+                            <th data-sortable="true">Adresse email</th>
+                            <th data-sortable="false" class="text-center">Statut du compte</th>
+                            <th data-sortable="true">Date de création</th>
+                            <th data-sortable="true">Date de modification</th>
+                            <th data-sortable="false">Action</th>
+                        </tr>
+
+                    </thead>
+
+                    <tfoot>
+
+                        <tr>
+                            <th></th>
                             <th></th>
                             <th>Nom</th>
                             <th>Prénom</th>
@@ -103,27 +125,14 @@
                             <th>Action</th>
                         </tr>
 
-                    </thead>
-
-                    <tfoot>
-
-                        <tr>
-                            <th data-sortable="false"></th>
-                            <th>Nom</th>
-                            <th>Prénom</th>
-                            <th>Adresse email</th>
-                            <th class="text-center">Statut du compte</th>
-                            <th>Date de création</th>
-                            <th>Date de modification</th>
-                            <th data-sortable="false">Action</th>
-                        </tr>
-
                     </tfoot>
 
                     <tbody>
 
                         @foreach ($users as $data)
                             <tr id="td_user_{{ $data->id }}">
+
+                                <td></td>
 
                                 <td class="text-center">
                                     <img src="{{ URL::asset('img/profil/' . $data->avatar) }}" class="img-fluid"
@@ -150,7 +159,13 @@
 
                                 <td>{{ date('d/m/Y à H:i', strtotime($data->created_at)) }}</td>
 
-                                <td>@if($data->updated_at != null) {{ date('d/m/Y à H:i', strtotime($data->updated_at)) }} @else / @endif</td>
+                                <td>
+                                    @if ($data->updated_at != null)
+                                        {{ date('d/m/Y à H:i', strtotime($data->updated_at)) }}
+                                    @else
+                                        /
+                                    @endif
+                                </td>
 
                                 <td>
 
@@ -191,3 +206,24 @@
 
 </div>
 <!-- /.container-fluid -->
+
+<script>
+    $(function() {
+        $('#dataTable').bootstrapTable()
+    })
+
+    function customSort(sortName, sortOrder, data) {
+        var order = sortOrder === 'desc' ? -1 : 1
+        data.sort(function(a, b) {
+            var aa = +((a[sortName] + '').replace(/[^\d]/g, ''))
+            var bb = +((b[sortName] + '').replace(/[^\d]/g, ''))
+            if (aa < bb) {
+                return order * -1
+            }
+            if (aa > bb) {
+                return order
+            }
+            return 0
+        })
+    }
+</script>

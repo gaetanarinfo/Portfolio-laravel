@@ -15,8 +15,11 @@ return new class extends Migration
             $table->id()->unique();
             $table->string('name');
             $table->string('email');
+            $table->string('to_mail')->default('zineddinehamel@gmail.com');
             $table->string('sujet');
             $table->string('message');
+            $table->string('token');
+            $table->integer('archive')->default(0);
             $table->timestamps();
         });
     }
