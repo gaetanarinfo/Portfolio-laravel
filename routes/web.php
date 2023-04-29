@@ -3,15 +3,20 @@
 use App\Models\Projets;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\URL;
-use App\Http\Controllers\Auth\Users;
+use App\Http\Controllers\Auth\UsersController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\GithubController;
 use App\Http\Controllers\YoutubeController;
 use App\Http\Controllers\ContactsController;
 use App\Http\Controllers\GoogleController;
+use App\Http\Controllers\GoogleAuthController;
+use App\Http\Controllers\FacebookController;
 use App\Http\Controllers\NewsletterController;
 use App\Http\Controllers\Auth\LoginRegisterController;
+use App\Http\Controllers\Auth\LogsController;
+use App\Http\Controllers\GithubAuthController;
+use App\Http\Controllers\GooglePlayController;
 use App\Http\Controllers\NewsScrappingController;
 
 /*
@@ -30,19 +35,17 @@ use App\Http\Controllers\NewsScrappingController;
 Route::get('/', function () {
 
     $projets = Projets::orderBy('created_at', 'DESC')
-    ->get();
+        ->get();
 
     return view('home', compact('projets'));
-
 })->name('home');
 
 Route::get('/home', function () {
 
     $projets = Projets::orderBy('created_at', 'DESC')
-    ->get();
+        ->get();
 
     return view('home', compact('projets'));
-
 })->name('home');
 
 // Home (Projets) + (Artcile -> 6)
@@ -129,7 +132,7 @@ Route::controller(LoginRegisterController::class)->group(function () {
 
     Route::get('/dashboard', 'dashboard')->name('dashboard');
 
-    Route::get('/dashboard/{year}', 'dashboard')->name('dashboard');
+    Route::get('/dashboard/{year?}', 'dashboard')->name('dashboard');
 
     Route::get('/forgot-password/{token}', 'forgot_password')->name('forgot-password');
     Route::post('/forgot-password', 'forgot_password_change')->name('forgot_password_change');
@@ -139,12 +142,14 @@ Route::controller(LoginRegisterController::class)->group(function () {
     Route::get('/add-article', 'dashboard')->name('add-article');
 });
 
-Route::controller(Users::class)->group(function () {
+Route::controller(UsersController::class)->group(function () {
+
     // Utilisateurs
     Route::get('/show-users', 'show_users')->name('show-users');
     Route::post('/show-users/delete', 'delete_user')->name('delete-user');
     Route::post('/show-users/edit', 'edit_user')->name('edit-user');
     Route::post('/show-users/add', 'add_user')->name('add-user');
+    Route::post('/user/edit', 'edit_user_logged')->name('edit-user');
 
     // Projets
     Route::get('/show-projets', 'show_projets')->name('show-projets');
@@ -165,9 +170,36 @@ Route::controller(Users::class)->group(function () {
 
     // Mail
     Route::post('/mail/archive', 'archive_mail')->name('archive-mail');
+});
 
+Route::controller(LogsController::class)->group(function () {
+
+    // Logs
+    Route::get('/logs', 'logs')->name('logs');
 });
 
 // Youtube
 
 Route::get('/youtube-api', [YoutubeController::class, 'showYoutubeProfil']);
+
+
+// Auth Socials
+
+Route::controller(GoogleAuthController::class)->group(function(){
+    Route::get('auth/google', 'redirectToGoogle')->name('auth.google');
+    Route::get('auth/google/callback', 'handleGoogleCallback');
+});
+
+Route::controller(FacebookController::class)->group(function(){
+    Route::get('auth/facebook', 'redirectToFacebook')->name('auth.facebook');
+    Route::get('auth/facebook/callback', 'handleFacebookCallback');
+});
+
+Route::controller(GithubAuthController::class)->group(function(){
+    Route::get('auth/github', 'redirectToGithub')->name('auth.github');
+    Route::get('auth/github/callback', 'handleGithubCallback');
+});
+
+// Google Play
+
+Route::get('/google-play-api', [GooglePlayController::class, 'showGoogleProjets']);

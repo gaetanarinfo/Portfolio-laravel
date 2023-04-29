@@ -16,7 +16,7 @@ h1,
 }
 
 .card-container.card {
-    max-width: 440px;
+    max-width: 470px;
     padding: 40px 40px;
     margin-top: 0;
     margin-bottom: 0;
@@ -91,6 +91,7 @@ h1,
     font-size: 16px;
 }
 
+.form-signin #password,
 .form-signin input[type=password],
 .form-signin input[type=text],
 .form-signin button {
@@ -103,6 +104,18 @@ h1,
     -moz-box-sizing: border-box;
     -webkit-box-sizing: border-box;
     box-sizing: border-box;
+}
+
+.form-signin #password,
+.form-signin input[type=password] {
+    position: relative !important;
+    -webkit-box-flex: 1 !important;
+    -ms-flex: 1 1 auto !important;
+    flex: 1 1 auto !important;
+    width: 1% !important;
+    margin-bottom: 0 !important;
+    display: block !important;
+    font-size: 1rem !important;
 }
 
 .form-signin input[type=text]:first-child {
@@ -157,4 +170,8 @@ h1,
 
 #form-forgot-new {
     display: none;
+}
+
+.input-group-prepend {
+    margin-top: 1rem;
 }

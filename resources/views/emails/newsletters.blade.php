@@ -23,7 +23,7 @@
     <h4 style="margin: 1.5rem 0;"><b>Gaëtan Seigneur</b></h4>
 
     <div>
-        <img style="max-width: 90px" src="https://portfolio-gaetan.fr/img/icons/favicon.png" alt="">
+        <img style="max-width: 90px; border-radius: 50%;" src="https://portfolio-gaetan.fr/img/logo.png" alt="">
     </div>
 
 </body>

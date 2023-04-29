@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use Validator;
 use App\Models\News;
 use App\Models\User;
+use App\Functions\Log;
 use App\Models\Contact;
 use App\Models\Projets;
 use Illuminate\Support\Str;
@@ -14,7 +15,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
-class Users extends Controller
+class UsersController extends Controller
 {
     /**
      * Instantiate a new LoginRegisterController instance.
@@ -40,7 +41,7 @@ class Users extends Controller
             ->first();
 
         $contacts = Contact::where('archive', 0)
-            ->join('users', 'users.email', '=', 'contacts.to_mail')
+            ->join('users', 'users.email', '=', 'contacts.email')
             ->where('contacts.to_mail', $user_not_admin->email)
             ->orderBy('contacts.created_at', 'DESC')
             ->limit(6)
@@ -97,7 +98,13 @@ class Users extends Controller
                 $file_path = app_path() . '/../public/img/profil/' . $user_delete->avatar;
                 unlink($file_path);
             }
+
             User::where('id', $request->user_id)->delete();
+
+            // Logs
+            $logs_user = new Log();
+            $logs_user->log_user('Utilisateur', 'Un utilisateur a été supprimer !', url()->current(), $request->ip());
+
             return response()->json(['status' => 1, 'msg' => 'L\'utilisateur a été supprimé.', 'title' => 'Supprimer un utilisateur', 'toast' => 'toast-success', 'icone' => '<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-check mr-2" viewBox="0 0 16 16"><path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z"/></svg>']);
         } else {
             return response()->json(['status' => 0, 'msg' => 'Vous n\'avez pas la permission.', 'title' => 'Supprimer un utilisateur', 'toast' => 'toast-error', 'icone' => '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-exclamation-triangle-fill mr-2" viewBox="0 0 16 16"><path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/></svg>']);
@@ -182,6 +189,10 @@ class Users extends Controller
                         'updated_at' => date('Y/m/d H:i:s')
                     ));
 
+                // Logs
+                $logs_user = new Log();
+                $logs_user->log_user('Utilisateur', 'Un utilisateur a été modifiée !', url()->current(), $request->ip());
+
                 return response()->json(['status' => 1, 'msg' => 'L\'utilisateur a été modifiée.', 'title' => 'Modification d\'un utilisateur', 'toast' => 'toast-success', 'icone' => '<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-check mr-2" viewBox="0 0 16 16"><path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z"/></svg>']);
             }
         } else {
@@ -251,6 +262,10 @@ class Users extends Controller
                     'active' => $request->active
                 ));
 
+                // Logs
+                $logs_user = new Log();
+                $logs_user->log_user('Utilisateur', 'Un utilisateur a été créer !', url()->current(), $request->ip());
+
                 if (!empty($request->file_0)) {
 
                     $validator = Validator::make($request->all(), [
@@ -296,7 +311,7 @@ class Users extends Controller
             ->first();
 
         $contacts = Contact::where('archive', 0)
-            ->join('users', 'users.email', '=', 'contacts.to_mail')
+            ->join('users', 'users.email', '=', 'contacts.email')
             ->where('contacts.to_mail', $user_not_admin->email)
             ->orderBy('contacts.created_at', 'DESC')
             ->limit(6)
@@ -350,11 +365,18 @@ class Users extends Controller
         if (isset($user)) {
 
             $projet_delete = Projets::where('id', $request->projet_id)->first();
+
             if (!empty($projet_delete->image) && $projet_delete->image != "default.png") {
                 $file_path = app_path() . '/../public/img/projets/' . $projet_delete->image;
                 unlink($file_path);
             }
+
             Projets::where('id', $request->projet_id)->delete();
+
+            // Logs
+            $logs_user = new Log();
+            $logs_user->log_user('Projet', 'Un projet a été supprimer !', url()->current(), $request->ip());
+
             return response()->json(['status' => 1, 'msg' => 'Le projet a été supprimé.', 'title' => 'Supprimer un projet', 'toast' => 'toast-success', 'icone' => '<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-check mr-2" viewBox="0 0 16 16"><path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z"/></svg>']);
         } else {
             return response()->json(['status' => 0, 'msg' => 'Vous n\'avez pas la permission.', 'title' => 'Supprimer un projet', 'toast' => 'toast-error', 'icone' => '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-exclamation-triangle-fill mr-2" viewBox="0 0 16 16"><path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/></svg>']);
@@ -441,6 +463,10 @@ class Users extends Controller
                         'updated_at' => date('Y/m/d H:i:s')
                     ));
 
+                // Logs
+                $logs_user = new Log();
+                $logs_user->log_user('Projet', 'Un projet a été modifiée !', url()->current(), $request->ip());
+
                 return response()->json(['status' => 1, 'msg' => 'Le projet a été modifiée.', 'title' => 'Modification d\'un projet', 'toast' => 'toast-success', 'icone' => '<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-check mr-2" viewBox="0 0 16 16"><path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z"/></svg>']);
             }
         } else {
@@ -506,6 +532,10 @@ class Users extends Controller
                     'active' => $request->active
                 ));
 
+                // Logs
+                $logs_user = new Log();
+                $logs_user->log_user('Projet', 'Un projet a été créer !', url()->current(), $request->ip());
+
                 if (!empty($request->file_0)) {
 
                     $validator = Validator::make($request->all(), [
@@ -551,7 +581,7 @@ class Users extends Controller
             ->first();
 
         $contacts = Contact::where('archive', 0)
-            ->join('users', 'users.email', '=', 'contacts.to_mail')
+            ->join('users', 'users.email', '=', 'contacts.email')
             ->where('contacts.to_mail', $user_not_admin->email)
             ->orderBy('contacts.created_at', 'DESC')
             ->limit(6)
@@ -622,6 +652,10 @@ class Users extends Controller
 
             News::where('id', $request->article_id)->delete();
 
+            // Logs
+            $logs_user = new Log();
+            $logs_user->log_user('Blog', 'Un article a été supprimer !', url()->current(), $request->ip());
+
             return response()->json(['status' => 1, 'msg' => 'L\'article a été supprimé.', 'title' => 'Supprimer un article', 'toast' => 'toast-success', 'icone' => '<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-check mr-2" viewBox="0 0 16 16"><path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z"/></svg>']);
         } else {
             return response()->json(['status' => 0, 'msg' => 'Vous n\'avez pas la permission.', 'title' => 'Supprimer un article', 'toast' => 'toast-error', 'icone' => '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-exclamation-triangle-fill mr-2" viewBox="0 0 16 16"><path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/></svg>']);
@@ -641,7 +675,7 @@ class Users extends Controller
             ->first();
 
         $contacts = Contact::where('archive', 0)
-            ->join('users', 'users.email', '=', 'contacts.to_mail')
+            ->join('users', 'users.email', '=', 'contacts.email')
             ->where('contacts.to_mail', $user_not_admin->email)
             ->orderBy('contacts.created_at', 'DESC')
             ->limit(6)
@@ -783,6 +817,10 @@ class Users extends Controller
                             'updated_at' => date('Y/m/d H:i:s')
                         ));
 
+                    // Logs
+                    $logs_user = new Log();
+                    $logs_user->log_user('Blog', 'Un article a été modifiée !', url()->current(), $request->ip());
+
                     return response()->json(['status' => 1, 'msg' => 'Votre article a bien été modifiée.', 'title' => 'Modification de l\'article', 'toast' => 'toast-success', 'icone' => '<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-check mr-2" viewBox="0 0 16 16"><path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z"/></svg>']);
                 }
             } else {
@@ -806,7 +844,7 @@ class Users extends Controller
             ->first();
 
         $contacts = Contact::where('archive', 0)
-            ->join('users', 'users.email', '=', 'contacts.to_mail')
+            ->join('users', 'users.email', '=', 'contacts.email')
             ->where('contacts.to_mail', $user_not_admin->email)
             ->orderBy('contacts.created_at', 'DESC')
             ->limit(6)
@@ -882,6 +920,10 @@ class Users extends Controller
                     ));
 
                     $insert->save();
+
+                    // Logs
+                    $logs_user = new Log();
+                    $logs_user->log_user('Blog', 'Un nouvel article a été créer !', url()->current(), $request->ip());
 
                     if (!empty($request->file_0)) {
 
@@ -997,14 +1039,6 @@ class Users extends Controller
                 ->sum('Item_Price');
 
 
-            // $articles_inactive = News::where('active', 0)
-            //     ->orderBy('created_at', 'DESC')
-            //     ->get();
-
-            // $articles_active = News::where('active', 1)
-            //     ->orderBy('created_at', 'DESC')
-            //     ->get();
-
             if (isset($user)) {
                 return view('auth.admin.show_orders_google', compact('user', 'orders_google', 'total_commandes', 'totals_commandes', 'total_commandes_refund', 'contacts'));
             } else {
@@ -1033,12 +1067,90 @@ class Users extends Controller
                 ->get();
 
             if (!empty($contacts)) {
+
                 Contact::where('id', $request->mail_id)->update(array(
                     'archive' => 1,
                 ));
+
+                // Logs
+                $logs_user = new Log();
+                $logs_user->log_user('Boîte email', 'Un email dans votre boîte de réception a été archivée !', url()->current(), $request->ip());
+
                 return response()->json(['status' => 1, 'msg' => 'Votre message a été archivée.', 'title' => 'Boîte email', 'toast' => 'toast-success', 'icone' => '<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-check mr-2" viewBox="0 0 16 16"><path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z"/></svg>']);
             } else {
                 return response()->json(['status' => 0, 'msg' => 'Votre message a déjà été archivée.', 'title' => 'Boîte email', 'toast' => 'toast-error', 'icone' => '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-exclamation-triangle-fill mr-2" viewBox="0 0 16 16"><path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/></svg>']);
+            }
+        }
+    }
+
+    /**
+     * Edit user profil.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function edit_user_logged(Request $request)
+    {
+
+        if (Auth::check()) {
+
+            $user = User::where('active', 1)
+                ->where('id', Auth::id())
+                ->first();
+
+            if (isset($user)) {
+
+                $validator = Validator::make($request->all(), [
+                    'email' => 'bail|required|email',
+                    'lastname' => 'bail|required',
+                    'firstname' => 'bail|required'
+                ]);
+
+
+                if (!$validator->passes()) {
+                    return response()->json(['error' => $validator->errors()->toArray(), 'status' => 0, 'msg' => 'Vos informations sont erronées !', 'title' => 'Modification de votre profil !', 'toast' => 'toast-error', 'icone' => '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-exclamation-triangle-fill mr-2" viewBox="0 0 16 16"><path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/></svg>']);
+                } else {
+
+                    if (!empty($request->file_0)) {
+
+                        $validator = Validator::make($request->all(), [
+                            'file' => 'mimes:gif,png,jpeg,jpg,svg'
+                        ]);
+
+                        if (!$validator->passes()) {
+                            return response()->json(['error' => $validator->errors()->toArray(), 'status' => 0, 'msg' => 'L\'avatar doit être au format image !', 'title' => 'Modification de votre profil !', 'toast' => 'toast-error', 'icone' => '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-exclamation-triangle-fill mr-2" viewBox="0 0 16 16"><path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/></svg>']);
+                        } else {
+                            $fileName = strtolower($request->lastname . '_' . $request->firstname) . '_' . time() . '.' . $request->file_0->extension();
+
+                            $request->file_0->move(public_path('img/profil'), $fileName);
+
+                            User::where('id', Auth::id())
+                                ->update(array(
+                                    'avatar' => $fileName,
+                                ));
+
+                            // Logs
+                            $logs_user = new Log();
+                            $logs_user->log_user('Modification profil', 'Votre photo de profil a été modifiée !', url()->current(), $request->ip());
+                        }
+                    }
+
+                    User::where('id', Auth::id())
+                        ->update(array(
+                            'lastname' => $request->lastname,
+                            'firstname' => $request->firstname,
+                            'email' => $request->email,
+                            'updated_at' => date('Y/m/d H:i:s')
+                        ));
+
+                    // Logs
+                    $logs_user = new Log();
+                    $logs_user->log_user('Modification profil', 'Votre profil a été modifiée !', url()->current(), $request->ip());
+
+                    return response()->json(['status' => 1, 'msg' => 'Votre profil a été modifiée.', 'title' => 'Modification de votre profil !', 'toast' => 'toast-success', 'icone' => '<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-check mr-2" viewBox="0 0 16 16"><path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z"/></svg>']);
+                }
+            } else {
+                return response()->json(['status' => 0, 'msg' => 'Une erreur est survenue.', 'title' => 'Modification de votre profil !', 'toast' => 'toast-error', 'icone' => '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-exclamation-triangle-fill mr-2" viewBox="0 0 16 16"><path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/></svg>']);
             }
         }
     }

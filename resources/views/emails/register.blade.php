@@ -15,8 +15,8 @@
     <p>Vos informations :</p>
 
     <ul>
-        <li><strong>Nom</strong> : {{ $contact['lastname'] }}</li>
-        <li><strong>Prenom</strong> : {{ $contact['firstname'] }}</li>
+        @if(!empty($contact['firstname']))<li><strong>Nom</strong> : {{ $contact['lastname'] }}</li>@else <li><strong>Nom</strong> : {{ $contact['name'] }}</li> @endif
+        @if(!empty($contact['firstname']))<li><strong>Prenom</strong> : {{ $contact['firstname'] }}</li>@endif
         <li><strong>Email</strong> : {{ $contact['email'] }}</li>
         <li><strong>Mot de passe</strong> : {{ $contact['password'] }}</li>
     </ul>
@@ -28,7 +28,7 @@
     <h4 style="margin: 1.5rem 0;"><b>Gaëtan Seigneur</b></h4>
 
     <div>
-        <img style="max-width: 90px" src="https://portfolio-gaetan.fr/img/icons/favicon.png" alt="">
+        <img style="max-width: 90px; border-radius: 50%;" src="https://portfolio-gaetan.fr/img/logo.png" alt="">
     </div>
 
 </body>

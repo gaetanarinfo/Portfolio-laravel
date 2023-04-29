@@ -22,7 +22,27 @@ $(document).ready(function () {
         name_file_article_bandeau = [],
         fichier_article_author = [],
         name_file_article_author = [],
+        fichier_logged_user = [],
+        name_file_logged_user = [],
         file_size = 10000000;
+
+    $(document).on('click', '.btn-modal-user', function (e) {
+
+        e.preventDefault();
+
+        if ($(this).attr('data-edit') == "1") {
+
+            $('#editUserLoggedModal .modal-title').html('Modification de mon profil');
+
+            // Form dynamic with modal
+            $('#editUserLoggedModal #avatar').attr('src', 'img/profil/' + $(this).data('avatar'));
+            $('#editUserLoggedModal #firstname').val($(this).data('firstname'));
+            $('#editUserLoggedModal #lastname').val($(this).data('lastname'));
+            $('#editUserLoggedModal #email').val($(this).data('email'));
+
+        }
+
+    })
 
 
     $(document).on('click', '.btn-modal-mail', function (e) {
@@ -1314,6 +1334,7 @@ $(document).ready(function () {
     })
 
     // Edit article image
+
     $('#bandeau_article').on('change', function (e) {
 
         let that = e.currentTarget
@@ -1387,28 +1408,29 @@ $(document).ready(function () {
 
     });
 
-    // Edit article avatar author
-    $('#author_article').on('change', function (e) {
+    // Edit user logged avatar
+
+    $('#avatar_logged_input').on('change', function (e) {
 
         let that = e.currentTarget
 
-        if (name_file_article_author.length < 2) {
+        if (name_file.length < 2) {
 
-            $.each($('#author_article').prop('files'), (index, item) => {
-                fichier_article_author.push(item);
+            $.each($('#avatar_logged_input').prop('files'), (index, item) => {
+                fichier.push(item);
             })
 
-            for (i = 0; i < fichier_article_author.length; i++) {
+            for (i = 0; i < fichier.length; i++) {
 
-                if (name_file_article_author.length < 2) {
+                if (name_file.length < 2) {
 
-                    if (fichier_article_author[i].size < file_size) {
+                    if (fichier[i].size < file_size) {
 
-                        if (name_file_article_author.indexOf(fichier_article_author[i].name) == -1) {
+                        if (name_file.indexOf(fichier[i].name) == -1) {
 
-                            $('.author_article_error').hide();
+                            $('.error_avatar').hide();
 
-                            name_file_article_author.push(fichier_article_author[i].name);
+                            name_file.push(fichier[i].name);
 
                             let reader = new FileReader();
 
@@ -1419,23 +1441,22 @@ $(document).ready(function () {
                                 image.src = e.target.result;
                                 image.onload = () => {
 
-                                    if (image.width <= 800 && image.height <= 800) {
+                                    if (image.width <= 250 && image.height <= 250) {
 
-                                        $('.author-article').attr('src', e.target.result);
-                                        $('.delete-author-article').show();
-                                        $('#author_article').attr('class', 'disabled');
-                                        $('#author_article').prop("disabled", true);
-                                        $('.author-article-bloc').show();
+                                        $('#avatar').attr('src', e.target.result);
+                                        $('#delete-image-logged').show();
+                                        $('#avatar_logged_input').attr('class', 'disabled');
+                                        $('#avatar_logged_input').prop("disabled", true);
 
-                                        $('.author_article_error').html('');
+                                        $('.error_avatar').html('');
 
                                     } else {
 
-                                        name_file_article_author = [];
-                                        fichier_article_author = [];
+                                        name_file = [];
+                                        fichier = [];
 
-                                        $('.author_article_error').show();
-                                        $('.author_article_error').html('<p>Le fichier ne correspond pas aux dimension. 250 pixels par 250 pixels !</p>');
+                                        $('.error_avatar').show();
+                                        $('.error_avatar').html('<p>Le fichier ne correspond pas aux dimension. 250 pixels par 250 pixels !</p>');
 
                                     }
 
@@ -1449,8 +1470,8 @@ $(document).ready(function () {
 
                     } else {
 
-                        $('.author_article_error').show();
-                        $('.author_article_error').html('<p>Le fichier est trop volumineux.</p>');
+                        $('.error_avatar').show();
+                        $('.error_avatar').html('<p>Le fichier est trop volumineux.</p>');
 
                     }
 
@@ -1460,5 +1481,112 @@ $(document).ready(function () {
         }
 
     });
+
+    // Delete user logged avatar
+
+    $(document).on('click', '#del-1-avatar-logged', function (e) {
+
+        e.preventDefault();
+
+        $('#avatar').attr('src', '/img/news/picture-empty.jpg');
+        $('#delete-image-logged').hide();
+        $('#avatar_logged_input').removeAttr('class');
+        $('#avatar_logged_input').prop("disabled", false);
+        $('#avatar_logged_input').val('');
+
+        $('.error_avatar').html('');
+
+        name_file_logged_user = [];
+        fichier_logged_user = [];
+
+    })
+
+    // Edit user logged -> route
+
+    $('#edit-user-logged').on('click', function (e) {
+
+        e.preventDefault();
+
+        var form = [],
+            form_data = new FormData(),
+            firstname = $('#editUserLoggedModal #firstname').val(),
+            lastname = $('#editUserLoggedModal #lastname').val(),
+            email = $('#editUserLoggedModal #email').val()
+
+        if (fichier.length == 1) {
+            for (let i = 0; i < fichier.length; i++) {
+                if ($.inArray(fichier[i].name, name_file) !== -1) form_data.append('file_' + i, fichier[i]);
+            }
+        }
+
+        form.forEach(e => {
+
+            if (e.name != "firstname") form_data.append(e.name, e.value);
+            if (e.name != "lastname") form_data.append(e.name, e.value);
+            if (e.name != "email") form_data.append(e.name, e.value);
+
+        });
+
+        form_data.append('firstname', firstname);
+        form_data.append('lastname', lastname);
+        form_data.append('email', email);
+
+        $.ajax({
+            url: '/user/edit',
+            method: 'post',
+            enctype: "multipart/form-data",
+            processData: false,
+            contentType: false,
+            data: form_data,
+            success: function (data) {
+
+                if (data.status == 0) {
+
+                    $.each(data.error, function (prefix, val) {
+                        $('.' + prefix + '_error').text(val[0]);
+                    });
+
+                    $('.toast-form-contact .svg').html(data.icone)
+                    $('.toast-form-contact .title').html(data.title);
+                    $('.toast-form-contact .toast-body').html(data.msg)
+                    $('.toast-form-contact').removeClass('toast-success').removeClass('toast-error').addClass(data.toast);
+
+                    $('.toast-form-contact').toast({
+                        delay: 10000
+                    });
+
+                    $('.toast-form-contact').toast('show');
+
+                } else {
+
+                    setTimeout(() => {
+
+                        $('.toast-form-contact .svg').html(data.icone)
+                        $('.toast-form-contact .title').html(data.title);
+                        $('.toast-form-contact .toast-body').html(data.msg)
+                        $('.toast-form-contact').removeClass('toast-success').removeClass('toast-error').addClass(data.toast);
+
+                        $('.toast-form-contact').toast({
+                            delay: 10000
+                        });
+
+                        $('.toast-form-contact').toast('show');
+                        $('#editUserModal').modal('hide');
+
+                    }, 400);
+
+                    setTimeout(() => {
+                        location.reload()
+                    }, 2100);
+
+                }
+            },
+            error: function (e) {
+                console.log(e);
+            }
+        });
+
+    })
+
 
 });

@@ -1,3 +1,4 @@
+
 $('[data-toggle="popover"]').popover()
 
 // Download CV
@@ -473,7 +474,7 @@ $.ajax({
 
                 })
 
-            }, 2500);
+            }, 1500);
 
         }
 
@@ -971,14 +972,14 @@ $.ajax({
                     viewsK = '',
                     published_date = value.published_date
 
-                    published_date = published_date.replace(['days ago'], ['jours'])
-                    published_date = published_date.replace(['weeks ago'], ['semaines'])
-                    published_date = published_date.replace(['month ago'], ['mois'])
+                published_date = published_date.replace(['days ago'], ['jours'])
+                published_date = published_date.replace(['weeks ago'], ['semaines'])
+                published_date = published_date.replace(['month ago'], ['mois'])
 
                 if (parseInt(views) >= 1000) {
                     viewsK = 'k';
                     views = views.toString().substr(3)
-                }else{
+                } else {
                     viewsK = '';
                     views = views
                 }
@@ -993,7 +994,7 @@ $.ajax({
 
                     window.open(url);
 
-                 })
+                })
 
                 $('#loader-youtube').addClass('hidden');
                 $('.page-youtube .youtube-api').fadeIn(300);
@@ -1036,3 +1037,40 @@ function copyToClipboard(element_id) {
     document.body.removeChild(aux);
 
 }
+
+// Forms login / register
+
+var switcher = 0,
+    switcher2 = 0;
+
+$(document).on('click', '#show-password', function (e) {
+
+    e.preventDefault();
+
+    if (switcher == 0) {
+        $(this).find('i.fa-solid.fa-eye').removeClass('fa-solid fa-eye').addClass('fa-solid fa-eye-slash');
+        $(document).find('#password').attr('type', 'text');
+        switcher = 1;
+    } else {
+        $(this).find('i.fa-solid.fa-eye-slash').removeClass('fa-solid fa-eye-slash').addClass('fa-solid fa-eye');
+        $(document).find('#password').attr('type', 'password');
+        switcher = 0;
+    }
+
+})
+
+$(document).on('click', '#show-password-2', function (e) {
+
+    e.preventDefault();
+
+    if (switcher2 == 0) {
+        $(this).find('i.fa-solid.fa-eye').removeClass('fa-solid fa-eye').addClass('fa-solid fa-eye-slash');
+        $(document).find('#passwordconfirmation').attr('type', 'text');
+        switcher2 = 1;
+    } else {
+        $(this).find('i.fa-solid.fa-eye-slash').removeClass('fa-solid fa-eye-slash').addClass('fa-solid fa-eye');
+        $(document).find('#passwordconfirmation').attr('type', 'password');
+        switcher2 = 0;
+    }
+
+})

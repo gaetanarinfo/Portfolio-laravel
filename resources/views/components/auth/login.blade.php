@@ -6,7 +6,7 @@
 
     <div class="container">
 
-        <h1 class="mb-5">Connexion</h1>
+        <h1 class="mb-5">Connexion utilisateur</h1>
 
         <div class="card card-container">
 
@@ -25,9 +25,18 @@
 
                 <span class="error-text text-danger email_error"></span>
 
-                <input type="password" id="password" name="password" class="form-control" placeholder="Mot de passe">
+                <div class="input-group">
 
-                <span class="error-text text-danger password_error"></span>
+                    <input type="password" id="password" name="password" class="form-control"
+                        placeholder="Mot de passe">
+
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="show-password"><i class="fa-solid fa-eye"></i></span>
+                    </div>
+
+                    <span class="error-text text-danger password_error"></span>
+
+                </div>
 
                 <div id="remember" class="checkbox mt-3">
 
@@ -54,6 +63,32 @@
 
             </form>
             <!-- /form -->
+
+            <div style="width: 100%;display: flex;justify-content: center;">
+
+                <div style="max-width: 230px;display: flex;flex-direction: column;">
+
+                    <div class="btn-group mt-3">
+                        <a class='btn btn-danger disabled'><i class="fa fa-google-plus"
+                                style="width:16px; height:20px"></i></a>
+                        <a class='btn btn-danger' href="{{ route('auth.google') }}" style="width:12em;"> Google</a>
+                    </div>
+
+                    <div class="btn-group mt-3">
+                        <a class='btn btn-info disabled'><i class="fa fa-facebook"
+                                style="width:16px; height:20px"></i></a>
+                        <a class='btn btn-info' href="{{ route('auth.facebook') }}" style="width:12em;"> Facebook</a>
+                    </div>
+
+                    <div class="btn-group mb-3 mt-3">
+                        <a class='btn btn-secondary disabled'><i class="fa fa-github"
+                                style="width:16px; height:20px"></i></a>
+                        <a class='btn btn-secondary' href="{{ route('auth.github') }}" style="width:12em;"> Github</a>
+                    </div>
+
+                </div>
+
+            </div>
 
             <a href="#" class="forgot-password mt-2">
                 Mot de passe oublié ?

@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('projets', function (Blueprint $table) {
-            $table->id()->unique();
+            $table->id()->unique()->autoIncrement();
             $table->string('categorie');
             $table->string('title');
             $table->string('image')->default('default.png');

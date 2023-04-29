@@ -950,9 +950,9 @@
 
 @media all and (max-width: 768px) {
     .page-youtube .youtube-api {
-    display: none;
-    margin-top: 1rem;
-}
+        display: none;
+        margin-top: 1rem;
+    }
 }
 
 #bloc-youtube .bloc-flex {
@@ -976,11 +976,11 @@
         margin: 4rem 0;
     }
 
-     #bloc-youtube .bloc-flex:first-child {
+    #bloc-youtube .bloc-flex:first-child {
         margin: 0 0 4rem 0;
     }
 
-     #bloc-youtube .bloc-flex:last-child {
+    #bloc-youtube .bloc-flex:last-child {
         margin: 1rem 0 0 0;
     }
 }

@@ -91,6 +91,8 @@ h1,
     font-size: 16px;
 }
 
+.form-signin #password,
+.form-signin #passwordconfirmation,
 .form-signin input[type=password],
 .form-signin input[type=text],
 .form-signin button {
@@ -103,6 +105,19 @@ h1,
     -moz-box-sizing: border-box;
     -webkit-box-sizing: border-box;
     box-sizing: border-box;
+}
+
+.form-signin #password,
+.form-signin #passwordconfirmation,
+.form-signin input[type=password] {
+    position: relative !important;
+    -webkit-box-flex: 1 !important;
+    -ms-flex: 1 1 auto !important;
+    flex: 1 1 auto !important;
+    width: 1% !important;
+    margin-bottom: 0 !important;
+    display: block !important;
+    font-size: 1rem !important;
 }
 
 .form-signin input[type=text]:first-child {
@@ -153,4 +168,8 @@ h1,
 #loader-register {
     margin: 2rem 0;
     min-height: 214px;
+}
+
+.input-group-prepend {
+    margin-top: 1rem;
 }

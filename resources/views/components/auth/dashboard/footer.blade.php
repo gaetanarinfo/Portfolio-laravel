@@ -532,6 +532,81 @@
 
 @endif
 
+ <!-- Edit user Modal-->
+ <div class="modal fade" id="editUserLoggedModal" tabindex="-1" role="dialog" aria-hidden="true">
+
+    <div class="modal-dialog" role="document">
+
+        <div class="modal-content">
+
+            <div class="modal-header">
+
+                <h5 class="modal-title"></h5>
+
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+
+            </div>
+
+            <div class="modal-body">
+
+                <form class="px-5">
+
+                    <div class="mt-4 mr-4 ml-4 mb-0 text-center">
+
+                        <label>
+                            <input type="file" id="avatar_logged_input" accept="image/*" name="avatar_logged_input"
+                                style="display: none">
+                            <img id="avatar" src="{{ URL::asset('img/profil/default.svg') }}"
+                                class="img-fluid" style="max-width: 150px;width: 150px;">
+                            <div class="mt-2" id="delete-image-logged">
+                                <span class="delete-image-logged" id="del-1-avatar-logged">
+                                    <i class="fa-solid fa-xmark"></i>
+                                </span>
+                            </div>
+                            <div class="avatar-cam"><i class="fa-solid fa-camera-rotate"></i></div>
+                        </label>
+
+                        <span class="error_avatar"></span>
+
+                    </div>
+
+                    <div class="form-group">
+                        <label for="firstname" class="col-form-label">Prénom :</label>
+                        <input type="text" class="form-control" id="firstname" name="firstname">
+                        <span class="error-text text-danger firstname_error"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="lastname" class="col-form-label">Nom :</label>
+                        <input type="text" class="form-control" id="lastname" name="lastname">
+                        <span class="error-text text-danger lastname_error"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email" class="col-form-label">Adresse email :</label>
+                        <input type="text" class="form-control" id="email" name="email">
+                        <span class="error-text text-danger email_error"></span>
+                    </div>
+
+                </form>
+
+            </div>
+
+            <div class="modal-footer">
+                <button class="btn btn-warning font-weight-bold" type="button"
+                    data-dismiss="modal">Annuler</button>
+                <a id="edit-user-logged" data-user="" class="btn btn-success font-weight-bold"
+                    href="#">Valider</a>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
 <!-- Mail Modal -->
 <div class="modal fade" id="mailModal" tabindex="-1" role="dialog" aria-hidden="true">
 

@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('google_play_orders', function (Blueprint $table) {
-            $table->id()->unique();
+            $table->id()->unique()->autoIncrement();
             $table->string('order_date');
             $table->string('application');
             $table->string('produit');

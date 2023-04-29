@@ -15,7 +15,12 @@
  <script src="https://unpkg.com/bootstrap-table@1.21.4/dist/bootstrap-table.min.js"></script>
  <script src="https://unpkg.com/bootstrap-table@1.21.4/dist/bootstrap-table-locale-all.min.js"></script>
  <script src="https://unpkg.com/bootstrap-table@1.21.4/dist/extensions/export/bootstrap-table-export.min.js"></script>
- <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.2.1/chart.umd.min.js" integrity="sha512-GCiwmzA0bNGVsp1otzTJ4LWQT2jjGJENLGyLlerlzckNI30moi2EQT0AfRI7fLYYYDKR+7hnuh35r3y1uJzugw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+ @if ($user->admin == 1)
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.2.1/chart.umd.min.js"
+         integrity="sha512-GCiwmzA0bNGVsp1otzTJ4LWQT2jjGJENLGyLlerlzckNI30moi2EQT0AfRI7fLYYYDKR+7hnuh35r3y1uJzugw=="
+         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+ @endif
 
  @if (Route::current()->getName() == 'add-article')
      <script src="{{ URL::asset('js/add-blog.js') }}"></script>
@@ -23,8 +28,12 @@
      <script src="{{ URL::asset('js/dashboard.js') }}"></script>
  @endif
 
- @if (Route::current()->getName() == 'dashboard')
- <script src="{{ URL::asset('js/chart-bar.js') }}"></script>
+ @if ($user->admin == 1)
+
+     @if (Route::current()->getName() == 'dashboard')
+         <script src="{{ URL::asset('js/chart-bar.js') }}"></script>
+     @endif
+
  @endif
 
  <script src="https://accounts.google.com/gsi/client" async defer></script>

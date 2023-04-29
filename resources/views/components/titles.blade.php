@@ -15,7 +15,7 @@
     @break
 
     @case('register')
-        <title>Inscription utilisateur</title>
+        <title>S'inscrire sur mon portfolio</title>
         <meta name="description" content="{{ config('app.description') }}">
     @break
 

@@ -182,7 +182,6 @@
                         <li><a href="/cgu">Cgu</a></li>
                         <li><a href="/politique-confidentialite">Politique de confidentialité</a></li>
                         <li><a href="mailto:contact@portfolio-gaetan.fr">contact@portfolio-gaetan.fr</a></li>
-                        <li><a href="tel:0615759302">06.15.75.93.02</a></li>
                     </ul>
 
                 </div>

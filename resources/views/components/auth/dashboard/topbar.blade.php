@@ -13,30 +13,6 @@
     <!-- Topbar Navbar -->
     <ul class="navbar-nav ml-auto">
 
-        <!-- Nav Item - Alerts -->
-        <li class="nav-item dropdown no-arrow mx-1">
-
-            <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button" data-toggle="dropdown"
-                aria-haspopup="true" aria-expanded="false">
-                <i class="fas fa-bell fa-fw"></i>
-
-                <!-- Counter - Alerts -->
-                <span class="badge badge-danger badge-counter">0</span>
-
-            </a>
-
-            <!-- Dropdown - Alerts -->
-            <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
-                aria-labelledby="alertsDropdown">
-
-                <h6 class="dropdown-header">
-                    Notifications
-                </h6>
-
-            </div>
-
-        </li>
-
         <!-- Nav Item - Messages -->
         <li class="nav-item dropdown no-arrow mx-1">
 
@@ -74,7 +50,7 @@
 
                             <div class="dropdown-list-image mr-3">
                                 <img class="rounded-circle"
-                                    src="@if (!empty($data->avatar)) {{ URL::asset('/img/profil/' . $data->avatar) }} @else {{ URL::asset('/img/profil/dzfault.svg') }} @endif" />
+                                    src="@if (!empty($data->avatar)) {{ URL::asset('/img/profil/' . $data->avatar) }} @else {{ URL::asset('/img/profil/default.svg') }} @endif" />
                                 <div class="status-indicator bg-success"></div>
                             </div>
 
@@ -113,7 +89,7 @@
                     <span><i class="fa-solid fa-crown mr-2 text-warning"></i></span>
                 @endif
                 <span
-                    class="mr-2 d-none d-lg-inline text-light font-weight-bold">{{ $user->firstname . ' ' . $user->lastname }}</span>
+                    class="mr-2 d-none d-lg-inline text-light font-weight-bold">@if(!empty($user->firstname) && !empty($user->lastname)) {{ $user->firstname . ' ' . $user->lastname }} @else {{ $user->name }} @endif</span>
 
                 <img class="img-profile rounded-circle"
                     src="@if (!empty($user->avatar)) {{ '/img/profil/' . $user->avatar }} @else {{ URL::asset('img/profil/default.svg') }} @endif">
@@ -123,17 +99,15 @@
             <!-- Dropdown - User Information -->
             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
 
-                <a class="dropdown-item" href="#">
+                <a class="dropdown-item btn-modal-user" href="#" data-toggle="modal" data-target="#editUserLoggedModal" data-lastname="{{ $user->lastname }}"
+                    data-firstname="{{ $user->firstname }}" data-email="{{ $user->email }}"
+                    data-avatar="{{ $user->avatar }}"
+                    data-edit="1">
                     <i class="fas fa-user fa-sm fa-fw mr-2 text-light"></i>
                     Mon profil
                 </a>
 
-                <a class="dropdown-item" href="#">
-                    <i class="fas fa-cogs fa-sm fa-fw mr-2 text-light"></i>
-                    Paramètres
-                </a>
-
-                <a class="dropdown-item" href="#">
+                <a class="dropdown-item" href="/logs">
                     <i class="fas fa-list fa-sm fa-fw mr-2 text-light"></i>
                     Mon activité
                 </a>
