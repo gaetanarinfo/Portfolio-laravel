@@ -40,8 +40,8 @@ class GoogleAuthController extends Controller
 
             $user = Socialite::driver('google')->user();
 
-            // $minutes = 60;
-            // Cookie::queue(Cookie::make('token_special', $user->token, $minutes));
+            $minutes = 60;
+            Cookie::queue(Cookie::make('token_special', $user->token, $minutes));
 
             $finduser = User::where('google_id', $user->id)->first();
 

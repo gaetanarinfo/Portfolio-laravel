@@ -2,6 +2,10 @@
 
     <div class="container">
 
+        <div class="blog-title mt-4 mb-4">
+            <h1>{{ $article->title }}</h1>
+        </div>
+
         <div class="row widget-grid mb-4">
 
             <div class="col-lg-8">
@@ -25,6 +29,8 @@
                             <option value="Graphique">Graphique</option>
                             <option value="UI/UX">UI/UX</option>
                             <option value="Culture">Culture</option>
+                            <option value="Financement">Financement</option>
+                            <option value="Ethique">Ethique</option>
                         </select>
 
                     </div>

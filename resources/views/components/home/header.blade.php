@@ -1,4 +1,5 @@
-<div class="vg-page page-home header" id="home" style="background-image: url('{{ URL::asset('img/bg_image_1.jpg') }}')">
+<div class="vg-page page-home header" id="home"
+    style="background-image: url('{{ URL::asset('img/bg_image_1.jpg') }}')">
 
     <!-- Navbar -->
     <div class="navbar navbar-expand-lg navbar-dark sticky" data-offset="500">
@@ -63,6 +64,13 @@
                                     class="mr-2 fa-solid fa-user"></i>Se connecter</a>
                         </li>
                     @endif
+
+                    <li class="nav-item @if (Route::current()->getName() == 'cart') active @endif">
+                        <a @if (!empty($_COOKIE['product_formule'])) href="/cart" @endif
+                            class="nav-link font-weight-bold @if (empty($_COOKIE['product_formule'])) disabled @endif"><i
+                                class="fa-solid fa-cart-shopping"></i>
+                        </a>
+                    </li>
 
                 </ul>
 

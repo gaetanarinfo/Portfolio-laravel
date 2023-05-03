@@ -23,9 +23,9 @@ return new class extends Migration
             $table->string('author');
             $table->string('author_content');
             $table->string('author_link');
-            $table->string('source')->nullable(true);
+            $table->string('source')->unique();
             $table->string('avatar')->nullable(true);
-            $table->integer('views')->default(1);
+            $table->integer('views')->default(0);
             $table->integer('active')->default(1);
             $table->string('url_fb')->nullable(true);
             $table->string('url_linkedin')->nullable(true);

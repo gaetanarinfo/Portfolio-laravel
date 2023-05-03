@@ -14,7 +14,8 @@ class NewsController extends Controller
      */
     public function getNewsSmall(): View
     {
-        $news = News::orderBy('created_at', 'desc')
+        $news = News::where('active', 1)
+            ->orderBy('created_at', 'desc')
             ->skip(0)
             ->take(6)
             ->get();

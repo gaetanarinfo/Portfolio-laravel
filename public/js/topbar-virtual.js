@@ -1,13 +1,5 @@
 $(function () {
 
-    $('.testi-carousel').owlCarousel({
-        margin: 0,
-        loop: true,
-        autoplay: true,
-        autoplayTimeout: 4000,
-        items: 1,
-    });
-
     // Nice select
     $('.vg-select').niceSelect();
 
@@ -144,7 +136,8 @@ $(document).ready(function () {
 
 $(document).ready(function () {
 
-    $('#sideel').click(function () {
+    $('#paramsR').click(function () {
+        console.log('test');
         $(this).parents('.config').toggleClass('active');
     });
 

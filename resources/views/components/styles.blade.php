@@ -2,24 +2,32 @@
     <link rel="stylesheet" type="text/css" href="{{ URL::asset('css/bootstrap.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ URL::asset('vendor/animate/animate.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ URL::asset('vendor/owl-carousel/owl.carousel.css') }}">
-    <link rel="stylesheet" type="text/css" href="{{ URL::asset('vendor/perfect-scrollbar/css/perfect-scrollbar.css') }}">
+    <link rel="stylesheet" type="text/css"
+        href="{{ URL::asset('vendor/perfect-scrollbar/css/perfect-scrollbar.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ URL::asset('vendor/nice-select/css/nice-select.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ URL::asset('vendor/fancybox/css/jquery.fancybox.min.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ URL::asset('css/virtual.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ URL::asset('css/topbar.virtual.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ URL::asset('css/app.css') }}">
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI=" crossorigin="" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"
+        integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI=" crossorigin="" />
 
-    @if(Route::current()->getName() == "login")
-    <link rel="stylesheet" type="text/css" href="{{ URL::asset('css/login.css') }}">
+
+    @if (Route::current()->getName() == 'login')
+        <link rel="stylesheet" type="text/css" href="{{ URL::asset('css/login.css') }}">
     @endif
 
-    @if(Route::current()->getName() == "register")
-    <link rel="stylesheet" type="text/css" href="{{ URL::asset('css/register.css') }}">
+    @if (Route::current()->getName() == 'register')
+        <link rel="stylesheet" type="text/css" href="{{ URL::asset('css/register.css') }}">
     @endif
 
-    @if(Route::current()->getName() == "forgot-password")
-    <link rel="stylesheet" type="text/css" href="{{ URL::asset('css/forgot-password.css') }}">
+    @if (Route::current()->getName() == 'forgot-password')
+        <link rel="stylesheet" type="text/css" href="{{ URL::asset('css/forgot-password.css') }}">
+    @endif
+
+    @if (Route::current()->getName() == 'cart')
+        <link rel="stylesheet" type="text/css" href="{{ URL::asset('css/cart.css') }}">
+        <link rel="stylesheet" type="text/css" href="{{ URL::asset('css/jquery.datetimepicker.min.css') }}">
     @endif
 
     <!-- Fonts -->

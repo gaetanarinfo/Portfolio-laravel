@@ -9,6 +9,20 @@
 
      <div class="badge">{{ config('app.organization') }}</div>
 
+     <div class="d-flex projets mt-5">
+
+        <div class="img">
+            <img src="{{ URL::asset('img/projet.png') }}" alt="Envie de créer un projet ?" class="img-fluid">
+        </div>
+
+         <div class="content">
+             <h3 class="fw-light">Envie de créer un <a href="/offers" class="text-decoration-none"
+                     title="Envie de créer un projet ?"><b class="fg-theme">projet</b></a> ?</h3>
+             <a href="/offers" class="btn-lg badge mt-3" title="Envie de créer un projet ?">Cliquez-ici</a>
+         </div>
+
+     </div>
+
  </div>
  <!-- End Caption header -->
 

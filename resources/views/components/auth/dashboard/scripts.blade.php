@@ -34,6 +34,12 @@
          <script src="{{ URL::asset('js/chart-bar.js') }}"></script>
      @endif
 
+     @if (Route::current()->getName() == 'show-agenda')
+     <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.6/index.global.min.js'></script>
+         <script src='{{ URL::asset('js/fullcalendar/locales-all.global.min.js') }}'></script>
+         <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+     @endif
+
  @endif
 
  <script src="https://accounts.google.com/gsi/client" async defer></script>

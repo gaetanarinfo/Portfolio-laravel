@@ -29,6 +29,16 @@
         <meta name="description" content="{{ config('app.description') }}">
     @break
 
+    @case('offers')
+        <title>Mes besoins, mon offre, sans enguagement, devis gratuit !</title>
+        <meta name="description" content="{{ config('app.description') }}">
+    @break
+
+    @case('cart')
+        <title>Mes besoins, mon offre, sans enguagement, devis gratuit !</title>
+        <meta name="description" content="{{ config('app.description') }}">
+    @break
+
     @default
         <title>{{ config('app.title') }}</title>
         <meta name="description" content="{{ config('app.description') }}">

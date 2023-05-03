@@ -11,7 +11,7 @@
 
          <!-- Settings -->
          <div class="d-block">
-             <button class="btn btn-fab btn-sm" id="sideel" title="Paramètres"><span class="ti-settings"></span></button>
+             <button class="btn btn-sm" id="paramsR" title="Paramètres"><span class="ti-settings"></span></button>
          </div>
 
      </div>
@@ -32,6 +32,7 @@
              <option value="">Choisir la page</option>
              <option value="/">Accueil</option>
              <option value="/blog/1">Mon blog</option>
+             <option value="/offers">Créer un projet</option>
              @if (Auth::check())
                  <option value="/logout">Déconnexion</option>
              @else

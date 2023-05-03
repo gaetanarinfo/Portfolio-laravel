@@ -61,6 +61,13 @@
                     </li>
                 @endif
 
+                <li class="nav-item @if (Route::current()->getName() == 'cart') active @endif">
+                    <a @if (!empty($_COOKIE['product_formule'])) href="/cart" @endif
+                        class="nav-link font-weight-bold @if (empty($_COOKIE['product_formule'])) disabled @endif"><i
+                            class="fa-solid fa-cart-shopping"></i>
+                    </a>
+                </li>
+
             </ul>
 
             <ul class="nav ml-auto">

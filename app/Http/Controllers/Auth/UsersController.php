@@ -6,14 +6,20 @@ use Validator;
 use App\Models\News;
 use App\Models\User;
 use App\Functions\Log;
+use App\Models\Orders;
 use App\Models\Contact;
 use App\Models\Projets;
+use App\Models\Products;
+use App\Mail\OrderRefund;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use App\Models\ProductsContacts;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
+use Srmklive\PayPal\Services\PayPal as PaypalClient;
 
 class UsersController extends Controller
 {
@@ -103,7 +109,7 @@ class UsersController extends Controller
 
             // Logs
             $logs_user = new Log();
-            $logs_user->log_user('Utilisateur', 'Un utilisateur a été supprimer !', url()->current(), $request->ip());
+            $logs_user->log_user(Auth::id(), 'Utilisateur', 'Un utilisateur a été supprimer !', url()->current(), $request->ip());
 
             return response()->json(['status' => 1, 'msg' => 'L\'utilisateur a été supprimé.', 'title' => 'Supprimer un utilisateur', 'toast' => 'toast-success', 'icone' => '<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-check mr-2" viewBox="0 0 16 16"><path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z"/></svg>']);
         } else {
@@ -157,7 +163,7 @@ class UsersController extends Controller
             }
 
             if (!$validator->passes()) {
-                return response()->json(['error' => $error, 'status' => 0, 'msg' => 'Vos informations sont erronées !', 'title' => 'Modification d\'un utilisateur !', 'toast' => 'toast-error', 'icone' => '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-exclamation-triangle-fill mr-2" viewBox="0 0 16 16"><path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/></svg>']);
+                return response()->json(['error' => $error, 'status' => 0, 'msg' => 'Il semble y avoir des erreurs dans le formulaire !', 'title' => 'Modification d\'un utilisateur !', 'toast' => 'toast-error', 'icone' => '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-exclamation-triangle-fill mr-2" viewBox="0 0 16 16"><path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/></svg>']);
             } else {
 
                 if (!empty($request->file_0)) {
@@ -191,7 +197,7 @@ class UsersController extends Controller
 
                 // Logs
                 $logs_user = new Log();
-                $logs_user->log_user('Utilisateur', 'Un utilisateur a été modifiée !', url()->current(), $request->ip());
+                $logs_user->log_user(Auth::id(), 'Utilisateur', 'Un utilisateur a été modifiée !', url()->current(), $request->ip());
 
                 return response()->json(['status' => 1, 'msg' => 'L\'utilisateur a été modifiée.', 'title' => 'Modification d\'un utilisateur', 'toast' => 'toast-success', 'icone' => '<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-check mr-2" viewBox="0 0 16 16"><path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z"/></svg>']);
             }
@@ -251,7 +257,7 @@ class UsersController extends Controller
             }
 
             if (!$validator->passes() && $request->password != $request->passwordconfirmation or mb_strlen($request->password) < 7) {
-                return response()->json(['error' => $error, 'status' => 0, 'msg' => 'Vos informations sont erronées !', 'title' => 'Création d\'un utilisateur !', 'toast' => 'toast-error', 'icone' => '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-exclamation-triangle-fill mr-2" viewBox="0 0 16 16"><path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/></svg>']);
+                return response()->json(['error' => $error, 'status' => 0, 'msg' => 'Il semble y avoir des erreurs dans le formulaire !', 'title' => 'Création d\'un utilisateur !', 'toast' => 'toast-error', 'icone' => '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-exclamation-triangle-fill mr-2" viewBox="0 0 16 16"><path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/></svg>']);
             } else {
 
                 $insert = User::create(array(
@@ -264,7 +270,7 @@ class UsersController extends Controller
 
                 // Logs
                 $logs_user = new Log();
-                $logs_user->log_user('Utilisateur', 'Un utilisateur a été créer !', url()->current(), $request->ip());
+                $logs_user->log_user(Auth::id(), 'Utilisateur', 'Un utilisateur a été créer !', url()->current(), $request->ip());
 
                 if (!empty($request->file_0)) {
 
@@ -375,7 +381,7 @@ class UsersController extends Controller
 
             // Logs
             $logs_user = new Log();
-            $logs_user->log_user('Projet', 'Un projet a été supprimer !', url()->current(), $request->ip());
+            $logs_user->log_user(Auth::id(), 'Projet', 'Un projet a été supprimer !', url()->current(), $request->ip());
 
             return response()->json(['status' => 1, 'msg' => 'Le projet a été supprimé.', 'title' => 'Supprimer un projet', 'toast' => 'toast-success', 'icone' => '<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-check mr-2" viewBox="0 0 16 16"><path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z"/></svg>']);
         } else {
@@ -430,7 +436,7 @@ class UsersController extends Controller
             }
 
             if (!$validator->passes()) {
-                return response()->json(['error' => $error, 'status' => 0, 'msg' => 'Vos informations sont erronées !', 'title' => 'Modification d\'un projet !', 'toast' => 'toast-error', 'icone' => '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-exclamation-triangle-fill mr-2" viewBox="0 0 16 16"><path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/></svg>']);
+                return response()->json(['error' => $error, 'status' => 0, 'msg' => 'Il semble y avoir des erreurs dans le formulaire !', 'title' => 'Modification d\'un projet !', 'toast' => 'toast-error', 'icone' => '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-exclamation-triangle-fill mr-2" viewBox="0 0 16 16"><path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/></svg>']);
             } else {
 
                 if (!empty($request->file_0)) {
@@ -465,7 +471,7 @@ class UsersController extends Controller
 
                 // Logs
                 $logs_user = new Log();
-                $logs_user->log_user('Projet', 'Un projet a été modifiée !', url()->current(), $request->ip());
+                $logs_user->log_user(Auth::id(), 'Projet', 'Un projet a été modifiée !', url()->current(), $request->ip());
 
                 return response()->json(['status' => 1, 'msg' => 'Le projet a été modifiée.', 'title' => 'Modification d\'un projet', 'toast' => 'toast-success', 'icone' => '<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-check mr-2" viewBox="0 0 16 16"><path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z"/></svg>']);
             }
@@ -521,7 +527,7 @@ class UsersController extends Controller
             }
 
             if (!$validator->passes()) {
-                return response()->json(['error' => $error, 'status' => 0, 'msg' => 'Vos informations sont erronées !', 'title' => 'Création d\'un projet !', 'toast' => 'toast-error', 'icone' => '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-exclamation-triangle-fill mr-2" viewBox="0 0 16 16"><path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/></svg>']);
+                return response()->json(['error' => $error, 'status' => 0, 'msg' => 'Il semble y avoir des erreurs dans le formulaire !', 'title' => 'Création d\'un projet !', 'toast' => 'toast-error', 'icone' => '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-exclamation-triangle-fill mr-2" viewBox="0 0 16 16"><path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/></svg>']);
             } else {
 
                 $insert = Projets::create(array(
@@ -534,7 +540,7 @@ class UsersController extends Controller
 
                 // Logs
                 $logs_user = new Log();
-                $logs_user->log_user('Projet', 'Un projet a été créer !', url()->current(), $request->ip());
+                $logs_user->log_user(Auth::id(), 'Projet', 'Un projet a été créer !', url()->current(), $request->ip());
 
                 if (!empty($request->file_0)) {
 
@@ -654,7 +660,7 @@ class UsersController extends Controller
 
             // Logs
             $logs_user = new Log();
-            $logs_user->log_user('Blog', 'Un article a été supprimer !', url()->current(), $request->ip());
+            $logs_user->log_user(Auth::id(), 'Blog', 'Un article a été supprimer !', url()->current(), $request->ip());
 
             return response()->json(['status' => 1, 'msg' => 'L\'article a été supprimé.', 'title' => 'Supprimer un article', 'toast' => 'toast-success', 'icone' => '<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-check mr-2" viewBox="0 0 16 16"><path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z"/></svg>']);
         } else {
@@ -819,7 +825,7 @@ class UsersController extends Controller
 
                     // Logs
                     $logs_user = new Log();
-                    $logs_user->log_user('Blog', 'Un article a été modifiée !', url()->current(), $request->ip());
+                    $logs_user->log_user(Auth::id(), 'Blog', 'Un article a été modifiée !', url()->current(), $request->ip());
 
                     return response()->json(['status' => 1, 'msg' => 'Votre article a bien été modifiée.', 'title' => 'Modification de l\'article', 'toast' => 'toast-success', 'icone' => '<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-check mr-2" viewBox="0 0 16 16"><path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z"/></svg>']);
                 }
@@ -923,7 +929,7 @@ class UsersController extends Controller
 
                     // Logs
                     $logs_user = new Log();
-                    $logs_user->log_user('Blog', 'Un nouvel article a été créer !', url()->current(), $request->ip());
+                    $logs_user->log_user(Auth::id(), 'Blog', 'Un nouvel article a été créer !', url()->current(), $request->ip());
 
                     if (!empty($request->file_0)) {
 
@@ -1074,7 +1080,7 @@ class UsersController extends Controller
 
                 // Logs
                 $logs_user = new Log();
-                $logs_user->log_user('Boîte email', 'Un email dans votre boîte de réception a été archivée !', url()->current(), $request->ip());
+                $logs_user->log_user(Auth::id(), 'Boîte email', 'Un email dans votre boîte de réception a été archivée !', url()->current(), $request->ip());
 
                 return response()->json(['status' => 1, 'msg' => 'Votre message a été archivée.', 'title' => 'Boîte email', 'toast' => 'toast-success', 'icone' => '<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-check mr-2" viewBox="0 0 16 16"><path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z"/></svg>']);
             } else {
@@ -1108,7 +1114,7 @@ class UsersController extends Controller
 
 
                 if (!$validator->passes()) {
-                    return response()->json(['error' => $validator->errors()->toArray(), 'status' => 0, 'msg' => 'Vos informations sont erronées !', 'title' => 'Modification de votre profil !', 'toast' => 'toast-error', 'icone' => '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-exclamation-triangle-fill mr-2" viewBox="0 0 16 16"><path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/></svg>']);
+                    return response()->json(['error' => $validator->errors()->toArray(), 'status' => 0, 'msg' => 'Il semble y avoir des erreurs dans le formulaire !', 'title' => 'Modification de votre profil !', 'toast' => 'toast-error', 'icone' => '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-exclamation-triangle-fill mr-2" viewBox="0 0 16 16"><path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/></svg>']);
                 } else {
 
                     if (!empty($request->file_0)) {
@@ -1131,7 +1137,7 @@ class UsersController extends Controller
 
                             // Logs
                             $logs_user = new Log();
-                            $logs_user->log_user('Modification profil', 'Votre photo de profil a été modifiée !', url()->current(), $request->ip());
+                            $logs_user->log_user(Auth::id(), 'Modification profil', 'Votre photo de profil a été modifiée !', url()->current(), $request->ip());
                         }
                     }
 
@@ -1145,12 +1151,161 @@ class UsersController extends Controller
 
                     // Logs
                     $logs_user = new Log();
-                    $logs_user->log_user('Modification profil', 'Votre profil a été modifiée !', url()->current(), $request->ip());
+                    $logs_user->log_user(Auth::id(), 'Modification profil', 'Votre profil a été modifiée !', url()->current(), $request->ip());
 
                     return response()->json(['status' => 1, 'msg' => 'Votre profil a été modifiée.', 'title' => 'Modification de votre profil !', 'toast' => 'toast-success', 'icone' => '<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-check mr-2" viewBox="0 0 16 16"><path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z"/></svg>']);
                 }
             } else {
                 return response()->json(['status' => 0, 'msg' => 'Une erreur est survenue.', 'title' => 'Modification de votre profil !', 'toast' => 'toast-error', 'icone' => '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-exclamation-triangle-fill mr-2" viewBox="0 0 16 16"><path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/></svg>']);
+            }
+        }
+    }
+
+    /**
+     * Display a dashboard to agenda.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function show_agenda()
+    {
+
+        $user_not_admin = User::where('active', 1)
+            ->where('id', Auth::id())
+            ->first();
+
+        $contacts = Contact::where('archive', 0)
+            ->join('users', 'users.email', '=', 'contacts.email')
+            ->where('contacts.to_mail', $user_not_admin->email)
+            ->orderBy('contacts.created_at', 'DESC')
+            ->limit(6)
+            ->get();
+
+
+        if (Auth::check()) {
+
+            $user = User::where('active', 1)
+                ->where('id', Auth::id())
+                ->where('admin', 1)
+                ->first();
+
+            if (isset($user)) {
+                return view('auth.admin.agenda', compact('user', 'contacts'));
+            } else {
+                return redirect()->route('dashboard');
+            }
+
+            return view('auth.admin.agenda', compact('user', 'contacts'));
+        }
+
+        return redirect()->route('dashboard');
+    }
+
+    /**
+     * Display a dashboard to orders clients.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function show_orders()
+    {
+
+        $user_not_admin = User::where('active', 1)
+            ->where('id', Auth::id())
+            ->first();
+
+        $contacts = Contact::where('archive', 0)
+            ->join('users', 'users.email', '=', 'contacts.email')
+            ->where('contacts.to_mail', $user_not_admin->email)
+            ->orderBy('contacts.created_at', 'DESC')
+            ->limit(6)
+            ->get();
+
+
+        if (Auth::check()) {
+
+            $user = User::where('active', 1)
+                ->where('id', Auth::id())
+                ->where('admin', 1)
+                ->first();
+
+            $orders_canceled = Orders::where('status', 'CANCELED')->get();
+            $orders_refund = Orders::where('status', 'REFUND')->get();
+            $orders_success = Orders::where('status', 'COMPLETED')->get();
+            $orders_total = Orders::sum('price');
+            $orders = Orders::join('products', 'products.product_id', '=', 'orders.product_id')
+                ->join('products_contacts', 'products_contacts.id', '=', 'orders.contact_id')
+                ->orderBy('orders.created_at', 'DESC')
+                ->groupBy('orders.id')
+                ->get();
+
+            if (isset($user)) {
+                return view('auth.admin.show_orders', compact('user', 'contacts', 'orders_canceled', 'orders_success', 'orders_refund', 'orders_total', 'orders'));
+            } else {
+                return redirect()->route('dashboard');
+            }
+
+            return view('auth.admin.show_orders', compact('user', 'contacts'));
+        }
+
+        return redirect()->route('dashboard');
+    }
+
+    /**
+     * Display a dashboard to orders refund.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function order_refund(Request $request, $id, $transaction)
+    {
+
+        if (Auth::check()) {
+
+            $user = User::where('active', 1)
+                ->where('id', Auth::id())
+                ->where('admin', 1)
+                ->first();
+
+            if (isset($user)) {
+
+                $order_verif = Orders::where('transaction_id', $transaction)
+                    ->first();
+
+                if (!empty($order_verif->id)) {
+
+                    $product = Products::where('product_id', $order_verif->product_id)->first();
+                    $contact = ProductsContacts::where('id', $order_verif->contact_id)->first();
+
+                    // Remboursement Paypal
+                    $provider = new PaypalClient;
+                    $provider->setApiCredentials(config('paypal'));
+                    $provider->getAccessToken();
+
+                    $response = $provider->refundCapturedPayment($order_verif->capture_id, $order_verif->transaction_id, $order_verif->price, "Demande par le client");
+
+                    if (isset($response['status']) && $response['status'] == 'COMPLETED') {
+
+                        Orders::where('transaction_id', $transaction)
+                            ->update(array(
+                                'refund_at' => date('Y-m-d H:i:s'),
+                                'status' => "REFUND"
+                            ));
+
+                        // Logs
+                        $logs_user = new Log();
+                        $logs_user->log_user(Auth::id(), 'Remboursement d\'une commande', 'La commande n°' .  $transaction . ' a bien été remboursé.', url()->current(), $request->ip());
+
+                        Mail::to($contact->email)
+                            ->send(new OrderRefund($order_verif, $product, 'contact@portfolio-gaetan.fr', 'Portefolio', 'Votre paiement n°' . $transaction . ' a été rembourser'));
+
+                        return response()->json(['status' => 1, 'title' => 'Remboursement d\'une commande', 'msg' => 'La commande n°' .  $transaction . ' a bien été remboursé.', 'toast' => 'toast-success', 'icone' => '<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-check mr-2" viewBox="0 0 16 16"><path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z"/></svg>']);
+                    } else {
+                        return response()->json(['status' => 0, 'title' => 'Une erreur est survenue.', 'msg' => 'Remboursement de la commande ' . $transaction . ' impossible !', 'toast' => 'toast-error', 'icone' => '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-exclamation-triangle-fill mr-2" viewBox="0 0 16 16"><path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/></svg>']);
+                    }
+                } else {
+                    return response()->json(['status' => 0, 'title' => 'Une erreur est survenue.', 'msg' => 'Remboursement de la commande ' . $transaction . ' impossible !', 'toast' => 'toast-error', 'icone' => '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-exclamation-triangle-fill mr-2" viewBox="0 0 16 16"><path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/></svg>']);
+                }
+            } else {
+                return response()->json(['status' => 0, 'title' => 'Une erreur est survenue.', 'msg' => 'Remboursement de la commande ' . $transaction . ' impossible !', 'toast' => 'toast-error', 'icone' => '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-exclamation-triangle-fill mr-2" viewBox="0 0 16 16"><path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/></svg>']);
             }
         }
     }

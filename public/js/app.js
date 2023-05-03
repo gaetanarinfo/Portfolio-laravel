@@ -24,7 +24,7 @@ $(document).on('click', '.color-item', function (e) {
 
     localStorage.setItem('theme', classes);
 
-    setCookie('theme', classes, 31);
+    setCookie('theme', classes, 2500);
 
 })
 
@@ -32,6 +32,12 @@ if (localStorage.getItem('theme') != null) {
     $('.color-item[data-class="' + localStorage.getItem('theme') + '"]').addClass('selected');
 } else {
     $('.color-item.bg-theme-red').addClass('selected');
+}
+
+function getCookie(name) {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) return parts.pop().split(';').shift();
 }
 
 function setCookie(name, value, days) {
@@ -45,6 +51,14 @@ function setCookie(name, value, days) {
     }
 
     document.cookie = name + "=" + (value || "") + expires + "; path=/";
+}
+
+function deleteCookie(name) {
+
+    if (getCookie(name)) {
+        setCookie(name, "", null, null, null, 1);
+    }
+
 }
 
 // ------------ //
@@ -361,7 +375,9 @@ $('#newsletter-form').on('submit', function (e) {
         error: function (e) {
             console.log(e);
         }
+
     });
+
 });
 
 // ------------ //
@@ -1074,3 +1090,539 @@ $(document).on('click', '#show-password-2', function (e) {
     }
 
 })
+
+// ----------- //
+
+// Offers
+
+$('.page-cart .btn-offer').on('click', function (e) {
+
+    e.preventDefault();
+
+    $('.page-cart .before-loader').fadeOut(600);
+
+    setTimeout(() => {
+        $('html, body').animate({ scrollTop: $('.page-cart .col-md-6:last-child').offset().top - 0 }, "slow");
+        $('.page-cart #loader-offer').removeClass('hidden');
+        $('.page-cart #loader-offer div').attr('style', 'visibility: visible;').fadeIn(600);
+    }, 600);
+
+    setTimeout(() => {
+        $('.page-cart #loader-offer div h5').html('C\'est presque terminé...');
+    }, 3600);
+
+    setTimeout(() => {
+        $('.page-cart #loader-offer div h5').html('Vous allez être redirigée ! Pas de panique.');
+    }, 5500);
+
+    setTimeout(() => {
+        setCookie('product_etape', 1, 1);
+        setCookie('product_formule', "/", 1);
+        location.href = '/cart';
+    }, 6600);
+
+})
+
+// ------------ //
+
+// Cart
+
+$(document).on('click', '.btn-formule', function (e) {
+
+    e.preventDefault();
+
+    var formule = $(this).data('product'),
+        counter = 0;
+
+    $('html, body').animate({ scrollTop: 0 }, "slow");
+
+    deleteCookie('product_formule');
+    deleteCookie('product_domain');
+    deleteCookie('product_etape');
+    setCookie('product_formule', formule, 1);
+    setCookie('product_etape', 2, 1);
+
+
+    if (getCookie('product_formule') == 3) {
+
+        var max_domain = 8;
+
+        $('#max_domain').val(max_domain);
+
+        $('.domain-count').html(counter + '/' + max_domain);
+
+    }
+
+    if (getCookie('product_formule') == 2) {
+
+        var max_domain = 4;
+
+        $('#max_domain').val(max_domain);
+
+        $('.domain-count').html(counter + '/' + max_domain);
+
+    }
+
+    if (getCookie('product_formule') == 1) {
+
+        var max_domain = 1;
+
+        $('#max_domain').val(max_domain);
+
+        $('.domain-count').html(counter + '/' + max_domain);
+
+    }
+
+    $('.bloc-formule').fadeOut(600);
+
+    setTimeout(() => {
+
+        $('.page-cart #loader-cart').removeClass('hidden');
+        $('.page-cart #loader-cart div').attr('style', 'visibility: visible;').fadeIn(200);
+
+    }, 600);
+
+
+    setTimeout(() => {
+        $('.page-cart #loader-cart').addClass('hidden');
+        $('.page-cart #loader-cart div').attr('style', 'visibility: hidden;').fadeOut(200);
+        $('.page-cart .bloc-domain').fadeIn(600);
+    }, 3600);
+
+});
+
+$('#domain').on('keyup', function (e) {
+
+    var domain = $('#domain')
+
+    if (domain.val().length >= 1) {
+        $('#domain').removeClass('erropr');
+    }
+
+})
+
+var domain_selected = new Array();
+
+$('#searchDomainForm').on('submit', function (e) {
+
+    e.preventDefault();
+
+    $('html, body').animate({ scrollTop: 0 }, "slow");
+
+    deleteCookie('product_domain');
+
+    var domain = $('#domain'),
+        max_domain = parseInt($('#max_domain').val()),
+        counter = 0
+
+    if (domain.val().length <= 0) {
+        $('#domain').addClass('error');
+    } else {
+
+        setTimeout(() => {
+            $('#loader-cart-form').removeClass('hidden');
+            $('#domain').prop('disabled', true);
+        }, 300);
+
+        $.ajax({
+            url: $(this).attr('action'),
+            method: $(this).attr('method'),
+            data: new FormData(this),
+            processData: false,
+            dataType: 'json',
+            contentType: false,
+            beforeSend: function (e) {
+                $(document).find('#domain').text('');
+            },
+            success: function (data) {
+
+                var result = $('.result-domain')
+
+                data.forEach(e => {
+
+                    var status = e.domain_registered,
+                        color = "",
+                        icon = "",
+                        disponible = "",
+                        row_select = "";
+
+                    if (status == "no") {
+                        color = "content-text-1";
+                        icon = "check";
+                        disponible = "Disponible";
+                        row_select = "row-select";
+                    } else {
+                        color = "content-text-2";
+                        icon = "xmark";
+                        disponible = "Déjà réservé";
+                        row_select = "row-noselect";
+                    }
+
+                    $('#loader-cart-form').addClass('hidden');
+                    $('#domain').prop('disabled', false);
+
+                    setTimeout(() => {
+                        if (e.domain_name != undefined) result.append('<div class="mt-1 ' + row_select + '" data-status="' + status + '" data-domain="' + e.domain_name + '"><div class="d-flex justify-content-between align-items-center"><div class="d-flex flex-row align-items-center"><span class="star"><i class="fa-solid fa-ellipsis-vertical"></i></span><div class="d-flex flex-column"><span>' + e.domain_name + '</span><div class="d-flex flex-row align-items-center time-text"><small>' + disponible + '</small></div></div></div><span class="' + color + '"><i class="fa-solid fa-' + icon + '"></i></span></div></div>');
+                    }, 300);
+
+                });
+
+                $(document).on('click', '.row-select', function (e) {
+
+                    e.preventDefault();
+
+                    var domain_name = $(this).data('domain'),
+                        status = $(this).data('status');
+
+                    if (getCookie('product_formule') == 3) {
+
+                        if (counter <= 7 && max_domain == 8 && status == "no") {
+                            counter++;
+                            $('.domain-count').html(counter + '/' + max_domain)
+                            $(this).removeClass('row-select').addClass('row-selected');
+                            domain_selected.push(domain_name);
+                            setCookie('product_domain', domain_selected.join(','), 1);
+                        }
+
+                        if (counter >= 8 && max_domain == 8) {
+                            $('.contact-form').fadeIn(300);
+                        } else if (counter <= 7) {
+                            $('.contact-form').fadeOut(300);
+                        }
+
+                    }
+
+                    if (getCookie('product_formule') == 2) {
+
+                        if (counter <= 1 && max_domain == 4 && status == "no") {
+                            counter++;
+                            $('.domain-count').html(counter + '/' + max_domain)
+                            $(this).removeClass('row-select').addClass('row-selected');
+                            domain_selected.push(domain_name);
+                            setCookie('product_domain', domain_selected.join(','), 1);
+                        }
+
+                        if (counter >= 4 && max_domain == 4) {
+                            $('.contact-form').fadeIn(300);
+                        } else if (counter <= 3) {
+                            $('.contact-form').fadeOut(300);
+                        }
+
+                    }
+
+                    if (getCookie('product_formule') == 1) {
+
+                        if (counter <= 0 && max_domain == 1 && status == "no") {
+                            counter++;
+                            $('.domain-count').html(counter + '/' + max_domain)
+                            $(this).removeClass('row-select').addClass('row-selected');
+                            domain_selected.push(domain_name);
+                            setCookie('product_domain', domain_selected.join(','), 1);
+                        }
+
+                        if (counter >= 1) {
+                            $('.contact-form').fadeIn(300);
+                        } else {
+                            $('.contact-form').fadeOut(300);
+                        }
+
+                    }
+
+                    if (counter >= 1) {
+                        $('.contact-form').fadeIn(300);
+                    } else {
+                        $('.contact-form').fadeOut(300);
+                    }
+
+                })
+
+                $(document).on('click', '.row-selected', function (e) {
+
+                    e.preventDefault();
+
+                    counter--;
+
+                    if (counter >= 1) {
+                        $('.contact-form').fadeIn(300);
+                    } else {
+                        $('.contact-form').fadeOut(300);
+                    }
+
+                    var domain_name = $(this).data('domain'),
+                        cookie = getCookie('product_domain')
+
+                    if (cookie.indexOf(domain_name + ',') != -1) {
+                        var total = cookie.replace(domain_name + ',', '');
+                        setCookie('product_domain', total, 1);
+                    } else if (cookie.indexOf(',' + domain_name) != -1) {
+                        var total = cookie.replace(',' + domain_name, '');
+                        setCookie('product_domain', total, 1);
+                    }
+
+                    if (cookie.split(',').length === 1) {
+                        deleteCookie('product_domain');
+                    }
+
+                    $('.domain-count').html(counter + '/' + max_domain);
+
+                    $(this).removeClass('row-selected').addClass('row-select');
+
+                })
+
+            },
+            error: function (e) {
+                console.log(e);
+            }
+        });
+
+    }
+
+})
+
+$(document).on('click', '#contact-form', function (e) {
+
+    e.preventDefault();
+
+    $('html, body').animate({ scrollTop: 0 }, "slow");
+
+    $('#domains').val(getCookie('product_domain'));
+
+    setCookie('product_etape', 3, 1);
+
+    $('.bloc-domain').fadeOut(600);
+    setTimeout(() => {
+        $('.bloc-domain').removeClass('show');
+    }, 600);
+
+    setTimeout(() => {
+
+        $('.page-cart #loader-cart').removeClass('hidden');
+        $('.page-cart #loader-cart div').attr('style', 'visibility: visible;').fadeIn(200);
+
+    }, 600);
+
+
+    setTimeout(() => {
+        $('.page-cart #loader-cart').addClass('hidden');
+        $('.page-cart #loader-cart div').attr('style', 'visibility: hidden;').fadeOut(200);
+        $('.page-cart .bloc-contact').fadeIn(600);
+    }, 3600);
+
+})
+
+var fichier_maquette = [],
+    name_file_maquette = [],
+    file_size = 10000000
+
+// Maquette utilisateur
+$('#maquette').on('change', function (e) {
+
+    let that = e.currentTarget
+
+    if (name_file_maquette.length < 2) {
+
+        $.each($('#maquette').prop('files'), (index, item) => {
+            fichier_maquette.push(item);
+        })
+
+        for (i = 0; i < fichier_maquette.length; i++) {
+
+            if (name_file_maquette.length < 2) {
+
+                if (fichier_maquette[i].size < file_size) {
+
+                    if (name_file_maquette.indexOf(fichier_maquette[i].name) == -1) {
+
+                        $('.maquette_error').hide();
+
+                        name_file_maquette.push(fichier_maquette[i].name);
+
+                        let reader = new FileReader();
+
+                        reader.onload = (e) => {
+
+                        }
+
+                        reader.readAsDataURL(that.files[0]);
+
+                    }
+
+                } else {
+
+                    $('.maquette_error').show();
+                    $('.maquette_error').html('<p>Le fichier est trop volumineux.</p>');
+
+                }
+
+            }
+        };
+
+    }
+
+});
+
+$('#form-cart-contact').on('submit', function (e) {
+
+    e.preventDefault();
+
+    $('html, body').animate({ scrollTop: 0 }, "slow");
+
+    var form = [],
+        form_data = new FormData(),
+        firstname = $('#form-cart-contact #firstname').val(),
+        lastname = $('#form-cart-contact #lastname').val(),
+        email = $('#form-cart-contact #email').val(),
+        phone = $('#form-cart-contact #phone').val(),
+        appointment = $('#form-cart-contact #appointment').val(),
+        appointmentTel = $('#form-cart-contact #appointmentTel').val(),
+        content = $('#form-cart-contact #content').val(),
+        domains = $('#form-cart-contact #domains').val(),
+        productId = $('#form-cart-contact #productId').val()
+
+    if (fichier_maquette.length == 1) {
+        for (let i = 0; i < fichier_maquette.length; i++) {
+            if ($.inArray(fichier_maquette[i].name, name_file_maquette) !== -1) form_data.append('file_' + i, fichier_maquette[i]);
+        }
+    }
+
+    form.forEach(e => {
+
+        if (e.name != "firstname") form_data.append(e.name, e.value);
+        if (e.name != "lastname") form_data.append(e.name, e.value);
+        if (e.name != "email") form_data.append(e.name, e.value);
+        if (e.name != "phone") form_data.append(e.name, e.value);
+        if (e.name != "appointment") form_data.append(e.name, e.value);
+        if (e.name != "appointmentTel") form_data.append(e.name, e.value);
+        if (e.name != "content") form_data.append(e.name, e.value);
+        if (e.name != "domains") form_data.append(e.name, e.value);
+        if (e.name != "productId") form_data.append(e.name, e.value);
+
+    });
+
+    form_data.append('firstname', firstname);
+    form_data.append('lastname', lastname);
+    form_data.append('email', email);
+    form_data.append('phone', phone);
+    form_data.append('appointment', appointment);
+    form_data.append('appointmentTel', appointmentTel);
+    form_data.append('content', content);
+    form_data.append('domains', domains);
+    form_data.append('productId', productId);
+
+    $.ajax({
+        url: $(this).attr('action'),
+        method: $(this).attr('method'),
+        enctype: "multipart/form-data",
+        processData: false,
+        contentType: false,
+        data: form_data,
+        dataType: 'json',
+        beforeSend: function (e) {
+            $(document).find('.error-text').text('');
+        },
+        success: function (data) {
+
+            if (data.status == 0) {
+                $.each(data.error, function (prefix, val) {
+                    $('.' + prefix + '_error').text(val[0]);
+                });
+
+                $('.toast-form-contact .svg').html(data.icone)
+                $('.toast-form-contact .title').html(data.title);
+                $('.toast-form-contact .toast-body').html(data.msg)
+                $('.toast-form-contact').removeClass('toast-success').removeClass('toast-error').addClass(data.toast);
+
+                $('.toast-form-contact').toast({
+                    delay: 10000
+                });
+
+                $('.toast-form-contact').toast('show');
+
+            } else {
+
+                $('.page-cart .bloc-contact').attr('style', 'visibility: hidden;');
+                $('.page-cart #loader-cart').removeClass('hidden');
+                $('.page-cart #loader-cart div').attr('style', 'visibility: visible;').fadeIn(200);
+                $('.page-cart .bloc-contact').removeClass('show');
+
+                setTimeout(() => {
+
+                    $('.toast-form-contact .svg').html(data.icone)
+                    $('.toast-form-contact .title').html(data.title);
+                    $('.toast-form-contact .toast-body').html(data.msg)
+                    $('.toast-form-contact').removeClass('toast-success').removeClass('toast-error').addClass(data.toast);
+
+                    $('.toast-form-contact').toast({
+                        delay: 10000
+                    });
+
+                    $('.toast-form-contact').toast('show');
+
+                    setCookie('product_etape', 4, 1);
+
+                    setTimeout(() => {
+                        $('.page-cart #loader-cart').addClass('hidden');
+                        $('.page-cart #loader-cart div').attr('style', 'visibility: hidden;').fadeOut(200);
+                        $('.page-cart .bloc-cart').fadeIn(600);
+                    }, 3600);
+
+                }, 2500);
+
+            }
+        },
+        error: function (e) {
+            console.log(e);
+        }
+
+    });
+
+});
+
+$('#valide-paiement-iban').on('click', function (e) {
+
+    e.preventDefault();
+
+    $('html, body').animate({ scrollTop: 0 }, "slow");
+
+    $('.page-cart .bloc-cart').attr('style', 'visibility: hidden;');
+    $('.page-cart #loader-cart').removeClass('hidden');
+    $('.page-cart #loader-cart div').attr('style', 'visibility: visible;').fadeIn(200);
+    $('.page-cart .bloc-cart').removeClass('show');
+
+    setTimeout(() => {
+        $('.page-cart #loader-cart').addClass('hidden');
+        $('.page-cart #loader-cart div').attr('style', 'visibility: hidden;').fadeIn(200);
+        $('.page-cart .bloc-iban').fadeIn(300);
+    }, 2500);
+
+    $('#showCoordoneesVirement').modal('hide');
+
+    setCookie('product_etape', 5, 1);
+
+})
+
+$('#change-paiement-iban').on('click', function (e) {
+
+    e.preventDefault();
+
+    $('html, body').animate({ scrollTop: 0 }, "slow");
+
+    $('.page-cart .bloc-iban').attr('style', 'visibility: hidden;');
+    $('.page-cart #loader-cart').removeClass('hidden');
+    $('.page-cart #loader-cart div').attr('style', 'visibility: visible;').fadeIn(200);
+    $('.page-cart .bloc-iban').removeClass('show');
+
+    setTimeout(() => {
+        $('.page-cart #loader-cart').addClass('hidden');
+        $('.page-cart #loader-cart div').attr('style', 'visibility: hidden;').fadeIn(200);
+        $('.page-cart .bloc-cart').attr('style', 'visibility: visible;');
+        $('.page-cart .bloc-cart').fadeIn(300);
+    }, 2500);
+
+    $('#showCoordoneesVirement').modal('hide');
+
+    setCookie('product_etape', 4, 1);
+
+})
+
+// ----------- //

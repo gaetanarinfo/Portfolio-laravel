@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Auth;
 use Validator;
 use App\Models\User;
 use App\Functions\Log;
-use App\Mail\Register;
+use App\Mail\RegisterMail;
 use App\Models\Contact;
 use App\Mail\ForgotPassword;
 use Illuminate\Http\Request;
@@ -121,10 +121,10 @@ class LoginRegisterController extends Controller
 
                 // Logs
                 $logs_user = new Log();
-                $logs_user->log_user('Création de votre compte', 'Votre compte a bien été créer sur mon site internet !', url()->current(), $request->ip());
+                $logs_user->log_user(Auth::id(), 'Création de votre compte', 'Votre compte a bien été créer sur mon site internet !', url()->current(), $request->ip());
 
                 Mail::to($request->email)
-                    ->send(new Register($request->except('_token'), 'contact@portfolio-gaetan.fr', 'Portefolio', 'Inscription sur mon portfolio'));
+                    ->send(new RegisterMail($request->except('_token'), 'contact@portfolio-gaetan.fr', 'Portefolio', 'Inscription sur mon portfolio'));
 
                 return response()->json(['status' => 1, 'msg' => 'Vous vous êtes inscrit et connecté avec succès !', 'title' => 'Céation de votre compte !', 'toast' => 'toast-success', 'icone' => '<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-check mr-2" viewBox="0 0 16 16"><path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z"/></svg>']);
             } else {
@@ -192,7 +192,7 @@ class LoginRegisterController extends Controller
 
                 // Logs
                 $logs_user = new Log();
-                $logs_user->log_user('Connexion utilisateur', 'Une connexion a été détecté sur votre compte !', url()->current(), $request->ip());
+                $logs_user->log_user(Auth::id(), 'Connexion utilisateur', 'Une connexion a été détecté sur votre compte !', url()->current(), $request->ip());
 
                 return response()->json(['status' => 1, 'msg' => 'Connexion réussi vous allez être redirigée dans quelque instant.', 'title' => 'Connexion à votre compte !', 'toast' => 'toast-success', 'icone' => '<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-check mr-2" viewBox="0 0 16 16"><path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z"/></svg>']);
             } else {
@@ -297,7 +297,7 @@ class LoginRegisterController extends Controller
 
         // Logs
         $logs_user = new Log();
-        $logs_user->log_user('Déconnexion utilisateur', 'Votre compte a été déconnecté !', url()->current(), $request->ip());
+        $logs_user->log_user(Auth::id(), 'Déconnexion utilisateur', 'Votre compte a été déconnecté !', url()->current(), $request->ip());
 
         Auth::logout();
         $request->session()->invalidate();
@@ -364,7 +364,7 @@ class LoginRegisterController extends Controller
 
                 // Logs
                 $logs_user = new Log();
-                $logs_user->log_user('Mot de passe modifiée', 'Une demande de nouveau mot de passe a été demandé !', url()->current(), $request->ip());
+                $logs_user->log_user($verfication_token->id, 'Mot de passe modifiée', 'Une demande de nouveau mot de passe a été demandé !', url()->current(), $request->ip());
 
                 return response()->json(['status' => 1, 'msg' => 'Votre mot de passe a été modifiée avec succès !', 'title' => 'Modification de votre mot de passe !', 'toast' => 'toast-success', 'icone' => '<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-check mr-2" viewBox="0 0 16 16"><path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z"/></svg>']);
             } else {
@@ -404,7 +404,7 @@ class LoginRegisterController extends Controller
 
                 // Logs
                 $logs_user = new Log();
-                $logs_user->log_user('Mot de passe modifiée', 'Une demande de nouveau mot de passe a été demandé !', url()->current(), $request->ip());
+                $logs_user->log_user($verfication_email->id, 'Mot de passe modifiée', 'Une demande de nouveau mot de passe a été demandé !', url()->current(), $request->ip());
 
                 Mail::to($request->emailForgot)
                     ->send(new ForgotPassword($request->except('_token'), 'contact@portfolio-gaetan.fr', 'Portefolio', 'Modification de votre mot de passe sur mon portfolio'));

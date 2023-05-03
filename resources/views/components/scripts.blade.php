@@ -13,6 +13,56 @@
 <script src="{{ URL::asset('js/app.js') }}"></script>
 <script src="{{ URL::asset('js/6650c3fdcf.js') }}"></script>
 
+@if (Route::current()->getName() == 'cart')
+    <input type="hidden" name="minDate" id="minDate" value="{{ date('Y') }}">
+
+    <script src="{{ URL::asset('js/jquery.datetimepicker.full.min.js') }}"></script>
+
+    <script>
+        jQuery.datetimepicker.setLocale('fr');
+
+        jQuery('#appointmentTel').datetimepicker({
+            i18n: {
+                fr: {
+                    months: [
+                        'Janvier', 'Février', 'Mars', 'Avril',
+                        'Mai', 'Juin', 'Juiller', 'Août',
+                        'Septembre', 'Octobre', 'Novembre', 'Décembre',
+                    ],
+                }
+            },
+            onGenerate: function(ct) {
+                jQuery(this).find('.xdsoft_date.xdsoft_weekend')
+                    .addClass('xdsoft_disabled');
+            },
+            weekends: ['01.01.2014', '02.01.2014', '03.01.2014', '04.01.2014', '05.01.2014', '06.01.2014'],
+            timepicker: true,
+            format: 'Y-m-d H:i',
+            minDate: $('#minDate').val(),
+        });
+
+        jQuery('#appointment').datetimepicker({
+            i18n: {
+                fr: {
+                    months: [
+                        'Janvier', 'Février', 'Mars', 'Avril',
+                        'Mai', 'Juin', 'Juiller', 'Août',
+                        'Septembre', 'Octobre', 'Novembre', 'Décembre',
+                    ],
+                }
+            },
+            onGenerate: function(ct) {
+                jQuery(this).find('.xdsoft_date.xdsoft_weekend')
+                    .addClass('xdsoft_disabled');
+            },
+            weekends: ['01.01.2014', '02.01.2014', '03.01.2014', '04.01.2014', '05.01.2014', '06.01.2014'],
+            timepicker: true,
+            minDate: $('#minDate').val(),
+            format: 'Y-m-d H:i'
+        });
+    </script>
+@endif
+
 @if (Route::current()->getName() == 'dashboard')
     <script src="{{ URL::asset('js/dashboard.min.js') }}"></script>
 @endif

@@ -83,6 +83,35 @@
                 <span>Commandes clients</span>
             </a>
         </li>
+
+        <!-- Heading -->
+        <div class="sidebar-heading">
+            Commandes clients
+        </div>
+
+        <li class="nav-item">
+
+            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages2"
+                aria-expanded="true" aria-controls="collapsePages2">
+                <i class="fas fa-fw fa-folder"></i>
+                <span>Pages</span>
+            </a>
+
+            <div id="collapsePages2" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+
+                <div class="bg-white py-2 collapse-inner rounded">
+
+                    <a class="collapse-item @if (Route::current()->getName() == 'show-agenda') active @endif" href="/show-blog">Mon
+                        agenda</a>
+
+                    <a class="collapse-item @if (Route::current()->getName() == 'show-orders') active @endif"
+                        href="/show-orders">Gestion des commandes</a>
+
+                </div>
+
+            </div>
+
+        </li>
     @endif
 
 </ul>

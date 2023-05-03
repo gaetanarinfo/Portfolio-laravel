@@ -3,21 +3,25 @@
 use App\Models\Projets;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\URL;
-use App\Http\Controllers\Auth\UsersController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\CartController;
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\GithubController;
+use App\Http\Controllers\GoogleController;
 use App\Http\Controllers\YoutubeController;
 use App\Http\Controllers\ContactsController;
-use App\Http\Controllers\GoogleController;
-use App\Http\Controllers\GoogleAuthController;
 use App\Http\Controllers\FacebookController;
-use App\Http\Controllers\NewsletterController;
-use App\Http\Controllers\Auth\LoginRegisterController;
 use App\Http\Controllers\Auth\LogsController;
+use App\Http\Controllers\Auth\UsersController;
 use App\Http\Controllers\GithubAuthController;
+use App\Http\Controllers\GoogleAuthController;
 use App\Http\Controllers\GooglePlayController;
+use App\Http\Controllers\NewsletterController;
+use App\Http\Controllers\WhoisDomainController;
 use App\Http\Controllers\NewsScrappingController;
+use App\Http\Controllers\FullCalendarController;
+use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\Auth\LoginRegisterController;
 
 /*
 |--------------------------------------------------------------------------
@@ -51,7 +55,7 @@ Route::get('/home', function () {
 // Home (Projets) + (Artcile -> 6)
 
 Route::get('/newsAll', [
-    NewsController::class, 'getNewsSmall',
+    \App\Http\Controllers\NewsController::class, 'getNewsSmall',
 ])->name('news');
 
 Route::get('/cgu', function () {
@@ -84,6 +88,8 @@ Route::get('/sitemap', function () {
     $sitemap->add(URL::to('/'), date('Y-m-d') . 'T' . date('H:i:s') . '-02:00', '1.0', 'daily');
     $sitemap->add(URL::to('/login'), date('Y-m-d') . 'T' . date('H:i:s') . '-02:00', '1.0', 'daily');
     $sitemap->add(URL::to('/register'), date('Y-m-d') . 'T' . date('H:i:s') . '-02:00', '1.0', 'daily');
+    $sitemap->add(URL::to('/offers'), date('Y-m-d') . 'T' . date('H:i:s') . '-02:00', '1.0', 'daily');
+    $sitemap->add(URL::to('/blog/1'), date('Y-m-d') . 'T' . date('H:i:s') . '-02:00', '1.0', 'daily');
 
     // Article du blog
     $articles = DB::table('news')->orderBy('created_at', 'desc')->get();
@@ -170,12 +176,34 @@ Route::controller(UsersController::class)->group(function () {
 
     // Mail
     Route::post('/mail/archive', 'archive_mail')->name('archive-mail');
+
+    // Agenda
+    Route::get('/show-agenda', 'show_agenda')->name('show-agenda');
+
+    // Commandes clients
+    Route::get('/show-orders', 'show_orders')->name('show-orders');
+    Route::get('/order/refund/{id}/{transaction}', 'order_refund')->name('order-refund');
 });
 
-Route::controller(LogsController::class)->group(function () {
+// Agenda
+Route::controller(FullCalendarController::class)->group(function () {
+    Route::get('fullcalender', 'index');
+    Route::post('fullcalenderAjax', 'ajax');
+});
 
-    // Logs
+// Logs
+Route::controller(LogsController::class)->group(function () {
     Route::get('/logs', 'logs')->name('logs');
+});
+
+// Panier
+Route::controller(CartController::class)->group(function () {
+    Route::get('/offers', 'getOffers')->name('offers');
+    Route::get('/cart', 'getCartSteps')->name('cart');
+    Route::post('/cart', 'contactCreate')->name('cart.contact.create');
+    Route::get('/handle-payment', 'handlePayment')->name('make.payment');
+    Route::get('/cancel-payment', 'paymentCancel')->name('cancel.payment');
+    Route::get('/payment-success', 'paymentSuccess')->name('success.payment');
 });
 
 // Youtube
@@ -185,17 +213,17 @@ Route::get('/youtube-api', [YoutubeController::class, 'showYoutubeProfil']);
 
 // Auth Socials
 
-Route::controller(GoogleAuthController::class)->group(function(){
+Route::controller(GoogleAuthController::class)->group(function () {
     Route::get('auth/google', 'redirectToGoogle')->name('auth.google');
     Route::get('auth/google/callback', 'handleGoogleCallback');
 });
 
-Route::controller(FacebookController::class)->group(function(){
+Route::controller(FacebookController::class)->group(function () {
     Route::get('auth/facebook', 'redirectToFacebook')->name('auth.facebook');
     Route::get('auth/facebook/callback', 'handleFacebookCallback');
 });
 
-Route::controller(GithubAuthController::class)->group(function(){
+Route::controller(GithubAuthController::class)->group(function () {
     Route::get('auth/github', 'redirectToGithub')->name('auth.github');
     Route::get('auth/github/callback', 'handleGithubCallback');
 });
@@ -203,3 +231,7 @@ Route::controller(GithubAuthController::class)->group(function(){
 // Google Play
 
 Route::get('/google-play-api', [GooglePlayController::class, 'showGoogleProjets']);
+
+// Whoise Domain
+
+Route::post('/whois-domain', [WhoisDomainController::class, 'showDomain'])->name('domain.search');

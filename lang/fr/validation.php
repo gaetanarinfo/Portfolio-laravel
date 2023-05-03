@@ -180,6 +180,10 @@ return [
     */
 
     'attributes' => [
+        "appointmentTel" => "rendez-vous téléphonique",
+        "appointment" => "mise en place du projet",
+        "firstname" => "prénom",
+        "lastname" => "nom",
         "activity" => "activité",
         "activities" => "activités",
         "address" => "adresse",

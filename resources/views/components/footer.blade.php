@@ -131,7 +131,7 @@
 <!-- Footer -->
 <div class="vg-footer">
 
-    <h1 class="text-center">{{ config('app.name_short') }} </h1>
+    <h2 class="text-center">{{ config('app.name_short') }} </h2>
 
     <div class="container">
 

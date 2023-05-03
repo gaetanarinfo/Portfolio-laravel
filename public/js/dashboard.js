@@ -1588,5 +1588,72 @@ $(document).ready(function () {
 
     })
 
+    // Remboursement commande client
+
+    $(document).on('click', '.refund-paiement', function (e) {
+
+        e.preventDefault();
+
+        var id_order = $(this).data('id'),
+            transaction_id = $(this).data('transaction')
+
+        var deleteMsg = confirm("Voulez-vous vraiment rembourser la commande ?");
+
+        if (deleteMsg) {
+
+            $.ajax({
+                url: '/order/refund/' + id_order + '/' + transaction_id,
+                method: 'GET',
+                data: {},
+                processData: false,
+                dataType: 'json',
+                contentType: false,
+                success: function (data) {
+
+                    if (data.status == 0) {
+
+                        $.each(data.error, function (prefix, val) {
+                            $('.' + prefix + '_error').text(val[0]);
+                        });
+
+                        $('.toast-form-contact .svg').html(data.icone)
+                        $('.toast-form-contact .title').html(data.title);
+                        $('.toast-form-contact .toast-body').html(data.msg)
+                        $('.toast-form-contact').removeClass('toast-success').removeClass('toast-error').addClass(data.toast);
+
+                        $('.toast-form-contact').toast({
+                            delay: 10000
+                        });
+
+                        $('.toast-form-contact').toast('show');
+
+                    } else {
+
+                        $('.toast-form-contact .svg').html(data.icone)
+                        $('.toast-form-contact .title').html(data.title);
+                        $('.toast-form-contact .toast-body').html(data.msg)
+                        $('.toast-form-contact').removeClass('toast-success').removeClass('toast-error').addClass(data.toast);
+
+                        $('.toast-form-contact').toast({
+                            delay: 10000
+                        });
+
+                        $('.toast-form-contact').toast('show');
+                        $('#editUserModal').modal('hide');
+
+                        setTimeout(() => {
+                            location.reload()
+                        }, 3500);
+
+                    }
+                },
+                error: function (e) {
+                    console.log(e);
+                }
+            });
+
+        }
+
+    })
 
 });
