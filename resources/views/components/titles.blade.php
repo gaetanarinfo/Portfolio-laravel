@@ -39,6 +39,26 @@
         <meta name="description" content="{{ config('app.description') }}">
     @break
 
+    @case('forum')
+        <title>Bienvenue sur mon forums</title>
+        <meta name="description" content="{{ config('app.description') }}">
+    @break
+
+    @case('forums.categorie')
+        <title>{{ $forum_categorie->title }}</title>
+        <meta name="description" content="{{ $forum_categorie->content }}">
+    @break
+
+    @case('forums.topic')
+        <title>{{ $forum_topic->title }}</title>
+        <meta name="description" content="{{ $forum_topic->content }}">
+    @break
+
+    @case('forums.search')
+        <title>{{ 'RÉSULTATS DE LA RECHERCHE POUR \'' . $terms . '\'' }}</title>
+        <meta name="description" content="{{ config('app.description') }}">
+    @break
+
     @default
         <title>{{ config('app.title') }}</title>
         <meta name="description" content="{{ config('app.description') }}">

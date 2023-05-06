@@ -20,7 +20,7 @@ use App\Http\Controllers\NewsletterController;
 use App\Http\Controllers\WhoisDomainController;
 use App\Http\Controllers\NewsScrappingController;
 use App\Http\Controllers\FullCalendarController;
-use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\ForumController;
 use App\Http\Controllers\Auth\LoginRegisterController;
 
 /*
@@ -89,7 +89,6 @@ Route::get('/sitemap', function () {
     $sitemap->add(URL::to('/login'), date('Y-m-d') . 'T' . date('H:i:s') . '-02:00', '1.0', 'daily');
     $sitemap->add(URL::to('/register'), date('Y-m-d') . 'T' . date('H:i:s') . '-02:00', '1.0', 'daily');
     $sitemap->add(URL::to('/offers'), date('Y-m-d') . 'T' . date('H:i:s') . '-02:00', '1.0', 'daily');
-    $sitemap->add(URL::to('/blog/1'), date('Y-m-d') . 'T' . date('H:i:s') . '-02:00', '1.0', 'daily');
 
     // Article du blog
     $articles = DB::table('news')->orderBy('created_at', 'desc')->get();
@@ -103,6 +102,20 @@ Route::get('/sitemap', function () {
 
     foreach ($articles as $post) {
         $sitemap->add(URL::to('/article') . '/' . $post->url, date('Y-m-d') . 'T' . date('H:i:s') . '-02:00', '1.0', 'daily');
+    }
+
+    // Forums
+    $forums = DB::table('forums')->orderBy('created_at', 'desc')->get();
+
+    foreach ($forums as $post) {
+        $sitemap->add(URL::to('/forums') . '/' . $post->url, date('Y-m-d') . 'T' . date('H:i:s') . '-02:00', '1.0', 'daily');
+    }
+
+    // Forums topics
+    $forums_topics = DB::table('topics_forums')->orderBy('created_at', 'desc')->get();
+
+    foreach ($forums_topics as $post) {
+        $sitemap->add(URL::to('/forums/forum/topic') . '/' . $post->url, date('Y-m-d') . 'T' . date('H:i:s') . '-02:00', '1.0', 'daily');
     }
 
     // generate (format, filename)
@@ -183,6 +196,10 @@ Route::controller(UsersController::class)->group(function () {
     // Commandes clients
     Route::get('/show-orders', 'show_orders')->name('show-orders');
     Route::get('/order/refund/{id}/{transaction}', 'order_refund')->name('order-refund');
+    Route::get('/show-orders-client', 'show_orders_client')->name('show-orders-client');
+
+    // Forums
+    Route::get('/forums/check/reply/{type?}/{id}', 'check_reply')->name('check.reply');
 });
 
 // Agenda
@@ -210,7 +227,6 @@ Route::controller(CartController::class)->group(function () {
 
 Route::get('/youtube-api', [YoutubeController::class, 'showYoutubeProfil']);
 
-
 // Auth Socials
 
 Route::controller(GoogleAuthController::class)->group(function () {
@@ -235,3 +251,18 @@ Route::get('/google-play-api', [GooglePlayController::class, 'showGoogleProjets'
 // Whoise Domain
 
 Route::post('/whois-domain', [WhoisDomainController::class, 'showDomain'])->name('domain.search');
+
+// Forums
+
+Route::controller(ForumController::class)->group(function () {
+    Route::get('/forums', 'index')->name('forum');
+    Route::get('/forums/forum/{url?}', 'getForum')->name('forums.categorie');
+    Route::get('/forums/forum/topic/{title?}', 'getTopic')->name('forums.topic');
+    Route::post('/forums', 'create_forum')->name('forum.create');
+    Route::post('/forums/forum/{url?}', 'create_topic')->name('forum.create.topic');
+    Route::post('/forums/reply', 'reply_topic')->name('topic.reply.message');
+    Route::post('/forums/close', 'close_topic')->name('close.topic');
+    Route::post('/forums/top', 'top_topic')->name('top.topic');
+    Route::post('/forums/close/user', 'close_topic_user')->name('close.topic.user');
+    Route::get('/forums/search/{terms?}', 'searchForum')->name('forums.search');
+});

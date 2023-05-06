@@ -3,14 +3,16 @@
 namespace App\Http\Controllers\Auth;
 
 use Validator;
+use App\Models\Pays;
 use App\Models\User;
 use App\Functions\Log;
-use App\Mail\RegisterMail;
 use App\Models\Contact;
+use App\Mail\RegisterMail;
 use App\Mail\ForgotPassword;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Models\TopicsReplies;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
@@ -18,6 +20,7 @@ use Illuminate\Support\Facades\Session;
 
 class LoginRegisterController extends Controller
 {
+
     /**
      * Instantiate a new LoginRegisterController instance.
      */
@@ -26,6 +29,29 @@ class LoginRegisterController extends Controller
         $this->middleware('guest')->except([
             'logout', 'dashboard'
         ]);
+    }
+
+    /**
+     * Display a notifications.
+     *
+     */
+    public static function Notif()
+    {
+        $notifications = [];
+
+        // Notification des message non vérifié sur le forums
+        $forum_topic_replies = TopicsReplies::where('topics_replies.status', 0)
+            ->where('topics_replies.archive_dashboard', 0)
+            ->join('users', 'users.id', '=', 'topics_replies.user_id')
+            ->select('topics_replies.*', 'users.lastname', 'users.firstname', 'users.avatar')
+            ->get();
+
+        if (!empty($forum_topic_replies) && count($forum_topic_replies) >= 1) {
+            array_push($notifications, array('forums_replies' => $forum_topic_replies));
+        }
+        // ------------ //
+
+        return $notifications;
     }
 
     /**
@@ -211,6 +237,8 @@ class LoginRegisterController extends Controller
 
         if (Auth::check()) {
 
+            $pays = Pays::orderBy('id', 'ASC')->get();
+
             $user = User::where('active', 1)
                 ->where('id', Auth::id())
                 ->first();
@@ -277,9 +305,11 @@ class LoginRegisterController extends Controller
                     ->where('Financial_Status', 'Refund')
                     ->sum('Item_Price');
 
-                return view('auth.dashboard', compact('user', 'commandes_graph', 'commandes_graph_refund', 'year', 'total_commandes', 'totals_commandes', 'total_commandes_refund', 'contacts'));
+                $notifications = $this->Notif();
+
+                return view('auth.dashboard', compact('user', 'commandes_graph', 'commandes_graph_refund', 'year', 'total_commandes', 'totals_commandes', 'total_commandes_refund', 'contacts', 'pays', 'notifications'));
             } else {
-                return view('auth.dashboard', compact('user', 'contacts'));
+                return view('auth.dashboard', compact('user', 'contacts', 'pays', 'notifications'));
             }
         }
 

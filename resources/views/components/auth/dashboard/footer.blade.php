@@ -96,6 +96,16 @@
                             </div>
 
                             <div class="form-group">
+                                <label for="pays" class="col-form-label">Pays :</label>
+                                <select name="pays" id="pays" class="form-control">
+                                    @foreach ($pays as $data)
+                                        <option value="{{ $data->alpha2 }}">{{ $data->nom_fr_fr }}</option>
+                                    @endforeach
+                                </select>
+                                <span class="error-text text-danger pays_error"></span>
+                            </div>
+
+                            <div class="form-group">
 
                                 <label for="active" class="col-form-label">Statut du compte :</label>
 
@@ -219,6 +229,18 @@
                                 <label for="password" class="col-form-label">Mot de passe :</label>
                                 <input type="password" class="form-control" id="password" name="password">
                                 <span class="error-text text-danger password_error"></span>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="pays" class="col-form-label">Pays :</label>
+                                <select name="pays" id="pays" class="form-control">
+                                    @foreach ($pays as $data)
+                                        <option value="{{ $data->alpha2 }}"
+                                            @if ($data->alpha2 == 'FR') selected @endif>
+                                            {{ $data->nom_fr_fr }}</option>
+                                    @endforeach
+                                </select>
+                                <span class="error-text text-danger pays_error"></span>
                             </div>
 
                             <div class="form-group">
@@ -532,8 +554,57 @@
 
 @endif
 
- <!-- Edit user Modal-->
- <div class="modal fade" id="editUserLoggedModal" tabindex="-1" role="dialog" aria-hidden="true">
+@if ($user->admin >= 1)
+    <!-- Mail Modal -->
+    <div class="modal fade" id="repliesModal" tabindex="-1" role="dialog" aria-hidden="true">
+
+        <div class="modal-dialog" role="document">
+
+            <div class="modal-content">
+
+                <div class="modal-header">
+
+                    <h5 class="modal-title"></h5>
+
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+
+                </div>
+
+                <div class="modal-body">
+
+                    <p>Message de réponse :</p>
+                    <div id="content">
+                    </div>
+
+                    <hr>
+
+                    <p>Signature :</p>
+                    <div id="signature">
+                    </div>
+
+                </div>
+
+                <div class="modal-footer">
+                    <button class="btn btn-warning font-weight-bold" type="button"
+                        data-dismiss="modal">Fermer</button>
+                    <a id="valide-reply-no" data-id="" class="btn btn-danger font-weight-bold"
+                        href="#">Non approuver</a>
+                    <a id="valide-reply" data-id="" class="btn btn-success font-weight-bold"
+                        href="#">Approuver</a>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+@endif
+
+
+<!-- Edit user Modal-->
+<div class="modal fade" id="editUserLoggedModal" tabindex="-1" role="dialog" aria-hidden="true">
 
     <div class="modal-dialog" role="document">
 
@@ -556,10 +627,10 @@
                     <div class="mt-4 mr-4 ml-4 mb-0 text-center">
 
                         <label>
-                            <input type="file" id="avatar_logged_input" accept="image/*" name="avatar_logged_input"
-                                style="display: none">
-                            <img id="avatar" src="{{ URL::asset('img/profil/default.svg') }}"
-                                class="img-fluid" style="max-width: 150px;width: 150px;">
+                            <input type="file" id="avatar_logged_input" accept="image/*"
+                                name="avatar_logged_input" style="display: none">
+                            <img id="avatar" src="{{ URL::asset('img/profil/default.svg') }}" class="img-fluid"
+                                style="max-width: 150px;width: 150px;">
                             <div class="mt-2" id="delete-image-logged">
                                 <span class="delete-image-logged" id="del-1-avatar-logged">
                                     <i class="fa-solid fa-xmark"></i>
@@ -585,6 +656,18 @@
                     </div>
 
                     <div class="form-group">
+                        <label for="pays" class="col-form-label">Pays :</label>
+                        <select name="pays" id="pays" class="form-control">
+                            @foreach ($pays as $data)
+                                <option value="{{ $data->alpha2 }}"
+                                    @if ($data->alpha2 == $user->pays) selected @elseif(empty($user->pays) && $data->alpha2 == 'FR') selected @endif>
+                                    {{ $data->nom_fr_fr }}</option>
+                            @endforeach
+                        </select>
+                        <span class="error-text text-danger pays_error"></span>
+                    </div>
+
+                    <div class="form-group">
                         <label for="email" class="col-form-label">Adresse email :</label>
                         <input type="text" class="form-control" id="email" name="email">
                         <span class="error-text text-danger email_error"></span>
@@ -595,8 +678,7 @@
             </div>
 
             <div class="modal-footer">
-                <button class="btn btn-warning font-weight-bold" type="button"
-                    data-dismiss="modal">Annuler</button>
+                <button class="btn btn-warning font-weight-bold" type="button" data-dismiss="modal">Annuler</button>
                 <a id="edit-user-logged" data-user="" class="btn btn-success font-weight-bold"
                     href="#">Valider</a>
             </div>
@@ -653,8 +735,7 @@
             </div>
 
             <div class="modal-footer">
-                <button class="btn btn-warning font-weight-bold" type="button"
-                    data-dismiss="modal">Fermer</button>
+                <button class="btn btn-warning font-weight-bold" type="button" data-dismiss="modal">Fermer</button>
                 <a id="archive-mail" data-mail="" class="btn btn-success font-weight-bold"
                     href="#">Archiver</a>
             </div>

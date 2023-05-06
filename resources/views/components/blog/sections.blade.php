@@ -2,16 +2,22 @@
 
     <div class="container">
 
-        <div class="blog-title mt-4 mb-4">
-            <h1>{{ $article->title }}</h1>
-        </div>
+        <h1 class="mb-4 text-center">Mon blog</h1>
+
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/" class="fg-theme">Accueil</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Blog</li>
+            </ol>
+        </nav>
 
         <div class="row widget-grid mb-4">
 
             <div class="col-lg-8">
 
                 <div class="input-group py-2">
-                    <input id="search-blog" name="search-blog" type="text" class="form-control" placeholder="Rechercher...">
+                    <input id="search-blog" name="search-blog" type="text" class="form-control"
+                        placeholder="Rechercher...">
                 </div>
 
             </div>
@@ -58,7 +64,6 @@
 
                 <aside class="widget widget-news-smart-box widget-3 widget-latest-home">
 
-                    <div class="news-smart-box__listing row allposts">
 
                         <div id="news-smart-box-5f2c793730c94" class="news-smart-box__instance layout_type_2">
 
@@ -82,7 +87,8 @@
                                                         <a>{{ $data->categorie }}</a>
                                                     </div>
 
-                                                    <a href="/article/{{ Str::slug($data->title) }}" title="{{ $data->title }}"
+                                                    <a href="/article/{{ Str::slug($data->title) }}"
+                                                        title="{{ $data->title }}"
                                                         class="news-smart-box__item-thumb-link"><img
                                                             class="news-smart-box__item-thumb-img lazy entered lazyloaded"
                                                             src="@if (empty($data->image)) {{ URL::asset('img/news') }}/picture-empty.jpg @else {{ $data->image }} @endif"
@@ -103,11 +109,13 @@
                                                     </div>
 
                                                     <h3 class="news-smart-box__item-title">
-                                                        <a href="/article/{{ Str::slug($data->title) }}" class="post-title"
+                                                        <a href="/article/{{ Str::slug($data->title) }}"
+                                                            class="post-title"
                                                             title="{{ $data->title }}">{{ $data->title }}</a>
                                                     </h3>
 
-                                                    <p class="news-smart-box__item-excerpt">{{ $data->small_content }}</p>
+                                                    <p class="news-smart-box__item-excerpt">{{ $data->small_content }}
+                                                    </p>
 
                                                 </div>
 
@@ -122,7 +130,6 @@
 
                         </div>
 
-                    </div>
 
                 </aside>
 

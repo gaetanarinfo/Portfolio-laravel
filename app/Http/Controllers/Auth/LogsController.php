@@ -3,9 +3,10 @@
 namespace App\Http\Controllers\Auth;
 
 use Validator;
+use App\Models\Logs;
+use App\Models\Pays;
 use App\Models\User;
 use App\Models\Contact;
-use App\Models\Logs;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -34,6 +35,8 @@ class LogsController extends Controller
     public function logs()
     {
 
+        $pays = Pays::orderBy('id', 'ASC')->get();
+
         if (Auth::check()) {
 
             $user_not_admin = User::where('active', 1)
@@ -54,7 +57,7 @@ class LogsController extends Controller
             $logs = Logs::where('user_id', Auth::id())
                 ->get();
 
-            return view('auth.logs', compact('user', 'contacts', 'logs'));
+            return view('auth.logs', compact('user', 'contacts', 'logs', 'pays'));
         }
 
         return redirect()->route('dashboard');

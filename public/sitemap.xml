@@ -4,121 +4,151 @@
 	<url>
 	<loc>https://portfolio-gaetan.fr</loc>
 		<priority>1.0</priority>
-		<lastmod>2023-05-03T18:50:00+02:00</lastmod>
+		<lastmod>2023-05-06T15:00:01+02:00</lastmod>
 		<changefreq>daily</changefreq>
 	</url>
 	<url>
 	<loc>https://portfolio-gaetan.fr/login</loc>
 		<priority>1.0</priority>
-		<lastmod>2023-05-03T18:50:00+02:00</lastmod>
+		<lastmod>2023-05-06T15:00:01+02:00</lastmod>
 		<changefreq>daily</changefreq>
 	</url>
 	<url>
 	<loc>https://portfolio-gaetan.fr/register</loc>
 		<priority>1.0</priority>
-		<lastmod>2023-05-03T18:50:00+02:00</lastmod>
+		<lastmod>2023-05-06T15:00:01+02:00</lastmod>
 		<changefreq>daily</changefreq>
 	</url>
 	<url>
 	<loc>https://portfolio-gaetan.fr/offers</loc>
 		<priority>1.0</priority>
-		<lastmod>2023-05-03T18:50:00+02:00</lastmod>
+		<lastmod>2023-05-06T15:00:01+02:00</lastmod>
 		<changefreq>daily</changefreq>
 	</url>
 	<url>
 	<loc>https://portfolio-gaetan.fr/blog/1</loc>
 		<priority>1.0</priority>
-		<lastmod>2023-05-03T18:50:00+02:00</lastmod>
-		<changefreq>daily</changefreq>
-	</url>
-	<url>
-	<loc>https://portfolio-gaetan.fr/blog/1</loc>
-		<priority>1.0</priority>
-		<lastmod>2023-05-03T18:50:00+02:00</lastmod>
+		<lastmod>2023-05-06T15:00:01+02:00</lastmod>
 		<changefreq>daily</changefreq>
 	</url>
 	<url>
 	<loc>https://portfolio-gaetan.fr/blog/2</loc>
 		<priority>1.0</priority>
-		<lastmod>2023-05-03T18:50:00+02:00</lastmod>
+		<lastmod>2023-05-06T15:00:01+02:00</lastmod>
 		<changefreq>daily</changefreq>
 	</url>
 	<url>
 	<loc>https://portfolio-gaetan.fr/blog/3</loc>
 		<priority>1.0</priority>
-		<lastmod>2023-05-03T18:50:00+02:00</lastmod>
+		<lastmod>2023-05-06T15:00:01+02:00</lastmod>
+		<changefreq>daily</changefreq>
+	</url>
+	<url>
+	<loc>https://portfolio-gaetan.fr/article/effervescence-2023-innover-et-revolutionner-la-maniere-dentrevoir-la-sante</loc>
+		<priority>1.0</priority>
+		<lastmod>2023-05-06T15:00:01+02:00</lastmod>
+		<changefreq>daily</changefreq>
+	</url>
+	<url>
+	<loc>https://portfolio-gaetan.fr/article/lazaruss-une-solution-technologique-innovante-pour-renforcer-la-securite-des-puits-de-mine</loc>
+		<priority>1.0</priority>
+		<lastmod>2023-05-06T15:00:01+02:00</lastmod>
 		<changefreq>daily</changefreq>
 	</url>
 	<url>
 	<loc>https://portfolio-gaetan.fr/article/metiers-de-la-construction-une-vision-de-modernisation-misant-sur-les-technologies</loc>
 		<priority>1.0</priority>
-		<lastmod>2023-05-03T18:50:00+02:00</lastmod>
+		<lastmod>2023-05-06T15:00:01+02:00</lastmod>
 		<changefreq>daily</changefreq>
 	</url>
 	<url>
 	<loc>https://portfolio-gaetan.fr/article/comprendre-les-baleines-grace-a-lintelligence-artificielle</loc>
 		<priority>1.0</priority>
-		<lastmod>2023-05-03T18:50:00+02:00</lastmod>
+		<lastmod>2023-05-06T15:00:01+02:00</lastmod>
 		<changefreq>daily</changefreq>
 	</url>
 	<url>
 	<loc>https://portfolio-gaetan.fr/article/emission-cclair-science-en-francais-pourquoi-est-ce-necessaire-aujourdhui</loc>
 		<priority>1.0</priority>
-		<lastmod>2023-05-03T18:50:00+02:00</lastmod>
+		<lastmod>2023-05-06T15:00:01+02:00</lastmod>
 		<changefreq>daily</changefreq>
 	</url>
 	<url>
 	<loc>https://portfolio-gaetan.fr/article/demande-de-moratoire-sur-lintelligence-artificielle-quelles-solutions-un-mois-plus-tard</loc>
 		<priority>1.0</priority>
-		<lastmod>2023-05-03T18:50:00+02:00</lastmod>
+		<lastmod>2023-05-06T15:00:01+02:00</lastmod>
 		<changefreq>daily</changefreq>
 	</url>
 	<url>
 	<loc>https://portfolio-gaetan.fr/article/5-projets-dinnovation-technologique-pour-leducation-sexuelle-le-bien-etre-et-la-vie-quotidienne</loc>
 		<priority>1.0</priority>
-		<lastmod>2023-05-03T18:50:00+02:00</lastmod>
+		<lastmod>2023-05-06T15:00:01+02:00</lastmod>
 		<changefreq>daily</changefreq>
 	</url>
 	<url>
 	<loc>https://portfolio-gaetan.fr/article/sophia-summit-2023-lancement-des-appels-de-soumissions-pour-le-rdv-deurope-sur-lia</loc>
 		<priority>1.0</priority>
-		<lastmod>2023-05-03T18:50:00+02:00</lastmod>
+		<lastmod>2023-05-06T15:00:01+02:00</lastmod>
 		<changefreq>daily</changefreq>
 	</url>
 	<url>
 	<loc>https://portfolio-gaetan.fr/article/evenement-effervescence-le-futur-des-sciences-de-la-vie</loc>
 		<priority>1.0</priority>
-		<lastmod>2023-05-03T18:50:00+02:00</lastmod>
+		<lastmod>2023-05-06T15:00:01+02:00</lastmod>
 		<changefreq>daily</changefreq>
 	</url>
 	<url>
 	<loc>https://portfolio-gaetan.fr/article/portrait-farah-alibay-une-perseverance-hors-de-ce-monde</loc>
 		<priority>1.0</priority>
-		<lastmod>2023-05-03T18:50:00+02:00</lastmod>
+		<lastmod>2023-05-06T15:00:01+02:00</lastmod>
 		<changefreq>daily</changefreq>
 	</url>
 	<url>
 	<loc>https://portfolio-gaetan.fr/article/intelligence-artificielle-un-sommet-a-montreal-qui-boude-le-francais</loc>
 		<priority>1.0</priority>
-		<lastmod>2023-05-03T18:50:00+02:00</lastmod>
+		<lastmod>2023-05-06T15:00:01+02:00</lastmod>
 		<changefreq>daily</changefreq>
 	</url>
 	<url>
 	<loc>https://portfolio-gaetan.fr/article/retour-sur-le-world-summit-ai-americas-entre-benefices-et-inquietudes</loc>
 		<priority>1.0</priority>
-		<lastmod>2023-05-03T18:50:00+02:00</lastmod>
+		<lastmod>2023-05-06T15:00:01+02:00</lastmod>
 		<changefreq>daily</changefreq>
 	</url>
 	<url>
 	<loc>https://portfolio-gaetan.fr/article/le-quebec-dans-la-course-mondiale-a-la-communication-quantique-et-a-la-cybersecurite</loc>
 		<priority>1.0</priority>
-		<lastmod>2023-05-03T18:50:00+02:00</lastmod>
+		<lastmod>2023-05-06T15:00:01+02:00</lastmod>
 		<changefreq>daily</changefreq>
 	</url>
 	<url>
 	<loc>https://portfolio-gaetan.fr/article/cybereco-veut-que-vous-fassiez-partie-de-la-solution</loc>
 		<priority>1.0</priority>
-		<lastmod>2023-05-03T18:50:00+02:00</lastmod>
+		<lastmod>2023-05-06T15:00:01+02:00</lastmod>
+		<changefreq>daily</changefreq>
+	</url>
+	<url>
+	<loc>https://portfolio-gaetan.fr/forums/annonces</loc>
+		<priority>1.0</priority>
+		<lastmod>2023-05-06T15:00:01+02:00</lastmod>
+		<changefreq>daily</changefreq>
+	</url>
+	<url>
+	<loc>https://portfolio-gaetan.fr/forums/jeux-vidéo</loc>
+		<priority>1.0</priority>
+		<lastmod>2023-05-06T15:00:01+02:00</lastmod>
+		<changefreq>daily</changefreq>
+	</url>
+	<url>
+	<loc>https://portfolio-gaetan.fr/forums/forum/topic/regle-et-politique-du-sujet-jeux-video</loc>
+		<priority>1.0</priority>
+		<lastmod>2023-05-06T15:00:01+02:00</lastmod>
+		<changefreq>daily</changefreq>
+	</url>
+	<url>
+	<loc>https://portfolio-gaetan.fr/forums/forum/topic/regles-et-politiques-du-forum-principal</loc>
+		<priority>1.0</priority>
+		<lastmod>2023-05-06T15:00:01+02:00</lastmod>
 		<changefreq>daily</changefreq>
 	</url>
 </urlset>

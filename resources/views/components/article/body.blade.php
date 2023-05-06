@@ -17,6 +17,14 @@
             <h1>{{ $article->title }}</h1>
         </div>
 
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/" class="fg-theme">Accueil</a></li>
+                <li class="breadcrumb-item"><a href="/blog/1" class="fg-theme">Blog</a></li>
+                <li class="breadcrumb-item active" aria-current="page">{{ $article->title }}</li>
+            </ol>
+        </nav>
+
         <div class="blog-header">
             <i class="fa-solid fa-clock"></i>
             <span><span class="day">{{ $post_date->dayName }}</span> - {{ $post_date->isoFormat('LL') }} -

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use Validator;
 use App\Models\News;
+use App\Models\Pays;
 use App\Models\User;
 use App\Functions\Log;
 use App\Models\Orders;
@@ -13,18 +14,20 @@ use App\Models\Products;
 use App\Mail\OrderRefund;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use App\Models\TopicsReplies;
 use App\Models\ProductsContacts;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
+use App\Http\Controllers\Auth\LoginRegisterController;
 use Srmklive\PayPal\Services\PayPal as PaypalClient;
 
 class UsersController extends Controller
 {
     /**
-     * Instantiate a new LoginRegisterController instance.
+     * Instantiate a new UsersController instance.
      */
     public function __construct()
     {
@@ -32,6 +35,30 @@ class UsersController extends Controller
         $this->middleware('auth')->except([
             'logout', 'dashboard'
         ]);
+    }
+
+    public static function repeatModels($type)
+    {
+
+        if ($type == 'pays') return $pays = Pays::orderBy('id', 'ASC')->get();
+
+        if ($type == 'user_not_admin') return $user_not_admin = User::where('active', 1)
+            ->where('id', Auth::id())
+            ->first();
+
+        if ($type == 'contacts') {
+
+            $user_not_admin = User::where('active', 1)
+            ->where('id', Auth::id())
+            ->first();
+
+            return $contacts = Contact::where('archive', 0)
+                ->join('users', 'users.email', '=', 'contacts.email')
+                ->where('contacts.to_mail', $user_not_admin->email)
+                ->orderBy('contacts.created_at', 'DESC')
+                ->limit(6)
+                ->get();
+        }
     }
 
     /**
@@ -42,16 +69,10 @@ class UsersController extends Controller
     public function show_users()
     {
 
-        $user_not_admin = User::where('active', 1)
-            ->where('id', Auth::id())
-            ->first();
-
-        $contacts = Contact::where('archive', 0)
-            ->join('users', 'users.email', '=', 'contacts.email')
-            ->where('contacts.to_mail', $user_not_admin->email)
-            ->orderBy('contacts.created_at', 'DESC')
-            ->limit(6)
-            ->get();
+        $notifications = LoginRegisterController::Notif();
+        $pays = $this->repeatModels('pays');
+        $user_not_admin = $this->repeatModels('user_not_admin');
+        $contacts = $this->repeatModels('contacts');
 
         if (Auth::check()) {
 
@@ -72,12 +93,12 @@ class UsersController extends Controller
                 ->get();
 
             if (isset($user)) {
-                return view('auth.admin.show_users', compact('user', 'users', 'users_active', 'users_banned', 'contacts'));
+                return view('auth.admin.show_users', compact('user', 'users', 'users_active', 'users_banned', 'contacts', 'pays', 'notifications'));
             } else {
                 return redirect()->route('dashboard');
             }
 
-            return view('auth.admin.show_users', compact('user', 'users', 'contacts'));
+            return view('auth.admin.show_users', compact('user', 'users', 'contacts', 'pays', 'notifications'));
         }
 
         return redirect()->route('dashboard');
@@ -137,6 +158,7 @@ class UsersController extends Controller
                 'email' => 'bail|required|email',
                 'lastname' => 'bail|required',
                 'firstname' => 'bail|required',
+                'pays' => 'bail|required',
                 'active' => 'bail|required'
             ]);
 
@@ -152,6 +174,10 @@ class UsersController extends Controller
 
             if (empty($request->lastname)) {
                 $error['lastname'] = array('Le champ nom est obligatoire.');
+            }
+
+            if (empty($request->pays)) {
+                $error['pays'] = array('Le champ pays est obligatoire.');
             }
 
             if (empty($request->firstname)) {
@@ -190,6 +216,7 @@ class UsersController extends Controller
                     ->update(array(
                         'lastname' => $request->lastname,
                         'firstname' => $request->firstname,
+                        'pays' => $request->pays,
                         'email' => $request->email,
                         'active' => $request->active,
                         'updated_at' => date('Y/m/d H:i:s')
@@ -227,6 +254,7 @@ class UsersController extends Controller
                 'password' => 'bail|required',
                 'lastname' => 'bail|required',
                 'firstname' => 'bail|required',
+                'pays' => 'bail|required',
                 'active' => 'bail|required'
             ]);
 
@@ -263,6 +291,7 @@ class UsersController extends Controller
                 $insert = User::create(array(
                     'lastname' => $request->lastname,
                     'firstname' => $request->firstname,
+                    'pays' => $request->pays,
                     'email' => $request->email,
                     'password' => Hash::make($request->password),
                     'active' => $request->active
@@ -312,17 +341,9 @@ class UsersController extends Controller
     public function show_projets()
     {
 
-        $user_not_admin = User::where('active', 1)
-            ->where('id', Auth::id())
-            ->first();
-
-        $contacts = Contact::where('archive', 0)
-            ->join('users', 'users.email', '=', 'contacts.email')
-            ->where('contacts.to_mail', $user_not_admin->email)
-            ->orderBy('contacts.created_at', 'DESC')
-            ->limit(6)
-            ->get();
-
+        $pays = $this->repeatModels('pays');
+        $user_not_admin = $this->repeatModels('user_not_admin');
+        $contacts = $this->repeatModels('contacts');
 
         if (Auth::check()) {
 
@@ -342,13 +363,15 @@ class UsersController extends Controller
                 ->orderBy('created_at', 'DESC')
                 ->get();
 
+            $notifications = LoginRegisterController::Notif();
+
             if (isset($user)) {
-                return view('auth.admin.show_projets', compact('user', 'projets', 'projets_active', 'projets_inactive', 'contacts'));
+                return view('auth.admin.show_projets', compact('user', 'projets', 'projets_active', 'projets_inactive', 'contacts', 'pays', 'notifications'));
             } else {
                 return redirect()->route('dashboard');
             }
 
-            return view('auth.admin.show_projets', compact('user', 'projets', 'contacts'));
+            return view('auth.admin.show_projets', compact('user', 'projets', 'contacts', 'pays', 'notifications'));
         }
 
         return redirect()->route('dashboard');
@@ -582,16 +605,9 @@ class UsersController extends Controller
     public function show_blog()
     {
 
-        $user_not_admin = User::where('active', 1)
-            ->where('id', Auth::id())
-            ->first();
-
-        $contacts = Contact::where('archive', 0)
-            ->join('users', 'users.email', '=', 'contacts.email')
-            ->where('contacts.to_mail', $user_not_admin->email)
-            ->orderBy('contacts.created_at', 'DESC')
-            ->limit(6)
-            ->get();
+        $pays = $this->repeatModels('pays');
+        $user_not_admin = $this->repeatModels('user_not_admin');
+        $contacts = $this->repeatModels('contacts');
 
         if (Auth::check()) {
 
@@ -611,13 +627,15 @@ class UsersController extends Controller
                 ->orderBy('created_at', 'DESC')
                 ->get();
 
+            $notifications = LoginRegisterController::Notif();
+
             if (isset($user)) {
-                return view('auth.admin.show_blog', compact('user', 'blogs', 'articles_active', 'articles_inactive', 'contacts'));
+                return view('auth.admin.show_blog', compact('user', 'blogs', 'articles_active', 'articles_inactive', 'contacts', 'pays', 'notifications'));
             } else {
                 return redirect()->route('dashboard');
             }
 
-            return view('auth.admin.show_blog', compact('user', 'blogs', 'contacts'));
+            return view('auth.admin.show_blog', compact('user', 'blogs', 'contacts', 'pays', 'notifications'));
         }
 
         return redirect()->route('dashboard');
@@ -845,16 +863,11 @@ class UsersController extends Controller
     public function add_article()
     {
 
-        $user_not_admin = User::where('active', 1)
-            ->where('id', Auth::id())
-            ->first();
+        $pays = $this->repeatModels('pays');
+        $user_not_admin = $this->repeatModels('user_not_admin');
+        $contacts = $this->repeatModels('contacts');
 
-        $contacts = Contact::where('archive', 0)
-            ->join('users', 'users.email', '=', 'contacts.email')
-            ->where('contacts.to_mail', $user_not_admin->email)
-            ->orderBy('contacts.created_at', 'DESC')
-            ->limit(6)
-            ->get();
+        $notifications = LoginRegisterController::Notif();
 
         if (Auth::check()) {
 
@@ -864,12 +877,12 @@ class UsersController extends Controller
                 ->first();
 
             if (isset($user)) {
-                return view('auth.admin.add_blog', compact('user', 'contacts'));
+                return view('auth.admin.add_blog', compact('user', 'contacts', 'notifications', 'pays'));
             } else {
                 return redirect()->route('dashboard');
             }
 
-            return view('auth.admin.add_blog', compact('user', 'contacts'));
+            return view('auth.admin.add_blog', compact('user', 'contacts', 'notifications', 'pays'));
         }
 
         return redirect()->route('dashboard');
@@ -1009,16 +1022,9 @@ class UsersController extends Controller
     public function show_orders_google()
     {
 
-        $user_not_admin = User::where('active', 1)
-            ->where('id', Auth::id())
-            ->first();
-
-        $contacts = Contact::where('archive', 0)
-            ->join('users', 'users.email', '=', 'contacts.email')
-            ->where('contacts.to_mail', $user_not_admin->email)
-            ->orderBy('contacts.created_at', 'DESC')
-            ->limit(6)
-            ->get();
+        $pays = $this->repeatModels('pays');
+        $user_not_admin = $this->repeatModels('user_not_admin');
+        $contacts = $this->repeatModels('contacts');
 
         if (Auth::check()) {
 
@@ -1044,14 +1050,15 @@ class UsersController extends Controller
                 ->where('Financial_Status', 'Refund')
                 ->sum('Item_Price');
 
+            $notifications = LoginRegisterController::Notif();
 
             if (isset($user)) {
-                return view('auth.admin.show_orders_google', compact('user', 'orders_google', 'total_commandes', 'totals_commandes', 'total_commandes_refund', 'contacts'));
+                return view('auth.admin.show_orders_google', compact('user', 'orders_google', 'total_commandes', 'totals_commandes', 'total_commandes_refund', 'contacts', 'pays', 'notifications'));
             } else {
                 return redirect()->route('dashboard');
             }
 
-            return view('auth.admin.show_orders_google', compact('user', 'orders_google', 'total_commandes', 'totals_commandes', 'total_commandes_refund', 'contacts'));
+            return view('auth.admin.show_orders_google', compact('user', 'orders_google', 'total_commandes', 'totals_commandes', 'total_commandes_refund', 'contacts', 'pays', 'notifications'));
         }
 
         return redirect()->route('dashboard');
@@ -1109,6 +1116,7 @@ class UsersController extends Controller
                 $validator = Validator::make($request->all(), [
                     'email' => 'bail|required|email',
                     'lastname' => 'bail|required',
+                    'pays' => 'bail|required',
                     'firstname' => 'bail|required'
                 ]);
 
@@ -1145,6 +1153,7 @@ class UsersController extends Controller
                         ->update(array(
                             'lastname' => $request->lastname,
                             'firstname' => $request->firstname,
+                            'pays' => $request->pays,
                             'email' => $request->email,
                             'updated_at' => date('Y/m/d H:i:s')
                         ));
@@ -1169,17 +1178,11 @@ class UsersController extends Controller
     public function show_agenda()
     {
 
-        $user_not_admin = User::where('active', 1)
-            ->where('id', Auth::id())
-            ->first();
+        $pays = $this->repeatModels('pays');
+        $user_not_admin = $this->repeatModels('user_not_admin');
+        $contacts = $this->repeatModels('contacts');
 
-        $contacts = Contact::where('archive', 0)
-            ->join('users', 'users.email', '=', 'contacts.email')
-            ->where('contacts.to_mail', $user_not_admin->email)
-            ->orderBy('contacts.created_at', 'DESC')
-            ->limit(6)
-            ->get();
-
+        $notifications = LoginRegisterController::Notif();
 
         if (Auth::check()) {
 
@@ -1189,12 +1192,12 @@ class UsersController extends Controller
                 ->first();
 
             if (isset($user)) {
-                return view('auth.admin.agenda', compact('user', 'contacts'));
+                return view('auth.admin.agenda', compact('user', 'contacts', 'pays', 'notifications'));
             } else {
                 return redirect()->route('dashboard');
             }
 
-            return view('auth.admin.agenda', compact('user', 'contacts'));
+            return view('auth.admin.agenda', compact('user', 'contacts', 'pays', 'notifications'));
         }
 
         return redirect()->route('dashboard');
@@ -1208,17 +1211,9 @@ class UsersController extends Controller
     public function show_orders()
     {
 
-        $user_not_admin = User::where('active', 1)
-            ->where('id', Auth::id())
-            ->first();
-
-        $contacts = Contact::where('archive', 0)
-            ->join('users', 'users.email', '=', 'contacts.email')
-            ->where('contacts.to_mail', $user_not_admin->email)
-            ->orderBy('contacts.created_at', 'DESC')
-            ->limit(6)
-            ->get();
-
+        $pays = $this->repeatModels('pays');
+        $user_not_admin = $this->repeatModels('user_not_admin');
+        $contacts = $this->repeatModels('contacts');
 
         if (Auth::check()) {
 
@@ -1237,13 +1232,15 @@ class UsersController extends Controller
                 ->groupBy('orders.id')
                 ->get();
 
+            $notifications = LoginRegisterController::Notif();
+
             if (isset($user)) {
-                return view('auth.admin.show_orders', compact('user', 'contacts', 'orders_canceled', 'orders_success', 'orders_refund', 'orders_total', 'orders'));
+                return view('auth.admin.show_orders', compact('user', 'contacts', 'orders_canceled', 'orders_success', 'orders_refund', 'orders_total', 'orders', 'pays', 'notifications'));
             } else {
                 return redirect()->route('dashboard');
             }
 
-            return view('auth.admin.show_orders', compact('user', 'contacts'));
+            return view('auth.admin.show_orders', compact('user', 'contacts', 'pays', 'notifications'));
         }
 
         return redirect()->route('dashboard');
@@ -1257,7 +1254,6 @@ class UsersController extends Controller
      */
     public function order_refund(Request $request, $id, $transaction)
     {
-
         if (Auth::check()) {
 
             $user = User::where('active', 1)
@@ -1307,6 +1303,56 @@ class UsersController extends Controller
             } else {
                 return response()->json(['status' => 0, 'title' => 'Une erreur est survenue.', 'msg' => 'Remboursement de la commande ' . $transaction . ' impossible !', 'toast' => 'toast-error', 'icone' => '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-exclamation-triangle-fill mr-2" viewBox="0 0 16 16"><path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/></svg>']);
             }
+        }
+    }
+
+    public function show_orders_client()
+    {
+
+        $pays = $this->repeatModels('pays');
+        $user_not_admin = $this->repeatModels('user_not_admin');
+        $contacts = $this->repeatModels('contacts');
+
+        $notifications = LoginRegisterController::Notif();
+
+        if (Auth::check()) {
+
+            $user = User::where('active', 1)
+                ->where('id', Auth::id())
+                ->first();
+
+            $orders = Orders::where('contact_id', Auth::id())
+                ->join('products', 'products.product_id', '=', 'orders.product_id')
+                ->join('products_contacts', 'products_contacts.id', '=', 'orders.contact_id')
+                ->orderBy('orders.created_at', 'DESC')
+                ->groupBy('orders.id')
+                ->get();
+
+            if (isset($user)) {
+                return view('auth.show_orders_client', compact('user', 'contacts', 'orders', 'pays', 'notifications'));
+            } else {
+                return redirect()->route('dashboard');
+            }
+
+            return view('auth.show_orders_client', compact('user', 'contacts', 'pays', 'notifications'));
+        }
+
+        return redirect()->route('dashboard');
+    }
+
+
+    public function check_reply($type = null, $id = null)
+    {
+        if ($type == "yes") {
+            TopicsReplies::where('id', $id)
+                ->update(array('status' => 1));
+
+            return response()->json(['status' => 1, 'title' => 'Validation du commantaire', 'msg' => 'Le commentaire a bien été validée.', 'toast' => 'toast-success', 'icone' => '<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-check mr-2" viewBox="0 0 16 16"><path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z"/></svg>']);
+        } else if ($type == 'no') {
+            TopicsReplies::where('id', $id)
+                ->update(array('status' => 0, 'archive_dashboard' => 1));
+
+            return response()->json(['status' => 1, 'title' => 'Validation du commantaire', 'msg' => 'Le commentaire a bien été rejeté.', 'toast' => 'toast-success', 'icone' => '<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-check mr-2" viewBox="0 0 16 16"><path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z"/></svg>']);
         }
     }
 }

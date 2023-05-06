@@ -16,10 +16,10 @@
         <!-- Nav Item - Messages -->
         <li class="nav-item dropdown no-arrow mx-1">
 
-            <a class="nav-link dropdown-toggle" href="#" id="messagesDropdown" role="button"
-                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <a class="nav-link dropdown-toggle" href="#" id="messagesDropdown" role="button" data-toggle="dropdown"
+                aria-haspopup="true" aria-expanded="false">
 
-                <i class="fas fa-envelope fa-fw"></i>
+                <i class="fa-regular fa-envelope fa-fw"></i>
 
                 <!-- Counter - Messages -->
                 <span class="badge badge-danger badge-counter">{{ count($contacts) }}</span>
@@ -64,7 +64,6 @@
                         </a>
                     @endforeach
                 @else
-
                     <div class="text-warning message-mail">Vous n'avez aucun message</div>
 
                 @endif
@@ -73,6 +72,64 @@
                     <a class="dropdown-item text-center small text-dark-500 font-weight-bold" href="#">Voir les
                         autres messages</a>
                 @endif
+            </div>
+
+        </li>
+
+        <li class="nav-item dropdown no-arrow mx-1">
+
+            <a class="nav-link dropdown-toggle" href="#" id="notificationDropdown" role="button"
+                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+
+                <i class="fa-regular fa-bell fa-fw"></i>
+
+                <!-- Counter - Notification -->
+                <span class="badge badge-danger badge-counter">{{ count($notifications) }}</span>
+
+            </a>
+
+            <!-- Dropdown - Notification -->
+            <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
+                aria-labelledby="notificationDropdown">
+
+                <h6 class="dropdown-header bg-success">
+                    Notification
+                </h6>
+
+                @if (count($notifications) >= 1)
+                    @foreach ($notifications[0]['forums_replies'] as $data)
+                        @php
+                            $post_date = $data->created_at;
+                        @endphp
+
+                        <a class="dropdown-item d-flex align-items-center btn-modal-replies" href="#"
+                            id="replies_{{ $data->id }}" data-toggle="modal" data-target="#repliesModal"
+                            data-title="Une réponse de {{ $data->firstname . ' ' . $data->lastname }} est à valider sur le
+                            forum"
+                            data-id="{{ $data->id }}" data-content="{{ $data->content }}"
+                            data-signature="{{ $data->signature }}">
+
+                            <div class="dropdown-list-image mr-3">
+                                <img class="rounded-circle"
+                                    src="@if (!empty($data->avatar)) {{ URL::asset('/img/profil/' . $data->avatar) }} @else {{ URL::asset('/img/profil/default.svg') }} @endif" />
+                                <div class="status-indicator bg-success"></div>
+                            </div>
+
+                            <div class="font-weight-bold">
+                                <div class="text-truncate">{{ $data->sujet }}</div>
+                                <div class="small text-dark-500 font-weight-bold">
+                                    Une réponse de {{ $data->firstname . ' ' . $data->lastname }} est à valider sur le
+                                    forum - {{ $data->created_at->diffForHumans() }}
+                                </div>
+                            </div>
+
+                        </a>
+                    @endforeach
+                @else
+                    <div class="text-warning message-mail">Vous n'avez pas de notification</div>
+
+                @endif
+
             </div>
 
         </li>
@@ -88,8 +145,13 @@
                 @if ($user->admin == 1)
                     <span><i class="fa-solid fa-crown mr-2 text-warning"></i></span>
                 @endif
-                <span
-                    class="mr-2 d-none d-lg-inline text-light font-weight-bold">@if(!empty($user->firstname) && !empty($user->lastname)) {{ $user->firstname . ' ' . $user->lastname }} @else {{ $user->name }} @endif</span>
+                <span class="mr-2 d-none d-lg-inline text-light font-weight-bold">
+                    @if (!empty($user->firstname) && !empty($user->lastname))
+                        {{ $user->firstname . ' ' . $user->lastname }}
+                    @else
+                        {{ $user->name }}
+                    @endif
+                </span>
 
                 <img class="img-profile rounded-circle"
                     src="@if (!empty($user->avatar)) {{ '/img/profil/' . $user->avatar }} @else {{ URL::asset('img/profil/default.svg') }} @endif">
@@ -99,10 +161,10 @@
             <!-- Dropdown - User Information -->
             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
 
-                <a class="dropdown-item btn-modal-user" href="#" data-toggle="modal" data-target="#editUserLoggedModal" data-lastname="{{ $user->lastname }}"
+                <a class="dropdown-item btn-modal-user" href="#" data-toggle="modal"
+                    data-target="#editUserLoggedModal" data-lastname="{{ $user->lastname }}"
                     data-firstname="{{ $user->firstname }}" data-email="{{ $user->email }}"
-                    data-avatar="{{ $user->avatar }}"
-                    data-edit="1">
+                    data-avatar="{{ $user->avatar }}" data-edit="1">
                     <i class="fas fa-user fa-sm fa-fw mr-2 text-light"></i>
                     Mon profil
                 </a>

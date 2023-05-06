@@ -112,6 +112,18 @@
             </div>
 
         </li>
+    @else
+        <!-- Heading -->
+        <div class="sidebar-heading">
+            Projets
+        </div>
+
+        <li class="nav-item @if (Route::current()->getName() == 'show-orders-client') active @endif">
+            <a class="nav-link" href="/show-orders-client">
+                <i class="fa-regular fa-credit-card"></i>
+                <span>Mes commandes</span>
+            </a>
+        </li>
     @endif
 
 </ul>

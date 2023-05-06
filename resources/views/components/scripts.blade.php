@@ -13,6 +13,38 @@
 <script src="{{ URL::asset('js/app.js') }}"></script>
 <script src="{{ URL::asset('js/6650c3fdcf.js') }}"></script>
 
+@if (Route::current()->getName() == 'forum' || Route::current()->getName() == 'forums.categorie')
+    <script src="{{ URL::asset('ckeditor/ckeditor.js') }}"></script>
+
+    <script>
+        // Replace the <textarea id="content"> with a CKEditor 4
+        // instance, using default configuration.
+        CKEDITOR.replace('content', {
+            language: 'fr',
+        });
+    </script>
+@endif
+
+@if (Auth::check())
+
+    @if (Route::current()->getName() == 'forums.topic')
+
+        <script src="{{ URL::asset('ckeditor/ckeditor.js') }}"></script>
+
+        @if ($forum_topic->status == 1 && $forum_categorie->status == 1)
+            <script>
+                // Replace the <textarea id="content"> with a CKEditor 4
+                // instance, using default configuration.
+                CKEDITOR.replace('content', {
+                    language: 'fr',
+                });
+            </script>
+        @endif
+
+    @endif
+
+@endif
+
 @if (Route::current()->getName() == 'cart')
     <input type="hidden" name="minDate" id="minDate" value="{{ date('Y') }}">
 

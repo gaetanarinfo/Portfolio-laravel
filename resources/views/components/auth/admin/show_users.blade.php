@@ -172,8 +172,9 @@
                                     <a href="#" data-toggle="modal" data-target="#editUserModal"
                                         data-user="{{ $data->id }}" data-lastname="{{ $data->lastname }}"
                                         data-firstname="{{ $data->firstname }}" data-email="{{ $data->email }}"
-                                        data-avatar="{{ $data->avatar }}" data-active="{{ $data->active }}"
-                                        data-edit="1" class="btn modal-btn btn-warning btn-icon-split mr-2">
+                                        data-avatar="{{ $data->avatar }}" data-pays="{{ $data->pays }}"
+                                        data-active="{{ $data->active }}" data-edit="1"
+                                        class="btn modal-btn btn-warning btn-icon-split mr-2">
                                         <span class="icon text-white-50">
                                             <i class="fas fa-exclamation-triangle"></i>
                                         </span>

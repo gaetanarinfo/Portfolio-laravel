@@ -44,6 +44,19 @@ $(document).ready(function () {
 
     })
 
+    $(document).on('click', '.btn-modal-replies', function (e) {
+
+        e.preventDefault();
+
+        $('#repliesModal .modal-title').html($(this).data('title'));
+
+        // Form dynamic with modal
+        $('#repliesModal #content').html($(this).data('content'));
+        $('#repliesModal #signature').html($(this).data('signature'));
+        $('#repliesModal #valide-reply').attr('data-id', $(this).data('id'));
+        $('#repliesModal #valide-reply-no').attr('data-id', $(this).data('id'));
+
+    })
 
     $(document).on('click', '.btn-modal-mail', function (e) {
 
@@ -72,6 +85,7 @@ $(document).ready(function () {
             $('#editUserModal #firstname').val($(this).data('firstname'));
             $('#editUserModal #lastname').val($(this).data('lastname'));
             $('#editUserModal #email').val($(this).data('email'));
+            $('#editUserModal #pays').val($(this).data('pays')).change();
             $('#editUserModal #active').val($(this).data('active')).change();
 
         }
@@ -306,6 +320,7 @@ $(document).ready(function () {
             firstname = $('#editUserModal #firstname').val(),
             lastname = $('#editUserModal #lastname').val(),
             email = $('#editUserModal #email').val(),
+            pays = $('#editUserModal #pays').val(),
             active = $('#editUserModal #active').val()
 
         if (fichier.length == 1) {
@@ -319,6 +334,7 @@ $(document).ready(function () {
             if (e.name != "user_id") form_data.append(e.name, e.value);
             if (e.name != "firstname") form_data.append(e.name, e.value);
             if (e.name != "lastname") form_data.append(e.name, e.value);
+            if (e.name != "pays") form_data.append(e.name, e.value);
             if (e.name != "email") form_data.append(e.name, e.value);
             if (e.name != "active") form_data.append(e.name, e.value);
 
@@ -327,6 +343,7 @@ $(document).ready(function () {
         form_data.append('user_id', user_id);
         form_data.append('firstname', firstname);
         form_data.append('lastname', lastname);
+        form_data.append('pays', pays);
         form_data.append('email', email);
         form_data.append('active', active);
 
@@ -343,6 +360,7 @@ $(document).ready(function () {
 
                     $.each(data.error, function (prefix, val) {
                         $('.' + prefix + '_error').text(val[0]);
+                        $('.' + prefix + '_error').show();
                     });
 
                     $('.toast-form-contact .svg').html(data.icone)
@@ -357,6 +375,8 @@ $(document).ready(function () {
                     $('.toast-form-contact').toast('show');
 
                 } else {
+
+                    $('.error-text').hide();
 
                     setTimeout(() => {
 
@@ -469,6 +489,7 @@ $(document).ready(function () {
             form_data = new FormData(),
             firstname = $('#addUserModal #firstname').val(),
             lastname = $('#addUserModal #lastname').val(),
+            pays = $('#addUserModal #pays').val(),
             email = $('#addUserModal #email').val(),
             active = $('#addUserModal #active').val(),
             password = $('#addUserModal #password').val()
@@ -484,6 +505,7 @@ $(document).ready(function () {
             if (e.name != "firstname") form_data.append(e.name, e.value);
             if (e.name != "lastname") form_data.append(e.name, e.value);
             if (e.name != "email") form_data.append(e.name, e.value);
+            if (e.name != "pays") form_data.append(e.name, e.value);
             if (e.name != "active") form_data.append(e.name, e.value);
             if (e.name != "password") form_data.append(e.name, e.value);
 
@@ -491,6 +513,7 @@ $(document).ready(function () {
 
         form_data.append('firstname', firstname);
         form_data.append('lastname', lastname);
+        form_data.append('pays', pays);
         form_data.append('email', email);
         form_data.append('active', active);
         form_data.append('password', password);
@@ -774,6 +797,7 @@ $(document).ready(function () {
 
                     $.each(data.error, function (prefix, val) {
                         $('.' + prefix + '_error').text(val[0]);
+                        $('.' + prefix + '_error').show();
                     });
 
                     $('.toast-form-contact .svg').html(data.icone)
@@ -788,6 +812,8 @@ $(document).ready(function () {
                     $('.toast-form-contact').toast('show');
 
                 } else {
+
+                    $('.error-text').hide();
 
                     setTimeout(() => {
 
@@ -1180,6 +1206,8 @@ $(document).ready(function () {
 
                 } else {
 
+                    $('.error-text').hide();
+
                     setTimeout(() => {
 
                         $('.toast-form-contact .svg').html(data.icone)
@@ -1511,6 +1539,7 @@ $(document).ready(function () {
             form_data = new FormData(),
             firstname = $('#editUserLoggedModal #firstname').val(),
             lastname = $('#editUserLoggedModal #lastname').val(),
+            pays = $('#editUserLoggedModal #pays').val(),
             email = $('#editUserLoggedModal #email').val()
 
         if (fichier.length == 1) {
@@ -1523,12 +1552,14 @@ $(document).ready(function () {
 
             if (e.name != "firstname") form_data.append(e.name, e.value);
             if (e.name != "lastname") form_data.append(e.name, e.value);
+            if (e.name != "pays") form_data.append(e.name, e.value);
             if (e.name != "email") form_data.append(e.name, e.value);
 
         });
 
         form_data.append('firstname', firstname);
         form_data.append('lastname', lastname);
+        form_data.append('pays', pays);
         form_data.append('email', email);
 
         $.ajax({
@@ -1544,6 +1575,7 @@ $(document).ready(function () {
 
                     $.each(data.error, function (prefix, val) {
                         $('.' + prefix + '_error').text(val[0]);
+                        $('.' + prefix + '_error').show();
                     });
 
                     $('.toast-form-contact .svg').html(data.icone)
@@ -1558,6 +1590,8 @@ $(document).ready(function () {
                     $('.toast-form-contact').toast('show');
 
                 } else {
+
+                    $('.error-text').hide();
 
                     setTimeout(() => {
 
@@ -1614,6 +1648,7 @@ $(document).ready(function () {
 
                         $.each(data.error, function (prefix, val) {
                             $('.' + prefix + '_error').text(val[0]);
+                            $('.' + prefix + '_error').show();
                         });
 
                         $('.toast-form-contact .svg').html(data.icone)
@@ -1628,6 +1663,8 @@ $(document).ready(function () {
                         $('.toast-form-contact').toast('show');
 
                     } else {
+
+                        $('.error-text').hide();
 
                         $('.toast-form-contact .svg').html(data.icone)
                         $('.toast-form-contact .title').html(data.title);
@@ -1655,5 +1692,116 @@ $(document).ready(function () {
         }
 
     })
+
+    // Validation du message de réponse du forum
+    $(document).on('click', '#valide-reply', function (e) {
+
+        e.preventDefault();
+
+        var id_reply = $(this).data('id'),
+            type = "yes";
+
+        $.ajax({
+            url: '/forums/check/reply/' + type + '/' + id_reply,
+            method: 'GET',
+            data: {},
+            dataType: 'json',
+            success: function (data) {
+
+                if (data.status == 0) {
+
+                    $('.toast-form-contact .svg').html(data.icone)
+                    $('.toast-form-contact .title').html(data.title);
+                    $('.toast-form-contact .toast-body').html(data.msg)
+                    $('.toast-form-contact').removeClass('toast-success').removeClass('toast-error').addClass(data.toast);
+
+                    $('.toast-form-contact').toast({
+                        delay: 10000
+                    });
+
+                    $('.toast-form-contact').toast('show');
+
+                } else {
+
+                    $('.toast-form-contact .svg').html(data.icone)
+                    $('.toast-form-contact .title').html(data.title);
+                    $('.toast-form-contact .toast-body').html(data.msg)
+                    $('.toast-form-contact').removeClass('toast-success').removeClass('toast-error').addClass(data.toast);
+
+                    $('.toast-form-contact').toast({
+                        delay: 10000
+                    });
+
+                    $('.toast-form-contact').toast('show');
+                    $('#repliesModal').modal('hide');
+
+                    setTimeout(() => {
+                        location.reload()
+                    }, 3500);
+
+                }
+            },
+            error: function (e) {
+                console.log(e);
+            }
+        });
+
+    })
+
+    $(document).on('click', '#valide-reply-no', function (e) {
+
+        e.preventDefault();
+
+        var id_reply = $(this).data('id'),
+            type = "no";
+
+        $.ajax({
+            url: '/forums/check/reply/' + type + '/' + id_reply,
+            method: 'GET',
+            data: {},
+            dataType: 'json',
+            success: function (data) {
+
+                if (data.status == 0) {
+
+                    $('.toast-form-contact .svg').html(data.icone)
+                    $('.toast-form-contact .title').html(data.title);
+                    $('.toast-form-contact .toast-body').html(data.msg)
+                    $('.toast-form-contact').removeClass('toast-success').removeClass('toast-error').addClass(data.toast);
+
+                    $('.toast-form-contact').toast({
+                        delay: 10000
+                    });
+
+                    $('.toast-form-contact').toast('show');
+
+                } else {
+
+                    $('.toast-form-contact .svg').html(data.icone)
+                    $('.toast-form-contact .title').html(data.title);
+                    $('.toast-form-contact .toast-body').html(data.msg)
+                    $('.toast-form-contact').removeClass('toast-success').removeClass('toast-error').addClass(data.toast);
+
+                    $('.toast-form-contact').toast({
+                        delay: 10000
+                    });
+
+                    $('.toast-form-contact').toast('show');
+                    $('#repliesModal').modal('hide');
+
+                    setTimeout(() => {
+                        location.reload()
+                    }, 3500);
+
+                }
+            },
+            error: function (e) {
+                console.log(e);
+            }
+        });
+
+    })
+
+    //-----------//
 
 });

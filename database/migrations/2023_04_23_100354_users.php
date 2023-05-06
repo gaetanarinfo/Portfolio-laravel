@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('firstname');
             $table->string('email')->unique();
             $table->string('password');
+            $table->string('pays')->default('fr');
             $table->string('token')->nullable();
             $table->integer('active')->default(1);
             $table->integer('admin')->default(0);
@@ -29,6 +30,7 @@ return new class extends Migration
             $table->timestamp('logged_at')->nullable(true);
             $table->string('profile_photo_path', 2048)->nullable();
             $table->rememberToken();
+            $table->integer('user_role')->default(3);
         });
     }
 

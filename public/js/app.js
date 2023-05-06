@@ -700,13 +700,20 @@ $('#form-login').on('submit', function (e) {
                 $('.toast-form-contact').toast('show');
 
             } else {
+
                 $('#form-login')[0].reset();
 
-                $('#form-login').fadeOut(100);
-                $('.forgot-password').fadeOut(100)
+                if ($('input[name=redirect]').val() != undefined) {
+                    $('#form-login').fadeOut(300);
+                }
 
                 setTimeout(() => {
-                    $('.page-login #loader-login').removeClass('hidden');
+
+                    if ($('input[name=redirect]').val() == undefined) {
+                        $('.page-login #loader-login').removeClass('hidden');
+                    } else {
+                        $('.vg-page #loader-login').removeClass('hidden');
+                    }
                     $('.toast-form-contact .svg').html(data.icone)
                     $('.toast-form-contact .title').html(data.title);
                     $('.toast-form-contact .toast-body').html(data.msg)
@@ -721,7 +728,8 @@ $('#form-login').on('submit', function (e) {
                 }, 100);
 
                 setTimeout(() => {
-                    location.href = '/dashboard';
+                    if ($('input[name=redirect]').val() == undefined) location.href = '/dashboard';
+                    else location.href = $('input[name=redirect]').val();
                 }, 2500);
 
             }
@@ -1624,5 +1632,562 @@ $('#change-paiement-iban').on('click', function (e) {
     setCookie('product_etape', 4, 1);
 
 })
+
+// ----------- //
+
+// Forums
+
+$(document).on('click', '#create-forum', function (e) {
+
+    e.preventDefault();
+
+    $('html, body').animate({ scrollTop: 0 }, "slow");
+
+    $('.panel-layout').fadeOut(600);
+
+    setTimeout(() => {
+        $('.panel-layout-create').fadeIn(600)
+    }, 600);
+
+})
+
+var fichier_add_forum = [],
+    name_file_add_forum = []
+
+$('#create_forum_form #image').on('change', function (e) {
+
+    let that = e.currentTarget
+
+    if (name_file_add_forum.length < 2) {
+
+        $.each($('#create_forum_form #image').prop('files'), (index, item) => {
+            fichier_add_forum.push(item);
+        })
+
+        for (i = 0; i < fichier_add_forum.length; i++) {
+
+            if (name_file_add_forum.length < 2) {
+
+                if (fichier_add_forum[i].size < file_size) {
+
+                    if (name_file_add_forum.indexOf(fichier_add_forum[i].name) == -1) {
+
+                        $('.image_error').hide();
+
+                        name_file_add_forum.push(fichier_add_forum[i].name);
+
+                        let reader = new FileReader();
+
+                        reader.onload = (e) => {
+
+                            const image = new Image();
+
+                            image.src = e.target.result;
+                            image.onload = () => {
+
+                                if (image.width <= 860 && image.height <= 860) {
+
+                                    $('.image-forum').attr('src', e.target.result);
+                                    $('.image_error').html('');
+
+                                } else {
+
+                                    name_file_add_forum = [];
+                                    fichier_add_forum = [];
+
+                                    $('.image_error').show();
+                                    $('.image_error').html('<p>Le fichier ne correspond pas aux dimension. 860 pixels par 860 pixels !</p>');
+
+                                }
+
+                            }
+
+                        }
+
+                        reader.readAsDataURL(that.files[0]);
+
+                    }
+
+                } else {
+
+                    $('.image_error').show();
+                    $('.image_error').html('<p>Le fichier est trop volumineux.</p>');
+
+                }
+
+            }
+        };
+
+    }
+
+});
+
+$('#create_forum_form').on('submit', function (e) {
+
+    e.preventDefault();
+
+    $('html, body').animate({ scrollTop: 0 }, "slow");
+
+    var data = CKEDITOR.instances.content.getData();
+    $('#content').val(data)
+
+    var form = [],
+        form_data = new FormData(),
+        title = $('#create_forum_form #title').val(),
+        content = $('#create_forum_form #content').val(),
+        status = $('#create_forum_form #status').val()
+
+    if (fichier_add_forum.length == 1) {
+        for (let i = 0; i < fichier_add_forum.length; i++) {
+            if ($.inArray(fichier_add_forum[i].name, name_file_add_forum) !== -1) form_data.append('file_' + i, fichier_add_forum[i]);
+        }
+    }
+
+    form.forEach(e => {
+
+        if (e.name != "title") form_data.append(e.name, e.value);
+        if (e.name != "content") form_data.append(e.name, e.value);
+        if (e.name != "status") form_data.append(e.name, e.value);
+
+    });
+
+    form_data.append('title', title);
+    form_data.append('content', content);
+    form_data.append('status', status);
+
+    $.ajax({
+        url: $(this).attr('action'),
+        method: $(this).attr('method'),
+        enctype: "multipart/form-data",
+        processData: false,
+        contentType: false,
+        data: form_data,
+        dataType: 'json',
+        beforeSend: function (e) {
+            $(document).find('.error-text').text('');
+            $(document).find('.error-text').hide();
+        },
+        success: function (data) {
+
+            if (data.status == 0) {
+
+                $.each(data.error, function (prefix, val) {
+                    $('#create_forum_form .' + prefix + '_error').show();
+                    $('#create_forum_form .' + prefix + '_error').text(val[0]);
+                });
+
+                $('.toast-form-contact .svg').html(data.icone)
+                $('.toast-form-contact .title').html(data.title);
+                $('.toast-form-contact .toast-body').html(data.msg)
+                $('.toast-form-contact').removeClass('toast-success').removeClass('toast-error').addClass(data.toast);
+
+                $('.toast-form-contact').toast({
+                    delay: 10000
+                });
+
+                $('.toast-form-contact').toast('show');
+
+            } else {
+
+                setTimeout(() => {
+
+                    $('.toast-form-contact .svg').html(data.icone)
+                    $('.toast-form-contact .title').html(data.title);
+                    $('.toast-form-contact .toast-body').html(data.msg)
+                    $('.toast-form-contact').removeClass('toast-success').removeClass('toast-error').addClass(data.toast);
+
+                    $('.toast-form-contact').toast({
+                        delay: 10000
+                    });
+
+                    $('.toast-form-contact').toast('show');
+
+                }, 400);
+
+                setTimeout(() => {
+                    location.reload()
+                }, 2100);
+
+            }
+        },
+        error: function (e) {
+            console.log(e);
+        }
+    });
+
+});
+
+$('.btn-cancel').on('click', function (e) {
+
+    e.preventDefault();
+
+    $('html, body').animate({ scrollTop: 0 }, "slow");
+
+    $('.panel-layout-create').fadeOut(600);
+
+    setTimeout(() => {
+        $('.panel-layout').fadeIn(600)
+    }, 600);
+
+})
+
+$(document).on('click', '#create-topic', function (e) {
+
+    e.preventDefault();
+
+    $('html, body').animate({ scrollTop: 0 }, "slow");
+
+    $('.panel-layout').fadeOut(600);
+
+    setTimeout(() => {
+        $('.panel-layout-create').fadeIn(600)
+    }, 600);
+
+})
+
+$('#create_topic_form').on('submit', function (e) {
+
+    e.preventDefault();
+
+    $('html, body').animate({ scrollTop: 0 }, "slow");
+
+    var data = CKEDITOR.instances.content.getData();
+    $('#content').val(data)
+
+    $.ajax({
+        url: $(this).attr('action'),
+        method: $(this).attr('method'),
+        enctype: "multipart/form-data",
+        processData: false,
+        contentType: false,
+        data: new FormData(this),
+        dataType: 'json',
+        beforeSend: function (e) {
+            $(document).find('.error-text').text('');
+            $(document).find('.error-text').hide();
+        },
+        success: function (data) {
+
+            if (data.status == 0) {
+
+                $.each(data.error, function (prefix, val) {
+                    $('#create_topic_form .' + prefix + '_error').show();
+                    $('#create_topic_form .' + prefix + '_error').text(val[0]);
+                });
+
+                $('.toast-form-contact .svg').html(data.icone)
+                $('.toast-form-contact .title').html(data.title);
+                $('.toast-form-contact .toast-body').html(data.msg)
+                $('.toast-form-contact').removeClass('toast-success').removeClass('toast-error').addClass(data.toast);
+
+                $('.toast-form-contact').toast({
+                    delay: 10000
+                });
+
+                $('.toast-form-contact').toast('show');
+
+            } else {
+
+                setTimeout(() => {
+
+                    $('.toast-form-contact .svg').html(data.icone)
+                    $('.toast-form-contact .title').html(data.title);
+                    $('.toast-form-contact .toast-body').html(data.msg)
+                    $('.toast-form-contact').removeClass('toast-success').removeClass('toast-error').addClass(data.toast);
+
+                    $('.toast-form-contact').toast({
+                        delay: 10000
+                    });
+
+                    $('.toast-form-contact').toast('show');
+
+                }, 400);
+
+                setTimeout(() => {
+                    location.reload()
+                }, 2100);
+
+            }
+        },
+        error: function (e) {
+            console.log(e);
+        }
+    });
+
+});
+
+$('.btn-cancel-topic').on('click', function (e) {
+
+    e.preventDefault();
+
+    $('html, body').animate({ scrollTop: 0 }, "slow");
+
+    $('.panel-layout-create').fadeOut(600);
+
+    setTimeout(() => {
+        $('.panel-layout').fadeIn(600)
+    }, 600);
+
+})
+
+$('#reply-topic').on('submit', function (e) {
+
+    e.preventDefault();
+
+    var data = CKEDITOR.instances.content.getData();
+    $('#content').val(data)
+
+    $.ajax({
+        url: $(this).attr('action'),
+        method: $(this).attr('method'),
+        enctype: "multipart/form-data",
+        processData: false,
+        contentType: false,
+        data: new FormData(this),
+        dataType: 'json',
+        beforeSend: function (e) {
+            $(document).find('.error-text').text('');
+            $(document).find('.error-text').hide();
+        },
+        success: function (data) {
+
+            if (data.status == 0) {
+
+                $.each(data.error, function (prefix, val) {
+                    $('#reply-topic .' + prefix + '_error').show();
+                    $('#reply-topic .' + prefix + '_error').text(val[0]);
+                });
+
+                $('.toast-form-contact .svg').html(data.icone)
+                $('.toast-form-contact .title').html(data.title);
+                $('.toast-form-contact .toast-body').html(data.msg)
+                $('.toast-form-contact').removeClass('toast-success').removeClass('toast-error').addClass(data.toast);
+
+                $('.toast-form-contact').toast({
+                    delay: 10000
+                });
+
+                $('.toast-form-contact').toast('show');
+
+            } else {
+
+                $('#reply-topic').fadeOut(600);
+
+                setTimeout(() => {
+                    $('#loader-reply').removeClass('hidden');
+                    $('#reply-topic').addClass('hidden');
+                }, 600);
+
+                setTimeout(() => {
+
+                    $('.toast-form-contact .svg').html(data.icone)
+                    $('.toast-form-contact .title').html(data.title);
+                    $('.toast-form-contact .toast-body').html(data.msg)
+                    $('.toast-form-contact').removeClass('toast-success').removeClass('toast-error').addClass(data.toast);
+
+                    $('.toast-form-contact').toast({
+                        delay: 10000
+                    });
+
+                    $('.toast-form-contact').toast('show');
+
+                }, 400);
+
+                setTimeout(() => {
+                    location.reload()
+                }, 2100);
+
+            }
+        },
+        error: function (e) {
+            console.log(e);
+        }
+    });
+
+});
+
+$(document).on('click', '#close-topic', function (e) {
+
+    e.preventDefault();
+
+    var id = $(this).data('id');
+
+    $.ajax({
+        url: $(this).data('action'),
+        method: $(this).data('method'),
+        data: {
+            idTopic: id
+        },
+        dataType: 'json',
+        success: function (data) {
+
+            if (data.status == 0) {
+
+                $('.toast-form-contact .svg').html(data.icone)
+                $('.toast-form-contact .title').html(data.title);
+                $('.toast-form-contact .toast-body').html(data.msg)
+                $('.toast-form-contact').removeClass('toast-success').removeClass('toast-error').addClass(data.toast);
+
+                $('.toast-form-contact').toast({
+                    delay: 10000
+                });
+
+                $('.toast-form-contact').toast('show');
+
+            } else {
+
+                setTimeout(() => {
+
+                    $('.toast-form-contact .svg').html(data.icone)
+                    $('.toast-form-contact .title').html(data.title);
+                    $('.toast-form-contact .toast-body').html(data.msg)
+                    $('.toast-form-contact').removeClass('toast-success').removeClass('toast-error').addClass(data.toast);
+
+                    $('.toast-form-contact').toast({
+                        delay: 10000
+                    });
+
+                    $('.toast-form-contact').toast('show');
+
+                }, 400);
+
+                setTimeout(() => {
+                    location.reload()
+                }, 2100);
+
+            }
+        },
+        error: function (e) {
+            console.log(e);
+        }
+    });
+
+});
+
+$(document).on('click', '#close-topic-user', function (e) {
+
+    e.preventDefault();
+
+    var id = $(this).data('id');
+
+    $.ajax({
+        url: $(this).data('action'),
+        method: $(this).data('method'),
+        data: {
+            idTopic: id
+        },
+        dataType: 'json',
+        success: function (data) {
+
+            if (data.status == 0) {
+
+                $('.toast-form-contact .svg').html(data.icone)
+                $('.toast-form-contact .title').html(data.title);
+                $('.toast-form-contact .toast-body').html(data.msg)
+                $('.toast-form-contact').removeClass('toast-success').removeClass('toast-error').addClass(data.toast);
+
+                $('.toast-form-contact').toast({
+                    delay: 10000
+                });
+
+                $('.toast-form-contact').toast('show');
+
+            } else {
+
+                setTimeout(() => {
+
+                    $('.toast-form-contact .svg').html(data.icone)
+                    $('.toast-form-contact .title').html(data.title);
+                    $('.toast-form-contact .toast-body').html(data.msg)
+                    $('.toast-form-contact').removeClass('toast-success').removeClass('toast-error').addClass(data.toast);
+
+                    $('.toast-form-contact').toast({
+                        delay: 10000
+                    });
+
+                    $('.toast-form-contact').toast('show');
+
+                }, 400);
+
+                setTimeout(() => {
+                    location.reload()
+                }, 2100);
+
+            }
+        },
+        error: function (e) {
+            console.log(e);
+        }
+    });
+
+});
+
+$(document).on('click', '#top-topic', function (e) {
+
+    e.preventDefault();
+
+    var id = $(this).data('id');
+
+    $.ajax({
+        url: $(this).data('action'),
+        method: $(this).data('method'),
+        data: {
+            idTopic: id
+        },
+        dataType: 'json',
+        success: function (data) {
+
+            if (data.status == 0) {
+
+                $('.toast-form-contact .svg').html(data.icone)
+                $('.toast-form-contact .title').html(data.title);
+                $('.toast-form-contact .toast-body').html(data.msg)
+                $('.toast-form-contact').removeClass('toast-success').removeClass('toast-error').addClass(data.toast);
+
+                $('.toast-form-contact').toast({
+                    delay: 10000
+                });
+
+                $('.toast-form-contact').toast('show');
+
+            } else {
+
+                setTimeout(() => {
+
+                    $('.toast-form-contact .svg').html(data.icone)
+                    $('.toast-form-contact .title').html(data.title);
+                    $('.toast-form-contact .toast-body').html(data.msg)
+                    $('.toast-form-contact').removeClass('toast-success').removeClass('toast-error').addClass(data.toast);
+
+                    $('.toast-form-contact').toast({
+                        delay: 10000
+                    });
+
+                    $('.toast-form-contact').toast('show');
+
+                }, 400);
+
+                setTimeout(() => {
+                    location.reload()
+                }, 2100);
+
+            }
+        },
+        error: function (e) {
+            console.log(e);
+        }
+    });
+
+});
+
+$(document).on('submit', '#bbp-header-search-form', function (e) {
+
+    e.preventDefault();
+
+    var terms = $(this).find('input[name=bbp_search]').val();
+
+    location.href = $(this).attr('action') + '/' + terms;
+
+});
 
 // ----------- //
