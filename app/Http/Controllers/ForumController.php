@@ -4,6 +4,7 @@
 namespace App\Http\Controllers;
 
 use Validator;
+use App\Models\Pays;
 use App\Models\User;
 use App\Models\Forums;
 use Illuminate\Support\Str;
@@ -28,7 +29,7 @@ class ForumController extends Controller
 
         $forums = Forums::orderBy('forums.id', 'ASC')
             ->join('users', 'users.id', '=', 'forums.user_id')
-            ->select('forums.*', 'users.lastname', 'users.firstname', 'users.avatar')
+            ->select('forums.*', 'users.lastname', 'users.firstname', 'users.avatar', 'users.pseudo')
             ->get();
 
         // Get all
@@ -66,7 +67,7 @@ class ForumController extends Controller
                 ->orderBy('topics_forums.sticky', 'desc')
                 ->orderBy('topics_forums.id', 'desc')
                 ->join('users', 'users.id', '=', 'topics_forums.user_id')
-                ->select('topics_forums.*', 'users.lastname', 'users.firstname', 'users.avatar')
+                ->select('topics_forums.*', 'users.lastname', 'users.firstname', 'users.avatar', 'users.pseudo')
                 ->get();
 
             $topics_replies_all = TopicsReplies::where('forum_id', $forum_categorie->id)
@@ -96,7 +97,7 @@ class ForumController extends Controller
         // Topic du forum
         $forum_topic = TopicsForums::where('url', $url)
             ->join('users', 'users.id', '=', 'topics_forums.user_id')
-            ->select('topics_forums.*', 'users.lastname', 'users.firstname', 'users.avatar', 'users.user_role', 'users.pays')
+            ->select('topics_forums.*', 'users.lastname', 'users.firstname', 'users.avatar', 'users.user_role', 'users.pays', 'users.pseudo')
             ->first();
 
         if (!empty($forum_topic)) {
@@ -122,7 +123,7 @@ class ForumController extends Controller
             $topics = TopicsForums::where('forum_id', $forum_topic->forum_id)
                 ->orderBy('topics_forums.id', 'ASC')
                 ->join('users', 'users.id', '=', 'topics_forums.user_id')
-                ->select('topics_forums.*', 'users.lastname', 'users.firstname', 'users.avatar', 'users.user_role', 'users.pays')
+                ->select('topics_forums.*', 'users.lastname', 'users.firstname', 'users.avatar', 'users.user_role', 'users.pays', 'users.pseudo')
                 ->get();
 
             // Replies par identifiant et par topic
@@ -130,7 +131,7 @@ class ForumController extends Controller
                 ->where('topics_replies.topic_id', $forum_topic->id)
                 ->where('topics_replies.status', 1)
                 ->join('users', 'users.id', '=', 'topics_replies.user_id')
-                ->select('topics_replies.*', 'users.lastname', 'users.firstname', 'users.avatar', 'users.user_role', 'users.pays')
+                ->select('topics_replies.*', 'users.lastname', 'users.firstname', 'users.avatar', 'users.user_role', 'users.pays', 'users.pseudo')
                 ->get();
 
             // Récuperation de la dernière réponse du topic
@@ -138,7 +139,7 @@ class ForumController extends Controller
                 ->where('topics_replies.topic_id', $forum_topic->id)
                 ->where('topics_replies.status', 1)
                 ->join('users', 'users.id', '=', 'topics_replies.user_id')
-                ->select('topics_replies.*', 'users.lastname', 'users.firstname', 'users.avatar', 'users.user_role', 'users.pays')
+                ->select('topics_replies.*', 'users.lastname', 'users.firstname', 'users.avatar', 'users.user_role', 'users.pays', 'users.pseudo')
                 ->orderBy('topics_replies.created_at', 'DESC')
                 ->first();
 
@@ -398,17 +399,40 @@ class ForumController extends Controller
         $forums = Forums::where('forums.title', 'LIKE', "%{$terms}%")
             ->orWhere('forums.content', 'like', "%{$terms}%")
             ->join('users', 'users.id', '=', 'forums.user_id')
-            ->select('forums.*', 'users.lastname', 'users.firstname', 'users.avatar', 'users.user_role', 'users.pays')
+            ->select('forums.*', 'users.lastname', 'users.firstname', 'users.avatar', 'users.user_role', 'users.pays', 'users.pseudo')
             ->orderBy('forums.created_at', 'DESC')
             ->get();
 
         $topics_replies = TopicsReplies::where('topics_replies.content', 'LIKE', "%{$terms}%")
             ->where('topics_replies.status', 1)
             ->join('users', 'users.id', '=', 'topics_replies.user_id')
-            ->select('topics_replies.*', 'users.lastname', 'users.firstname', 'users.avatar', 'users.user_role', 'users.pays')
+            ->select('topics_replies.*', 'users.lastname', 'users.firstname', 'users.avatar', 'users.user_role', 'users.pays', 'users.pseudo')
             ->orderBy('topics_replies.created_at', 'DESC')
             ->get();
 
         return view('forum-search', compact('terms', 'forums', 'topics_replies', 'forums_list', 'topics_recent'));
+    }
+
+    /**
+     * Users profil public
+     */
+    public function showUsersForum($pseudo = null)
+    {
+
+        $user = User::where('pseudo', $pseudo)
+            ->first();
+
+        $topics = TopicsForums::where('user_id', $user->id)
+            ->select('id')
+            ->get();
+
+        $replies = TopicsReplies::where('user_id', $user->id)
+            ->select('id')
+            ->get();
+
+        $pays = Pays::where('alpha2', $user->pays)
+            ->first();
+
+        return view('forum-users', compact('user', 'topics', 'replies', 'pays'));
     }
 }

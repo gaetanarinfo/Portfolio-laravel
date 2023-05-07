@@ -35,6 +35,8 @@ class LogsController extends Controller
     public function logs()
     {
 
+        $notifications = LoginRegisterController::Notif();
+
         $pays = Pays::orderBy('id', 'ASC')->get();
 
         if (Auth::check()) {
@@ -57,7 +59,7 @@ class LogsController extends Controller
             $logs = Logs::where('user_id', Auth::id())
                 ->get();
 
-            return view('auth.logs', compact('user', 'contacts', 'logs', 'pays'));
+            return view('auth.logs', compact('user', 'contacts', 'logs', 'pays', 'notifications'));
         }
 
         return redirect()->route('dashboard');

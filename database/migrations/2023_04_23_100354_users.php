@@ -17,6 +17,19 @@ return new class extends Migration
             $table->string('name');
             $table->string('lastname');
             $table->string('firstname');
+            $table->string('pseudo')->unique();
+
+            $table->string('signature')->nullable(true);
+            $table->date('naissance')->nullable(true);
+            $table->string('website')->nullable(true);
+            $table->integer('civilite');
+            $table->string('biographie')->nullable(true);
+            $table->string('fb_page')->nullable(true);
+            $table->string('twitter_page')->nullable(true);
+            $table->string('insta_page')->nullable(true);
+            $table->string('linkedin_page')->nullable(true);
+            $table->string('youtube_page')->nullable(true);
+
             $table->string('email')->unique();
             $table->string('password');
             $table->string('pays')->default('fr');

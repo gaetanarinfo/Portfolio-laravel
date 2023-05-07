@@ -59,6 +59,11 @@
         <meta name="description" content="{{ config('app.description') }}">
     @break
 
+    @case('forums.users')
+        <title>{{ $user->pseudo }}</title>
+        <meta name="description" content="{{ config('app.description') }}">
+    @break
+
     @default
         <title>{{ config('app.title') }}</title>
         <meta name="description" content="{{ config('app.description') }}">

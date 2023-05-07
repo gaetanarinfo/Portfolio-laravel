@@ -265,4 +265,5 @@ Route::controller(ForumController::class)->group(function () {
     Route::post('/forums/top', 'top_topic')->name('top.topic');
     Route::post('/forums/close/user', 'close_topic_user')->name('close.topic.user');
     Route::get('/forums/search/{terms?}', 'searchForum')->name('forums.search');
+    Route::get('/forums/users/{pseudo?}', 'showUsersForum')->name('forums.users');
 });

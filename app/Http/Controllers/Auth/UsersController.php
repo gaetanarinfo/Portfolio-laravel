@@ -49,8 +49,8 @@ class UsersController extends Controller
         if ($type == 'contacts') {
 
             $user_not_admin = User::where('active', 1)
-            ->where('id', Auth::id())
-            ->first();
+                ->where('id', Auth::id())
+                ->first();
 
             return $contacts = Contact::where('archive', 0)
                 ->join('users', 'users.email', '=', 'contacts.email')
@@ -159,7 +159,9 @@ class UsersController extends Controller
                 'lastname' => 'bail|required',
                 'firstname' => 'bail|required',
                 'pays' => 'bail|required',
-                'active' => 'bail|required'
+                'active' => 'bail|required',
+                'civilite' => 'bail|required',
+                'naissance' => 'bail|required',
             ]);
 
             $error = [];
@@ -174,6 +176,14 @@ class UsersController extends Controller
 
             if (empty($request->lastname)) {
                 $error['lastname'] = array('Le champ nom est obligatoire.');
+            }
+
+            if (empty($request->naissance)) {
+                $error['naissance'] = array('Le champ date de naissance est obligatoire.');
+            }
+
+            if (empty($request->civilite)) {
+                $error['civilite'] = array('Le champ civilité est obligatoire.');
             }
 
             if (empty($request->pays)) {
@@ -219,7 +229,18 @@ class UsersController extends Controller
                         'pays' => $request->pays,
                         'email' => $request->email,
                         'active' => $request->active,
-                        'updated_at' => date('Y/m/d H:i:s')
+                        'updated_at' => date('Y/m/d H:i:s'),
+                        'pseudo' => $request->pseudo,
+                        'civilite' => $request->civilite,
+                        'naissance' => $request->naissance,
+                        'biographie' => $request->biographie,
+                        'signature' => $request->signature,
+                        'website' => $request->website,
+                        'fb_page' => $request->facebook,
+                        'twitter_page' => $request->twitter,
+                        'insta_page' => $request->instagram,
+                        'linkedin_page' => $request->linkedin,
+                        'youtube_page' => $request->youtube,
                     ));
 
                 // Logs
@@ -255,7 +276,9 @@ class UsersController extends Controller
                 'lastname' => 'bail|required',
                 'firstname' => 'bail|required',
                 'pays' => 'bail|required',
-                'active' => 'bail|required'
+                'active' => 'bail|required',
+                'civilite' => 'bail|required',
+                'naissance' => 'bail|required',
             ]);
 
             $error = [];
@@ -276,6 +299,14 @@ class UsersController extends Controller
                 $error['lastname'] = array('Le champ nom est obligatoire.');
             }
 
+            if (empty($request->civilite)) {
+                $error['civilite'] = array('Le champ civilité est obligatoire.');
+            }
+
+            if (empty($request->naissance)) {
+                $error['naissance'] = array('Le champ date de naissance est obligatoire.');
+            }
+
             if (empty($request->firstname)) {
                 $error['firstname'] = array('Le champ prénom est obligatoire.');
             }
@@ -294,7 +325,18 @@ class UsersController extends Controller
                     'pays' => $request->pays,
                     'email' => $request->email,
                     'password' => Hash::make($request->password),
-                    'active' => $request->active
+                    'active' => $request->active,
+                    'pseudo' => $request->pseudo,
+                    'civilite' => $request->civilite,
+                    'naissance' => $request->naissance,
+                    'biographie' => $request->biographie,
+                    'signature' => $request->signature,
+                    'website' => $request->website,
+                    'fb_page' => $request->facebook,
+                    'twitter_page' => $request->twitter,
+                    'insta_page' => $request->instagram,
+                    'linkedin_page' => $request->linkedin,
+                    'youtube_page' => $request->youtube,
                 ));
 
                 // Logs
@@ -1117,7 +1159,9 @@ class UsersController extends Controller
                     'email' => 'bail|required|email',
                     'lastname' => 'bail|required',
                     'pays' => 'bail|required',
-                    'firstname' => 'bail|required'
+                    'firstname' => 'bail|required',
+                    'civilite' => 'bail|required',
+                    'naissance' => 'bail|required',
                 ]);
 
 
@@ -1155,7 +1199,18 @@ class UsersController extends Controller
                             'firstname' => $request->firstname,
                             'pays' => $request->pays,
                             'email' => $request->email,
-                            'updated_at' => date('Y/m/d H:i:s')
+                            'updated_at' => date('Y/m/d H:i:s'),
+                            'civilite' => $request->civilite,
+                            'pseudo' => $request->pseudo,
+                            'naissance' => $request->naissance,
+                            'biographie' => $request->biographie,
+                            'signature' => $request->signature,
+                            'website' => $request->website,
+                            'fb_page' => $request->facebook,
+                            'twitter_page' => $request->twitter,
+                            'insta_page' => $request->instagram,
+                            'linkedin_page' => $request->linkedin,
+                            'youtube_page' => $request->youtube,
                         ));
 
                     // Logs

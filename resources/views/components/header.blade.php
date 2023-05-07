@@ -39,34 +39,31 @@
                             class="mr-2 fa-solid fa-heart text-danger"></i>Youtube</a>
                 </li>
 
+                <li class="nav-item @if (Route::current()->getName() == 'forum' || Route::current()->getName() == 'forums.categorie' || Route::current()->getName() == 'forums.topic') active @endif">
+                    <a href="/forums" class="nav-link font-weight-bold">Forums</a>
+                </li>
+
                 @if (Auth::check())
                     <li class="nav-item @if (Route::current()->getName() == 'dashboard') active @endif">
-                        <a href="/dashboard" class="nav-link font-weight-bold" data-animate="scrolling"><i
+                        <a href="/dashboard" class="nav-link font-weight-bold"><i
                                 class="mr-2 fa-solid fa-dashboard"></i>Dashboard</a>
                     </li>
 
                     <li class="nav-item">
-                        <a href="/logout" class="nav-link font-weight-bold" data-animate="scrolling"><i
+                        <a href="/logout" class="nav-link font-weight-bold"><i
                                 class="mr-2 fa-solid fa-arrow-right-from-bracket"></i>Déconnexion</a>
                     </li>
                 @else
                     <li class="nav-item @if (Route::current()->getName() == 'register') active @endif">
-                        <a href="/register" class="nav-link font-weight-bold" data-animate="scrolling"><i
+                        <a href="/register" class="nav-link font-weight-bold"><i
                                 class="mr-2 fa-solid fa-user-plus"></i>S'inscrire</a>
                     </li>
 
                     <li class="nav-item @if (Route::current()->getName() == 'login') active @endif">
-                        <a href="/login" class="nav-link font-weight-bold" data-animate="scrolling"><i
+                        <a href="/login" class="nav-link font-weight-bold"><i
                                 class="mr-2 fa-solid fa-user"></i>Se connecter</a>
                     </li>
                 @endif
-
-                <li class="nav-item @if (Route::current()->getName() == 'cart') active @endif">
-                    <a @if (!empty($_COOKIE['product_formule'])) href="/cart" @endif
-                        class="nav-link font-weight-bold @if (empty($_COOKIE['product_formule'])) disabled @endif"><i
-                            class="fa-solid fa-cart-shopping"></i>
-                    </a>
-                </li>
 
             </ul>
 

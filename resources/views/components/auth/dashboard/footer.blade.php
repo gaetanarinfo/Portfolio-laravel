@@ -40,7 +40,7 @@
         <!-- Edit user Modal-->
         <div class="modal fade" id="editUserModal" tabindex="-1" role="dialog" aria-hidden="true">
 
-            <div class="modal-dialog" role="document">
+            <div class="modal-dialog modal-lg" role="document">
 
                 <div class="modal-content">
 
@@ -78,31 +78,127 @@
                             </div>
 
                             <div class="form-group">
-                                <label for="firstname" class="col-form-label">Prénom :</label>
-                                <input type="text" class="form-control" id="firstname" name="firstname">
-                                <span class="error-text text-danger firstname_error"></span>
+                                <label for="text" class="col-form-label">Pseudo :</label>
+                                <input type="text" class="form-control" id="pseudo" name="pseudo">
+                                <span class="error-text text-danger pseudo_error"></span>
+                            </div>
+
+                            <div class="row">
+
+                                <div class="form-group col">
+                                    <label for="email" class="col-form-label">Adresse email :</label>
+                                    <input type="text" class="form-control" id="email" name="email">
+                                    <span class="error-text text-danger email_error"></span>
+                                </div>
+
+                                <div class="form-group col">
+                                    <label for="pays" class="col-form-label">Pays :</label>
+                                    <select name="pays" id="pays" class="form-control">
+                                        @foreach ($pays as $data)
+                                            <option value="{{ $data->alpha2 }}"
+                                                @if ($data->alpha2 == $user->pays) selected @elseif(empty($user->pays) && $data->alpha2 == 'FR') selected @endif>
+                                                {{ $data->nom_fr_fr }}</option>
+                                        @endforeach
+                                    </select>
+                                    <span class="error-text text-danger pays_error"></span>
+                                </div>
+
+                            </div>
+
+                            <div class="row">
+
+                                <div class="form-group col">
+                                    <label for="firstname" class="col-form-label">Prénom :</label>
+                                    <input type="text" class="form-control" id="firstname" name="firstname">
+                                    <span class="error-text text-danger firstname_error"></span>
+                                </div>
+
+                                <div class="form-group col">
+                                    <label for="lastname" class="col-form-label">Nom :</label>
+                                    <input type="text" class="form-control" id="lastname" name="lastname">
+                                    <span class="error-text text-danger lastname_error"></span>
+                                </div>
+
+                            </div>
+
+                            <div class="row">
+
+                                <div class="form-group col">
+                                    <label for="civilite" class="col-form-label">Civilité :</label>
+                                    <select name="civilite" id="civilite" class="form-control">
+                                        <option value="2">Homme</option>
+                                        <option value="1">Femme</option>
+                                    </select>
+                                    <span class="error-text text-danger civilite_error"></span>
+                                </div>
+
+                                <div class="form-group col">
+                                    <label for="naissance" class="col-form-label">Date de naissance :</label>
+                                    <input class="form-control" type="date" id="naissance" name="naissance"
+                                        value="">
+                                    <span class="error-text text-danger naissance_error"></span>
+                                </div>
+
                             </div>
 
                             <div class="form-group">
-                                <label for="lastname" class="col-form-label">Nom :</label>
-                                <input type="text" class="form-control" id="lastname" name="lastname">
-                                <span class="error-text text-danger lastname_error"></span>
+                                <label for="biographie" class="col-form-label">Biographie :</label>
+                                <textarea class="form-control" name="biographie" id="biographie" cols="30" rows="10"></textarea>
+                                <span class="error-text text-danger biographie_error"></span>
                             </div>
 
                             <div class="form-group">
-                                <label for="email" class="col-form-label">Adresse email :</label>
-                                <input type="text" class="form-control" id="email" name="email">
-                                <span class="error-text text-danger email_error"></span>
+                                <label for="signature" class="col-form-label">Signature :</label>
+                                <textarea class="form-control" name="signature" id="signature" cols="30" rows="10"></textarea>
+                                <span class="error-text text-danger signature_error"></span>
                             </div>
 
-                            <div class="form-group">
-                                <label for="pays" class="col-form-label">Pays :</label>
-                                <select name="pays" id="pays" class="form-control">
-                                    @foreach ($pays as $data)
-                                        <option value="{{ $data->alpha2 }}">{{ $data->nom_fr_fr }}</option>
-                                    @endforeach
-                                </select>
-                                <span class="error-text text-danger pays_error"></span>
+                            <div class="row">
+
+                                <div class="form-group col">
+                                    <label for="website" class="col-form-label">Site internet :</label>
+                                    <input type="text" class="form-control" id="website" name="website">
+                                    <span class="error-text text-danger website_error"></span>
+                                </div>
+
+                                <div class="form-group col">
+                                    <label for="facebook" class="col-form-label">Page Facebook :</label>
+                                    <input type="text" class="form-control" id="facebook" name="facebook">
+                                    <span class="error-text text-danger facebook_error"></span>
+                                </div>
+
+                            </div>
+
+                            <div class="row">
+
+                                <div class="form-group col">
+                                    <label for="twitter" class="col-form-label">Page Twitter :</label>
+                                    <input type="text" class="form-control" id="twitter" name="twitter">
+                                    <span class="error-text text-danger twitter_error"></span>
+                                </div>
+
+                                <div class="form-group col">
+                                    <label for="instagram" class="col-form-label">Page Instagram :</label>
+                                    <input type="text" class="form-control" id="instagram" name="instagram">
+                                    <span class="error-text text-danger instagram_error"></span>
+                                </div>
+
+                            </div>
+
+                            <div class="row">
+
+                                <div class="form-group col">
+                                    <label for="linkedin" class="col-form-label">Page Linkedin :</label>
+                                    <input type="text" class="form-control" id="linkedin" name="linkedin">
+                                    <span class="error-text text-danger linkedin_error"></span>
+                                </div>
+
+                                <div class="form-group col">
+                                    <label for="youtube" class="col-form-label">Chaîne Youtube :</label>
+                                    <input type="text" class="form-control" id="youtube" name="youtube">
+                                    <span class="error-text text-danger youtube_error"></span>
+                                </div>
+
                             </div>
 
                             <div class="form-group">
@@ -170,7 +266,7 @@
         <!-- Add user Modal-->
         <div class="modal fade" id="addUserModal" tabindex="-1" role="dialog" aria-hidden="true">
 
-            <div class="modal-dialog" role="document">
+            <div class="modal-dialog modal-lg" role="document">
 
                 <div class="modal-content">
 
@@ -208,51 +304,150 @@
                             </div>
 
                             <div class="form-group">
-                                <label for="firstname" class="col-form-label">Prénom :</label>
-                                <input type="text" class="form-control" id="firstname" name="firstname">
-                                <span class="error-text text-danger firstname_error"></span>
+                                <label for="text" class="col-form-label">Pseudo :</label>
+                                <input type="text" class="form-control" id="pseudo" name="pseudo">
+                                <span class="error-text text-danger pseudo_error"></span>
+                            </div>
+
+                            <div class="row">
+
+                                <div class="form-group col">
+                                    <label for="email" class="col-form-label">Adresse email :</label>
+                                    <input type="text" class="form-control" id="email" name="email">
+                                    <span class="error-text text-danger email_error"></span>
+                                </div>
+
+                                <div class="form-group col">
+                                    <label for="password" class="col-form-label">Mot de passe :</label>
+                                    <input type="password" class="form-control" id="password" name="password">
+                                    <span class="error-text text-danger password_error"></span>
+                                </div>
+
+                            </div>
+
+                            <div class="row">
+
+                                <div class="form-group col">
+                                    <label for="firstname" class="col-form-label">Prénom :</label>
+                                    <input type="text" class="form-control" id="firstname" name="firstname">
+                                    <span class="error-text text-danger firstname_error"></span>
+                                </div>
+
+                                <div class="form-group col">
+                                    <label for="lastname" class="col-form-label">Nom :</label>
+                                    <input type="text" class="form-control" id="lastname" name="lastname">
+                                    <span class="error-text text-danger lastname_error"></span>
+                                </div>
+
+                            </div>
+
+                            <div class="row">
+
+                                <div class="form-group col">
+                                    <label for="civilite" class="col-form-label">Civilité :</label>
+                                    <select name="civilite" id="civilite" class="form-control">
+                                        <option value="2">Homme</option>
+                                        <option value="1">Femme</option>
+                                    </select>
+                                    <span class="error-text text-danger civilite_error"></span>
+                                </div>
+
+                                <div class="form-group col">
+                                    <label for="naissance" class="col-form-label">Date de naissance :</label>
+                                    <input class="form-control" type="date" id="naissance" name="naissance"
+                                        value="">
+                                    <span class="error-text text-danger naissance_error"></span>
+                                </div>
+
                             </div>
 
                             <div class="form-group">
-                                <label for="lastname" class="col-form-label">Nom :</label>
-                                <input type="text" class="form-control" id="lastname" name="lastname">
-                                <span class="error-text text-danger lastname_error"></span>
+                                <label for="biographie" class="col-form-label">Biographie :</label>
+                                <textarea class="form-control" name="biographie" id="biographie" cols="30" rows="10"></textarea>
+                                <span class="error-text text-danger biographie_error"></span>
                             </div>
 
                             <div class="form-group">
-                                <label for="email" class="col-form-label">Adresse email :</label>
-                                <input type="text" class="form-control" id="email" name="email">
-                                <span class="error-text text-danger email_error"></span>
+                                <label for="signature" class="col-form-label">Signature :</label>
+                                <textarea class="form-control" name="signature" id="signature" cols="30" rows="10"></textarea>
+                                <span class="error-text text-danger signature_error"></span>
                             </div>
 
-                            <div class="form-group">
-                                <label for="password" class="col-form-label">Mot de passe :</label>
-                                <input type="password" class="form-control" id="password" name="password">
-                                <span class="error-text text-danger password_error"></span>
+                            <div class="row">
+
+                                <div class="form-group col">
+                                    <label for="website" class="col-form-label">Site internet :</label>
+                                    <input type="text" class="form-control" id="website" name="website">
+                                    <span class="error-text text-danger website_error"></span>
+                                </div>
+
+                                <div class="form-group col">
+                                    <label for="facebook" class="col-form-label">Page Facebook :</label>
+                                    <input type="text" class="form-control" id="facebook" name="facebook">
+                                    <span class="error-text text-danger facebook_error"></span>
+                                </div>
+
                             </div>
 
-                            <div class="form-group">
-                                <label for="pays" class="col-form-label">Pays :</label>
-                                <select name="pays" id="pays" class="form-control">
-                                    @foreach ($pays as $data)
-                                        <option value="{{ $data->alpha2 }}"
-                                            @if ($data->alpha2 == 'FR') selected @endif>
-                                            {{ $data->nom_fr_fr }}</option>
-                                    @endforeach
-                                </select>
-                                <span class="error-text text-danger pays_error"></span>
+                            <div class="row">
+
+                                <div class="form-group col">
+                                    <label for="twitter" class="col-form-label">Page Twitter :</label>
+                                    <input type="text" class="form-control" id="twitter" name="twitter">
+                                    <span class="error-text text-danger twitter_error"></span>
+                                </div>
+
+                                <div class="form-group col">
+                                    <label for="instagram" class="col-form-label">Page Instagram :</label>
+                                    <input type="text" class="form-control" id="instagram" name="instagram">
+                                    <span class="error-text text-danger instagram_error"></span>
+                                </div>
+
                             </div>
 
-                            <div class="form-group">
+                            <div class="row">
 
-                                <label for="active" class="col-form-label">Statut du compte :</label>
+                                <div class="form-group col">
+                                    <label for="linkedin" class="col-form-label">Page Linkedin :</label>
+                                    <input type="text" class="form-control" id="linkedin" name="linkedin">
+                                    <span class="error-text text-danger linkedin_error"></span>
+                                </div>
 
-                                <select class="form-control" name="active" id="active">
-                                    <option value="0">Inactif</option>
-                                    <option value="1">Actif</option>
-                                </select>
+                                <div class="form-group col">
+                                    <label for="youtube" class="col-form-label">Chaîne Youtube :</label>
+                                    <input type="text" class="form-control" id="youtube" name="youtube">
+                                    <span class="error-text text-danger youtube_error"></span>
+                                </div>
 
-                                <span class="error-text text-danger active_error"></span>
+                            </div>
+
+
+                            <div class="row">
+
+                                <div class="form-group col">
+                                    <label for="pays" class="col-form-label">Pays :</label>
+                                    <select name="pays" id="pays" class="form-control">
+                                        @foreach ($pays as $data)
+                                            <option value="{{ $data->alpha2 }}"
+                                                @if ($data->alpha2 == 'FR') selected @endif>
+                                                {{ $data->nom_fr_fr }}</option>
+                                        @endforeach
+                                    </select>
+                                    <span class="error-text text-danger pays_error"></span>
+                                </div>
+
+                                <div class="form-group col">
+
+                                    <label for="active" class="col-form-label">Statut du compte :</label>
+
+                                    <select class="form-control" name="active" id="active">
+                                        <option value="0">Inactif</option>
+                                        <option value="1">Actif</option>
+                                    </select>
+
+                                    <span class="error-text text-danger active_error"></span>
+
+                                </div>
 
                             </div>
 
@@ -602,11 +797,10 @@
     </div>
 @endif
 
-
 <!-- Edit user Modal-->
 <div class="modal fade" id="editUserLoggedModal" tabindex="-1" role="dialog" aria-hidden="true">
 
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog modal-lg" role="document">
 
         <div class="modal-content">
 
@@ -644,33 +838,127 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="firstname" class="col-form-label">Prénom :</label>
-                        <input type="text" class="form-control" id="firstname" name="firstname">
-                        <span class="error-text text-danger firstname_error"></span>
+                        <label for="text" class="col-form-label">Pseudo :</label>
+                        <input type="text" class="form-control" id="pseudo" name="pseudo">
+                        <span class="error-text text-danger pseudo_error"></span>
+                    </div>
+
+                    <div class="row">
+
+                        <div class="form-group col">
+                            <label for="firstname" class="col-form-label">Prénom :</label>
+                            <input type="text" class="form-control" id="firstname" name="firstname">
+                            <span class="error-text text-danger firstname_error"></span>
+                        </div>
+
+                        <div class="form-group col">
+                            <label for="lastname" class="col-form-label">Nom :</label>
+                            <input type="text" class="form-control" id="lastname" name="lastname">
+                            <span class="error-text text-danger lastname_error"></span>
+                        </div>
+
+                    </div>
+
+                    <div class="row">
+
+                        <div class="form-group col">
+                            <label for="civilite" class="col-form-label">Civilité :</label>
+                            <select name="civilite" id="civilite" class="form-control">
+                                <option value="2">Homme</option>
+                                <option value="1">Femme</option>
+                            </select>
+                            <span class="error-text text-danger civilite_error"></span>
+                        </div>
+
+                        <div class="form-group col">
+                            <label for="naissance" class="col-form-label">Date de naissance :</label>
+                            <input class="form-control" type="date" id="naissance" name="naissance"
+                                value="">
+                            <span class="error-text text-danger naissance_error"></span>
+                        </div>
+
                     </div>
 
                     <div class="form-group">
-                        <label for="lastname" class="col-form-label">Nom :</label>
-                        <input type="text" class="form-control" id="lastname" name="lastname">
-                        <span class="error-text text-danger lastname_error"></span>
+                        <label for="biographie" class="col-form-label">Biographie :</label>
+                        <textarea class="form-control" name="biographie" id="biographie" cols="30" rows="10"></textarea>
+                        <span class="error-text text-danger biographie_error"></span>
                     </div>
 
                     <div class="form-group">
-                        <label for="pays" class="col-form-label">Pays :</label>
-                        <select name="pays" id="pays" class="form-control">
-                            @foreach ($pays as $data)
-                                <option value="{{ $data->alpha2 }}"
-                                    @if ($data->alpha2 == $user->pays) selected @elseif(empty($user->pays) && $data->alpha2 == 'FR') selected @endif>
-                                    {{ $data->nom_fr_fr }}</option>
-                            @endforeach
-                        </select>
-                        <span class="error-text text-danger pays_error"></span>
+                        <label for="signature" class="col-form-label">Signature :</label>
+                        <textarea class="form-control" name="signature" id="signature" cols="30" rows="10"></textarea>
+                        <span class="error-text text-danger signature_error"></span>
                     </div>
 
-                    <div class="form-group">
-                        <label for="email" class="col-form-label">Adresse email :</label>
-                        <input type="text" class="form-control" id="email" name="email">
-                        <span class="error-text text-danger email_error"></span>
+                    <div class="row">
+
+                        <div class="form-group col">
+                            <label for="website" class="col-form-label">Site internet :</label>
+                            <input type="text" class="form-control" id="website" name="website">
+                            <span class="error-text text-danger website_error"></span>
+                        </div>
+
+                        <div class="form-group col">
+                            <label for="facebook" class="col-form-label">Page Facebook :</label>
+                            <input type="text" class="form-control" id="facebook" name="facebook">
+                            <span class="error-text text-danger facebook_error"></span>
+                        </div>
+
+                    </div>
+
+                    <div class="row">
+
+                        <div class="form-group col">
+                            <label for="twitter" class="col-form-label">Page Twitter :</label>
+                            <input type="text" class="form-control" id="twitter" name="twitter">
+                            <span class="error-text text-danger twitter_error"></span>
+                        </div>
+
+                        <div class="form-group col">
+                            <label for="instagram" class="col-form-label">Page Instagram :</label>
+                            <input type="text" class="form-control" id="instagram" name="instagram">
+                            <span class="error-text text-danger instagram_error"></span>
+                        </div>
+
+                    </div>
+
+                    <div class="row">
+
+                        <div class="form-group col">
+                            <label for="linkedin" class="col-form-label">Page Linkedin :</label>
+                            <input type="text" class="form-control" id="linkedin" name="linkedin">
+                            <span class="error-text text-danger linkedin_error"></span>
+                        </div>
+
+                        <div class="form-group col">
+                            <label for="youtube" class="col-form-label">Chaîne Youtube :</label>
+                            <input type="text" class="form-control" id="youtube" name="youtube">
+                            <span class="error-text text-danger youtube_error"></span>
+                        </div>
+
+                    </div>
+
+                    <div class="row">
+
+                        <div class="form-group col">
+                            <label for="pays" class="col-form-label">Pays :</label>
+                            <select name="pays" id="pays" class="form-control">
+                                @foreach ($pays as $data)
+                                    <option value="{{ $data->alpha2 }}"
+                                        @if ($data->alpha2 == $user->pays) selected @elseif(empty($user->pays) && $data->alpha2 == 'FR') selected @endif>
+                                        {{ $data->nom_fr_fr }}</option>
+                                @endforeach
+                            </select>
+                            <span class="error-text text-danger pays_error"></span>
+                        </div>
+
+                        <div class="form-group col">
+                            <label for="email" class="col-form-label">Adresse email :</label>
+                            <input type="text" class="form-control" id="email" name="email">
+                            <span class="error-text text-danger email_error"></span>
+                        </div>
+
                     </div>
 
                 </form>

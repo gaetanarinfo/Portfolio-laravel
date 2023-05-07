@@ -64,7 +64,7 @@
             </form>
             <!-- /form -->
 
-            <div style="width: 100%;display: flex;justify-content: center;">
+            <div id="form-login-socials" style="width: 100%;display: flex;justify-content: center;">
 
                 <div style="max-width: 230px;display: flex;flex-direction: column;">
 

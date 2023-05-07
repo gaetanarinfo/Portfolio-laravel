@@ -76,6 +76,8 @@ class LoginRegisterController extends Controller
         $validator = Validator::make($request->all(), [
             'lastname' => 'bail|required',
             'firstname' => 'bail|required',
+            'civilite' => 'bail|required',
+            'pseudo' => 'bail|required',
             'email' => 'bail|required|email',
             'password' => 'bail|required|min:8',
             'password_confirmation' => 'bail|required|min:8',
@@ -89,6 +91,18 @@ class LoginRegisterController extends Controller
 
         if (empty($request->firstname)) {
             $error['firstname'] = array('Le champ prénom est obligatoire.');
+        }
+
+        if (empty($request->civilite)) {
+            $error['civilite'] = array('Le champ civilité est obligatoire.');
+        }
+
+        if (empty($request->naissance)) {
+            $error['naissance'] = array('Le champ date de naissance est obligatoire.');
+        }
+
+        if (empty($request->pseudo)) {
+            $error['pseudo'] = array('Le champ pseudo est obligatoire.');
         }
 
         if (empty($request->email)) {
@@ -128,6 +142,9 @@ class LoginRegisterController extends Controller
                 User::create([
                     'lastname' => $request->lastname,
                     'firstname' => $request->firstname,
+                    'civilite' => $request->civilite,
+                    'naissance' => $request->naissance,
+                    'pseudo' => $request->pseudo,
                     'email' => $request->email,
                     'password' => Hash::make($request->password)
                 ]);
@@ -250,6 +267,8 @@ class LoginRegisterController extends Controller
                 ->limit(6)
                 ->get();
 
+            $notifications = $this->Notif();
+
             if ($user->admin == 1) {
 
                 $months = DB::table('months')->get();
@@ -305,7 +324,6 @@ class LoginRegisterController extends Controller
                     ->where('Financial_Status', 'Refund')
                     ->sum('Item_Price');
 
-                $notifications = $this->Notif();
 
                 return view('auth.dashboard', compact('user', 'commandes_graph', 'commandes_graph_refund', 'year', 'total_commandes', 'totals_commandes', 'total_commandes_refund', 'contacts', 'pays', 'notifications'));
             } else {

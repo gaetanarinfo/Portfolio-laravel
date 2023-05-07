@@ -174,6 +174,14 @@
                                         data-firstname="{{ $data->firstname }}" data-email="{{ $data->email }}"
                                         data-avatar="{{ $data->avatar }}" data-pays="{{ $data->pays }}"
                                         data-active="{{ $data->active }}" data-edit="1"
+                                        data-naissance="{{ $data->naissance }}" data-civilite="{{ $data->civilite }}"
+                                        data-pseudo="{{ $data->pseudo }}" data-website="{{ $data->website }}"
+                                        data-biographie="{{ $data->biographie }}"
+                                        data-signature="{{ $data->signature }}" data-facebook="{{ $data->fb_page }}"
+                                        data-twitter="{{ $data->twitter_page }}"
+                                        data-instagram="{{ $data->insta_page }}"
+                                        data-linkedin="{{ $data->linkedin_page }}"
+                                        data-youtube="{{ $data->youtube_page }}"
                                         class="btn modal-btn btn-warning btn-icon-split mr-2">
                                         <span class="icon text-white-50">
                                             <i class="fas fa-exclamation-triangle"></i>

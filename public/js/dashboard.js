@@ -39,6 +39,20 @@ $(document).ready(function () {
             $('#editUserLoggedModal #firstname').val($(this).data('firstname'));
             $('#editUserLoggedModal #lastname').val($(this).data('lastname'));
             $('#editUserLoggedModal #email').val($(this).data('email'));
+            $('#editUserLoggedModal #pays').val($(this).data('pays')).change();
+            $('#editUserLoggedModal #pseudo').val($(this).data('pseudo'));
+
+            $('#editUserLoggedModal #civilite').val($(this).data('civilite')).change();
+            $('#editUserLoggedModal #naissance').val($(this).data('naissance'));
+            $('#editUserLoggedModal #biographie').val($(this).data('biographie'));
+            $('#editUserLoggedModal #website').val($(this).data('website'));
+            $('#editUserLoggedModal #signature').val($(this).data('signature'));
+
+            $('#editUserLoggedModal #facebook').val($(this).data('facebook'));
+            $('#editUserLoggedModal #twitter').val($(this).data('twitter'));
+            $('#editUserLoggedModal #instagram').val($(this).data('instagram'));
+            $('#editUserLoggedModal #linkedin').val($(this).data('linkedin'));
+            $('#editUserLoggedModal #youtube').val($(this).data('youtube'));
 
         }
 
@@ -86,7 +100,19 @@ $(document).ready(function () {
             $('#editUserModal #lastname').val($(this).data('lastname'));
             $('#editUserModal #email').val($(this).data('email'));
             $('#editUserModal #pays').val($(this).data('pays')).change();
+            $('#editUserModal #pseudo').val($(this).data('pseudo'));
             $('#editUserModal #active').val($(this).data('active')).change();
+            $('#editUserModal #civilite').val($(this).data('civilite')).change();
+            $('#editUserModal #naissance').val($(this).data('naissance'));
+            $('#editUserModal #biographie').val($(this).data('biographie'));
+            $('#editUserModal #website').val($(this).data('website'));
+            $('#editUserModal #signature').val($(this).data('signature'));
+
+            $('#editUserModal #facebook').val($(this).data('facebook'));
+            $('#editUserModal #twitter').val($(this).data('twitter'));
+            $('#editUserModal #instagram').val($(this).data('instagram'));
+            $('#editUserModal #linkedin').val($(this).data('linkedin'));
+            $('#editUserModal #youtube').val($(this).data('youtube'));
 
         }
 
@@ -321,7 +347,20 @@ $(document).ready(function () {
             lastname = $('#editUserModal #lastname').val(),
             email = $('#editUserModal #email').val(),
             pays = $('#editUserModal #pays').val(),
-            active = $('#editUserModal #active').val()
+            active = $('#editUserModal #active').val(),
+            pseudo = $('#editUserModal #pseudo').val(),
+
+            website = $('#editUserModal #website').val(),
+            civilite = $('#editUserModal #civilite').val(),
+            biographie = $('#editUserModal #biographie').val(),
+            naissance = $('#editUserModal #naissance').val(),
+            signature = $('#editUserModal #signature').val(),
+
+            facebook = $('#editUserModal #facebook').val(),
+            twitter = $('#editUserModal #twitter').val(),
+            instagram = $('#editUserModal #instagram').val(),
+            linkedin = $('#editUserModal #linkedin').val(),
+            youtube = $('#editUserModal #youtube').val()
 
         if (fichier.length == 1) {
             for (let i = 0; i < fichier.length; i++) {
@@ -337,6 +376,19 @@ $(document).ready(function () {
             if (e.name != "pays") form_data.append(e.name, e.value);
             if (e.name != "email") form_data.append(e.name, e.value);
             if (e.name != "active") form_data.append(e.name, e.value);
+            if (e.name != "pseudo") form_data.append(e.name, e.value);
+
+            if (e.name != "website") form_data.append(e.name, e.value);
+            if (e.name != "civilite") form_data.append(e.name, e.value);
+            if (e.name != "biographie") form_data.append(e.name, e.value);
+            if (e.name != "naissance") form_data.append(e.name, e.value);
+            if (e.name != "signature") form_data.append(e.name, e.value);
+
+            if (e.name != "facebook") form_data.append(e.name, e.value);
+            if (e.name != "twitter") form_data.append(e.name, e.value);
+            if (e.name != "instagram") form_data.append(e.name, e.value);
+            if (e.name != "linkedin") form_data.append(e.name, e.value);
+            if (e.name != "youtube") form_data.append(e.name, e.value);
 
         });
 
@@ -346,6 +398,19 @@ $(document).ready(function () {
         form_data.append('pays', pays);
         form_data.append('email', email);
         form_data.append('active', active);
+        form_data.append('pseudo', pseudo);
+
+        form_data.append('website', website);
+        form_data.append('civilite', civilite);
+        form_data.append('biographie', biographie);
+        form_data.append('naissance', naissance);
+        form_data.append('signature', signature);
+
+        form_data.append('facebook', facebook);
+        form_data.append('twitter', twitter);
+        form_data.append('instagram', instagram);
+        form_data.append('linkedin', linkedin);
+        form_data.append('youtube', youtube);
 
         $.ajax({
             url: '/show-users/edit',
@@ -492,7 +557,18 @@ $(document).ready(function () {
             pays = $('#addUserModal #pays').val(),
             email = $('#addUserModal #email').val(),
             active = $('#addUserModal #active').val(),
-            password = $('#addUserModal #password').val()
+            password = $('#addUserModal #password').val(),
+            pseudo = $('#addUserModal #pseudo').val(),
+            website = $('#addUserModal #website').val(),
+            civilite = $('#addUserModal #civilite').val(),
+            biographie = $('#addUserModal #biographie').val(),
+            naissance = $('#addUserModal #naissance').val(),
+            signature = $('#addUserModal #signature').val(),
+            facebook = $('#addUserModal #facebook').val(),
+            twitter = $('#addUserModal #twitter').val(),
+            instagram = $('#addUserModal #instagram').val(),
+            linkedin = $('#addUserModal #linkedin').val(),
+            youtube = $('#addUserModal #youtube').val()
 
         if (fichier_add.length == 1) {
             for (let i = 0; i < fichier_add.length; i++) {
@@ -508,6 +584,19 @@ $(document).ready(function () {
             if (e.name != "pays") form_data.append(e.name, e.value);
             if (e.name != "active") form_data.append(e.name, e.value);
             if (e.name != "password") form_data.append(e.name, e.value);
+            if (e.name != "pseudo") form_data.append(e.name, e.value);
+
+            if (e.name != "website") form_data.append(e.name, e.value);
+            if (e.name != "civilite") form_data.append(e.name, e.value);
+            if (e.name != "biographie") form_data.append(e.name, e.value);
+            if (e.name != "naissance") form_data.append(e.name, e.value);
+            if (e.name != "signature") form_data.append(e.name, e.value);
+
+            if (e.name != "facebook") form_data.append(e.name, e.value);
+            if (e.name != "twitter") form_data.append(e.name, e.value);
+            if (e.name != "instagram") form_data.append(e.name, e.value);
+            if (e.name != "linkedin") form_data.append(e.name, e.value);
+            if (e.name != "youtube") form_data.append(e.name, e.value);
 
         });
 
@@ -517,6 +606,19 @@ $(document).ready(function () {
         form_data.append('email', email);
         form_data.append('active', active);
         form_data.append('password', password);
+        form_data.append('pseudo', pseudo);
+
+        form_data.append('website', website);
+        form_data.append('civilite', civilite);
+        form_data.append('biographie', biographie);
+        form_data.append('naissance', naissance);
+        form_data.append('signature', signature);
+
+        form_data.append('facebook', facebook);
+        form_data.append('twitter', twitter);
+        form_data.append('instagram', instagram);
+        form_data.append('linkedin', linkedin);
+        form_data.append('youtube', youtube);
 
         $.ajax({
             url: '/show-users/add',
@@ -530,6 +632,8 @@ $(document).ready(function () {
                 $(document).find('.error-text').hide();
             },
             success: function (data) {
+
+                console.log(data);
 
                 if (data.status == 0) {
 
@@ -1540,7 +1644,20 @@ $(document).ready(function () {
             firstname = $('#editUserLoggedModal #firstname').val(),
             lastname = $('#editUserLoggedModal #lastname').val(),
             pays = $('#editUserLoggedModal #pays').val(),
-            email = $('#editUserLoggedModal #email').val()
+            email = $('#editUserLoggedModal #email').val(),
+            pseudo = $('#editUserLoggedModal #pseudo').val(),
+
+            website = $('#editUserLoggedModal #website').val(),
+            civilite = $('#editUserLoggedModal #civilite').val(),
+            biographie = $('#editUserLoggedModal #biographie').val(),
+            naissance = $('#editUserLoggedModal #naissance').val(),
+            signature = $('#editUserLoggedModal #signature').val(),
+
+            facebook = $('#editUserLoggedModal #facebook').val(),
+            twitter = $('#editUserLoggedModal #twitter').val(),
+            instagram = $('#editUserLoggedModal #instagram').val(),
+            linkedin = $('#editUserLoggedModal #linkedin').val(),
+            youtube = $('#editUserLoggedModal #youtube').val()
 
         if (fichier.length == 1) {
             for (let i = 0; i < fichier.length; i++) {
@@ -1554,6 +1671,19 @@ $(document).ready(function () {
             if (e.name != "lastname") form_data.append(e.name, e.value);
             if (e.name != "pays") form_data.append(e.name, e.value);
             if (e.name != "email") form_data.append(e.name, e.value);
+            if (e.name != "pseudo") form_data.append(e.name, e.value);
+
+            if (e.name != "website") form_data.append(e.name, e.value);
+            if (e.name != "civilite") form_data.append(e.name, e.value);
+            if (e.name != "biographie") form_data.append(e.name, e.value);
+            if (e.name != "naissance") form_data.append(e.name, e.value);
+            if (e.name != "signature") form_data.append(e.name, e.value);
+
+            if (e.name != "facebook") form_data.append(e.name, e.value);
+            if (e.name != "twitter") form_data.append(e.name, e.value);
+            if (e.name != "instagram") form_data.append(e.name, e.value);
+            if (e.name != "linkedin") form_data.append(e.name, e.value);
+            if (e.name != "youtube") form_data.append(e.name, e.value);
 
         });
 
@@ -1561,6 +1691,19 @@ $(document).ready(function () {
         form_data.append('lastname', lastname);
         form_data.append('pays', pays);
         form_data.append('email', email);
+        form_data.append('pseudo', pseudo);
+
+        form_data.append('website', website);
+        form_data.append('civilite', civilite);
+        form_data.append('biographie', biographie);
+        form_data.append('naissance', naissance);
+        form_data.append('signature', signature);
+
+        form_data.append('facebook', facebook);
+        form_data.append('twitter', twitter);
+        form_data.append('instagram', instagram);
+        form_data.append('linkedin', linkedin);
+        form_data.append('youtube', youtube);
 
         $.ajax({
             url: '/user/edit',

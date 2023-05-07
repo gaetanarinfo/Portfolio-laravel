@@ -57,7 +57,7 @@
                                 @else
                                     @endif @if (!empty($topic_replie_last) && !empty($topic_replie_last->updated_at))
                                         , a été mis à jour pour la dernière fois par
-                                        {{ $topic_replie_last->firstname . ' ' . $topic_replie_last->lastname }}
+                                        {{ $topic_replie_last->pseudo }}
                                         le {{ ucfirst($post_date_last_topic->dayName) }}
                                         {{ $post_date_last_topic->isoFormat('LL') }}
                                         - {{ $topic_replie_last->updated_at->diffForHumans() }}.
@@ -144,13 +144,13 @@
 
                                         <div class="disputo-replies-author-img " title="">
 
-                                            <a href="""
-                                                title="Voir le profil de {{ $forum_topic->firstname . ' ' . $forum_topic->lastname }}"
+                                            <a href="{{ route('forums.users') . '/' . $forum_topic->pseudo }}"
+                                                title="Voir le profil de {{ $forum_topic->pseudo }}"
                                                 class="bbp-author-link">
 
                                                 <span class="bbp-author-avatar">
 
-                                                    <img alt="{{ $forum_topic->firstname . ' ' . $forum_topic->lastname }}"
+                                                    <img alt="{{ $forum_topic->pseudo }}"
                                                         src="{{ URL::asset('img/profil/' . $forum_topic->avatar) }}"
                                                         class="avatar avatar-80 photo" height="80" width="80"
                                                         loading="lazy" decoding="async">
@@ -163,12 +163,12 @@
 
                                         <div class="disputo-replies-author-info">
 
-                                            <a href=""
-                                                title="Voir le profil de {{ $forum_topic->firstname . ' ' . $forum_topic->lastname }}"
+                                            <a href="{{ route('forums.users') . '/' . $forum_topic->pseudo }}"
+                                                title="Voir le profil de {{ $forum_topic->pseudo }}"
                                                 class="bbp-author-link">
 
                                                 <span class="bbp-author-name">
-                                                    {{ $forum_topic->firstname . ' ' . $forum_topic->lastname }}
+                                                    {{ $forum_topic->pseudo }}
                                                 </span>
 
                                             </a>
@@ -305,8 +305,8 @@
 
                                             <div class="disputo-replies-author-img " title="">
 
-                                                <a href=""
-                                                    title="Voir le profil de {{ $data->firstname . ' ' . $data->lastname }}"
+                                                <a href="{{ route('forums.users') . '/' . $data->pseudo }}"
+                                                    title="Voir le profil de {{ $data->pseudo }}"
                                                     class="bbp-author-link">
 
                                                     <span class="bbp-author-avatar">
@@ -321,12 +321,12 @@
 
                                             <div class="disputo-replies-author-info">
 
-                                                <a href=""
-                                                    title="Voir le profil de {{ $data->firstname . ' ' . $data->lastname }}"
+                                                <a href="{{ route('forums.users') . '/' . $data->pseudo }}"
+                                                    title="Voir le profil de {{ $data->pseudo }}"
                                                     class="bbp-author-link">
 
                                                     <span
-                                                        class="bbp-author-name">{{ $data->firstname . ' ' . $data->lastname }}</span>
+                                                        class="bbp-author-name">{{ $data->pseudo }}</span>
 
                                                 </a>
 

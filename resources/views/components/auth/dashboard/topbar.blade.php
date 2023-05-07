@@ -164,6 +164,12 @@
                 <a class="dropdown-item btn-modal-user" href="#" data-toggle="modal"
                     data-target="#editUserLoggedModal" data-lastname="{{ $user->lastname }}"
                     data-firstname="{{ $user->firstname }}" data-email="{{ $user->email }}"
+                    data-naissance="{{ $user->naissance }}" data-civilite="{{ $user->civilite }}"
+                    data-pays="{{ $user->pays }}" data-website="{{ $user->website }}"
+                    data-biographie="{{ $user->biographie }}" data-pseudo="{{ $user->pseudo }}"
+                    data-signature="{{ $user->signature }}" data-facebook="{{ $user->fb_page }}"
+                    data-twitter="{{ $user->twitter_page }}" data-instagram="{{ $user->insta_page }}"
+                    data-linkedin="{{ $user->linkedin_page }}" data-youtube="{{ $user->youtube_page }}"
                     data-avatar="{{ $user->avatar }}" data-edit="1">
                     <i class="fas fa-user fa-sm fa-fw mr-2 text-light"></i>
                     Mon profil

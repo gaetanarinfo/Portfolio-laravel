@@ -701,11 +701,11 @@ $('#form-login').on('submit', function (e) {
 
             } else {
 
-                $('#form-login')[0].reset();
+                $('#form-login').fadeOut();
+                $('#form-login-socials').fadeOut();
+                $('.forgot-password').fadeOut();
 
-                if ($('input[name=redirect]').val() != undefined) {
-                    $('#form-login').fadeOut(300);
-                }
+                $('#form-login')[0].reset();
 
                 setTimeout(() => {
 
@@ -725,10 +725,10 @@ $('#form-login').on('submit', function (e) {
 
                     $('.toast-form-contact').toast('show');
 
-                }, 100);
+                }, 300);
 
                 setTimeout(() => {
-                    if ($('input[name=redirect]').val() == undefined) location.href = '/dashboard';
+                    if ($('input[name=redirect]').val() == undefined) location.href = '/';
                     else location.href = $('input[name=redirect]').val();
                 }, 2500);
 

@@ -18,9 +18,8 @@
 
                 <div class="input-group">
 
-                    <input tabindex="101" type="text" name="bbp_search"
-                        class="form-control ui-autocomplete-input" placeholder="Entrez un mot-clé..."
-                        autocomplete="off">
+                    <input tabindex="101" type="text" name="bbp_search" class="form-control ui-autocomplete-input"
+                        placeholder="Entrez un mot-clé..." autocomplete="off">
 
                     <div class="input-group-append">
                         <button type="submit" class="btn btn-info"><i class="fa-solid fa-search"></i></button>
@@ -296,22 +295,22 @@
 
                                                                     <div class="disputo-freshness-name">
                                                                         <a href=""
-                                                                            title="Voir le profil de {{ $data->firstname }} {{ $data->lastname }}"
+                                                                            title="Voir le profil de {{ $data->pseudo }}"
                                                                             class="bbp-author-link"><span
-                                                                                class="bbp-author-name">{{ $data->firstname }}
-                                                                                {{ $data->lastname }}</span></a>
+                                                                                class="bbp-author-name">{{ $data->pseudo }}</span></a>
                                                                     </div>
 
                                                                     <div class="disputo-freshness-link">
-                                                                        <a href="https://themes.thememasters.club/disputo/forums/topic/main-forum-rules-policies/#post-333"
-                                                                            title="Reply To: Main Forum Rules &amp; Policies">{{ $data->created_at->diffForHumans() }}</a>
+                                                                        <a
+                                                                            title="Reply To: Main Forum Rules &amp; Policies">
+                                                                            {{ $data->created_at->diffForHumans() }}</a>
                                                                     </div>
 
                                                                 </div>
 
                                                                 <div class="disputo-freshness-right ">
-                                                                    <a href=""
-                                                                        title="Voir le profil de {{ $data->firstname }} {{ $data->lastname }}"
+                                                                    <a href="{{ route('forums.users') . '/' . $data->pseudo }}"
+                                                                        title="Voir le profil de {{ $data->pseudo }}"
                                                                         class="bbp-author-link"><span
                                                                             class="bbp-author-avatar"><img
                                                                                 alt=""

@@ -131,10 +131,10 @@
 
                                         <div class="disputo-forum-search-result-left">
 
-                                            <a href="Voir le profil de {{ $data->firstname . ' ' . $data->lastname }}"
-                                                title="{{ $data->firstname . ' ' . $data->lastname }}"
+                                            <a href="{{ route('forums.users') . '/' . $data->pseudo }}"
+                                                title="Voir le profil de {{ $data->pseudo }}"
                                                 class="bbp-author-link"><span class="bbp-author-avatar"><img
-                                                        alt="{{ $data->firstname . ' ' . $data->lastname }}"
+                                                        alt="Voir le profil de {{ $data->pseudo }}"
                                                         src="{{ URL::asset('img/profil/' . $data->avatar) }}"
                                                         class="avatar avatar-80 photo" height="80" width="80"
                                                         loading="lazy" decoding="async"></span></a>

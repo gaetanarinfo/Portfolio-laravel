@@ -16,47 +16,88 @@
 
                 <input type="hidden" name="token" value="{{ md5(rand(1, 10) . microtime()) }}" />
 
-                <input type="text" id="lastname" name="lastname" class="form-control" placeholder="Prénom"
-                    autofocus>
+                <div class="form-group mt-3">
+                    <label for="civilite">Civilité :</label>
+                    <select class="form-control mt-0" name="civilite" id="civilite">
+                        <option value="2">Homme</option>
+                        <option value="1">Femme</option>
+                    </select>
 
-                <span class="error-text text-danger lastname_error"></span>
-
-                <input type="text" id="firstname" name="firstname" class="form-control" placeholder="Nom" autofocus>
-
-                <span class="error-text text-danger firstname_error"></span>
-
-                <input type="text" id="email" name="email" class="form-control" placeholder="Adresse email"
-                    autofocus>
-
-                <span class="error-text text-danger email_error"></span>
-
-                <div class="input-group">
-
-                    <input type="password" id="password" name="password" class="form-control"
-                        placeholder="Mot de passe">
-
-                    <div class="input-group-prepend">
-                        <span class="input-group-text" id="show-password"><i class="fa-solid fa-eye"></i></span>
-                    </div>
-
-                    <span class="error-text text-danger password_error"></span>
-
+                    <span class="error-text text-danger civilite_error"></span>
                 </div>
 
-                <div class="input-group">
+                <div class="form-group mt-3">
+                    <label for="lastname">Nom :</label>
+                    <input type="text" id="lastname" name="lastname" class="form-control mt-0" placeholder="Nom"
+                        autofocus>
 
-                    <input type="password" id="passwordconfirmation" name="passwordconfirmation" class="form-control"
-                        placeholder="Confirmation du mot de passe">
-
-                    <div class="input-group-prepend">
-                        <span class="input-group-text" id="show-password-2"><i class="fa-solid fa-eye"></i></span>
-                    </div>
-
-                    <span class="error-text text-danger password_error"></span>
-
+                    <span class="error-text text-danger lastname_error"></span>
                 </div>
 
-                <span class="error-text text-danger passwordconfirmation_error"></span>
+                <div class="form-group mt-3">
+                    <label for="firstname">Prénom :</label>
+                    <input type="text" id="firstname" name="firstname" class="form-control mt-0" placeholder="Prénom"
+                        autofocus>
+                    <span class="error-text text-danger firstname_error"></span>
+                </div>
+
+                <div class="form-group mt-3">
+                    <label for="pseudo">Pseudo :</label>
+                    <input type="text" id="pseudo" name="pseudo" class="form-control mt-0"
+                        placeholder="Pseudo" />
+                    <span class="error-text text-danger pseudo_error"></span>
+                </div>
+
+                <div class="form-group  mt-3">
+                    <label for="naissance">Date de naissance :</label>
+                    <input type="date" id="naissance" name="naissance" class="form-control"
+                        placeholder="Date de naissance" autofocus>
+                    <span class="error-text text-danger naissance_error"></span>
+                </div>
+
+                <div class="form-group mt-3">
+                    <label for="email">Email :</label>
+                    <input type="text" id="email" name="email" class="form-control mt-0"
+                        placeholder="Adresse email" autofocus>
+                    <span class="error-text text-danger email_error"></span>
+                </div>
+
+                <div class="form-group mt-3">
+                    <label for="password">Mot de passe :</label>
+                    <div class="input-group">
+
+                        <input type="password" id="password" name="password" class="form-control mt-0"
+                            placeholder="Mot de passe">
+
+                        <div class="input-group-prepend mt-0">
+                            <span class="input-group-text" id="show-password"><i class="fa-solid fa-eye"></i></span>
+                        </div>
+
+                        <span class="error-text text-danger password_error"></span>
+
+                    </div>
+                </div>
+
+                <div class="form-group mt-3">
+
+                    <label for="passwordconfirmation">Confirmation du mot de passe :</label>
+
+                    <div class="input-group">
+
+                        <input type="password" id="passwordconfirmation" name="passwordconfirmation"
+                            class="form-control mt-0" placeholder="Confirmation du mot de passe">
+
+                        <div class="input-group-prepend mt-0">
+                            <span class="input-group-text" id="show-password-2"><i class="fa-solid fa-eye"></i></span>
+                        </div>
+
+                        <span class="error-text text-danger password_error"></span>
+
+                    </div>
+
+                    <span class="error-text text-danger passwordconfirmation_error"></span>
+
+                </div>
 
                 <div class="form-check form-switch mt-3">
                     <input class="form-check-input" type="checkbox" id="checkProtection">

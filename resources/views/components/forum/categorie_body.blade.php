@@ -32,24 +32,6 @@
 
                                     <div id="bbpress-forums">
 
-                                        <div class="bbp-search-form">
-
-                                            <form role="search" method="get"
-                                                action="https://themes.thememasters.club/disputo/forums/search/">
-                                                <div class="input-group">
-                                                    <input type="hidden" name="action" value="bbp-search-request">
-                                                    <input tabindex="101" type="text" value=""
-                                                        name="bbp_search" class="form-control"
-                                                        placeholder="Rechercher sur le forum">
-                                                    <div class="input-group-append">
-                                                        <button type="submit" class="btn btn-primary"><i
-                                                                class="fa-solid fa-search"></i></button>
-                                                    </div>
-                                                </div>
-                                            </form>
-
-                                        </div>
-
                                         <div class="bbp-breadcrumb">
                                             <p>
                                                 <a href="/" class="bbp-breadcrumb-home"><i
@@ -182,11 +164,10 @@
 
                                                                     <span class="bbp-topic-started-by">
                                                                         Démarré par :
-                                                                        <a href=""
-                                                                            title="Voir le profil de {{ $data->firstname }} {{ $data->lastname }}"
+                                                                        <a href="{{ route('forums.users') . '/' . $data->pseudo }}"
+                                                                            title="Voir le profil de {{ $data->pseudo }}"
                                                                             class="bbp-author-link"><span
-                                                                                class="bbp-author-name">{{ $data->firstname }}
-                                                                                {{ $data->lastname }}</span></a>
+                                                                                class="bbp-author-name">{{ $data->pseudo }}</span></a>
                                                                     </span>
                                                                 </p>
 
@@ -210,22 +191,20 @@
 
                                                                         <div class="disputo-freshness-name">
                                                                             <a href=""
-                                                                                title="Voir le profil de {{ $data->firstname }} {{ $data->lastname }}"
+                                                                                title="Voir le profil de {{ $data->pseudo }}"
                                                                                 class="bbp-author-link"><span
-                                                                                    class="bbp-author-name">{{ $data->firstname }}
-                                                                                    {{ $data->lastname }}</span></a>
+                                                                                    class="bbp-author-name">{{ $data->pseudo }}</span></a>
                                                                         </div>
 
                                                                         <div class="disputo-freshness-link">
-                                                                            <a href="https://themes.thememasters.club/disputo/forums/topic/main-forum-rules-policies/#post-333"
-                                                                                title="Reply To: Main Forum Rules &amp; Policies">{{ $data->created_at->diffForHumans() }}</a>
+                                                                            <a title="Reply To: Main Forum Rules &amp; Policies">{{ $data->created_at->diffForHumans() }}</a>
                                                                         </div>
 
                                                                     </div>
 
                                                                     <div class="disputo-freshness-right ">
-                                                                        <a href=""
-                                                                            title="Voir le profil de {{ $data->firstname }} {{ $data->lastname }}"
+                                                                        <a href="{{ route('forums.users') . '/' . $data->pseudo }}"
+                                                                            title="Voir le profil de {{ $data->pseudo }}"
                                                                             class="bbp-author-link"><span
                                                                                 class="bbp-author-avatar"><img
                                                                                     alt=""
