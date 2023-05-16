@@ -1,3 +1,10 @@
+/* FONTS */
+@font-face {
+    font-family: 'Google Font Light';
+    src: url(../../css/font/google/ProductSans-Light.ttf);
+}
+
+
 .breadcrumb-item a {
     text-decoration: none;
 }
@@ -1441,4 +1448,488 @@ img.alignright,
 
 .page-cart .bloc-iban {
     display: none;
+}
+
+/* APPLICATIONS */
+
+.apps {
+    background-color: #202124;
+    padding-bottom: 32px;
+}
+
+.apps-container.div,
+.apps-container div {
+    border: 0;
+    color: inherit;
+    font: inherit;
+    font-size: 100%;
+    margin: 0;
+    padding: 0;
+    vertical-align: baseline;
+}
+
+.apps-container {
+    max-width: 1296px;
+    margin: 0 auto;
+    min-height: 56px;
+    position: relative;
+    width: calc(100% - 48px);
+}
+
+@media screen and (min-width: 1280px) {
+    .apps-container {
+        width: calc(100% - 144px);
+    }
+}
+
+@media screen and (min-width: 600px) {
+    .apps-container {
+        width: calc(100% - 96px);
+    }
+}
+
+.apps-container .contain {
+    margin-top: 20rem;
+}
+
+.apps-container .contain h1,
+.apps-container .contain small,
+.apps-container .contain p {
+    color: white;
+}
+
+.apps-container .contain h1 {
+    font-family: "Google Font Light", Roboto, Arial, sans-serif;
+    line-height: 4.75rem;
+    font-size: 4rem;
+    font-weight: 600;
+    letter-spacing: 0.25rem;
+}
+
+.apps-container .h-s {
+    z-index: 9;
+}
+
+.apps-container .contain-btn {
+    align-items: center;
+    flex-direction: row;
+    display: flex;
+}
+
+.apps-container .contain .product {
+    margin-bottom: 0;
+    color: #00a173;
+    letter-spacing: .00625em;
+    font-weight: 600;
+}
+
+.apps-container .contain small {
+    display: block;
+    margin-bottom: 2rem;
+}
+
+.apps-container .contain .grid {
+    height: 64px;
+    margin: 16px 0 24px 0;
+    padding: 12px 0;
+}
+
+.apps-container .grid .row {
+    display: flex;
+    align-items: center;
+}
+
+.apps-container .grid .row .col {
+    text-align: center;
+}
+
+.apps-container .grid .row .col:first-child {
+    max-width: 48px;
+    text-align: left;
+}
+
+.apps-container .grid .row .col img {
+    border-width: 0;
+    box-shadow: 0 1px 2px 0 rgba(60, 64, 67, .3), 0 1px 3px 1px rgba(60, 64, 67, .15);
+    border-radius: 8px;
+    flex-shrink: 0;
+    width: 48px;
+}
+
+.apps-container .grid .row .col:nth-child(2) {
+    margin: 0 16px 0 0;
+    min-width: 96px;
+}
+
+.apps-container .grid .row .col:nth-child(3)::after {
+    background-color: rgb(60, 64, 67);
+    content: "";
+    display: block;
+    height: 24px;
+    left: 0;
+    position: absolute;
+    top: calc(50% - 12px);
+    width: 1px;
+}
+
+.apps-container .grid .row .col:nth-child(3),
+.apps-container .grid .row .col:nth-child(4),
+.apps-container .grid .row .col:nth-child(5) {
+    padding: 0 16px;
+    min-width: 96px;
+}
+
+.apps-container .grid .row .col:nth-child(4)::after {
+    background-color: rgb(60, 64, 67);
+    content: "";
+    display: block;
+    height: 24px;
+    left: 0;
+    position: absolute;
+    top: calc(50% - 12px);
+    width: 1px;
+}
+
+.apps-container .grid .row .col:nth-child(5)::after {
+    background-color: rgb(60, 64, 67);
+    content: "";
+    display: block;
+    height: 24px;
+    left: 0;
+    position: absolute;
+    top: calc(50% - 12px);
+    width: 1px;
+}
+
+.apps-container .grid .row .col:nth-child(2) i,
+.apps-container .grid .row .col:nth-child(3) i,
+.apps-container .grid .row .col:nth-child(4) i,
+.apps-container .grid .row .col:nth-child(5) i {
+    font-size: 12px;
+}
+
+.apps-container .grid .row .col:nth-child(2) p,
+.apps-container .grid .row .col:nth-child(3) p,
+.apps-container .grid .row .col:nth-child(4) p,
+.apps-container .grid .row .col:nth-child(5) p {
+    font-weight: 600;
+    font-size: 14px;
+    margin-bottom: 0;
+}
+
+.apps-container .grid .row .col:nth-child(2) small,
+.apps-container .grid .row .col:nth-child(3) small,
+.apps-container .grid .row .col:nth-child(4) small,
+.apps-container .grid .row .col:nth-child(5) small {
+    margin-bottom: 0;
+    color: rgb(154, 160, 166);
+    margin-top: 0.05rem;
+}
+
+.apps-container .grid .row .col:nth-child(4) span {
+    color: white;
+    align-items: center;
+    display: flex;
+    fill: currentColor;
+    justify-content: center;
+}
+
+.apps-container .grid .row .col:nth-child(5) i {
+    height: 16px;
+    min-width: 16px;
+    color: white;
+    background-size: contain;
+}
+
+.apps-container .desc-smart {
+    color: rgb(154, 160, 166) !important;
+    font-size: 16px;
+    margin-bottom: 16px;
+    font-weight: 500;
+}
+
+.apps-content {
+    margin: 2.5rem auto;
+}
+
+.apps-content .description {
+    font-weight: 500;
+    color: rgb(95, 99, 104);
+}
+
+.apps-content .security {
+    border-radius: 8px;
+    border: 1px solid rgb(205 207 213);
+    margin-top: 30px;
+    padding: 20px 20px 0;
+}
+
+.apps-content .security .item {
+    align-items: flex-start;
+    display: flex;
+    margin-top: 1.25rem;
+}
+
+.apps-content .security .item:first-child {
+    margin-top: 0;
+}
+
+.apps-content .security .item:last-child {
+    margin-bottom: 1.25rem;
+}
+
+.apps-content .security .item .icone {
+    height: 20px;
+    margin-right: 20px;
+    width: 20px;
+}
+
+.apps-content .security .item {
+    font-size: 14px;
+    font-family: 'Roboto', sans-serif;
+    color: #5F6368;
+}
+
+.apps-content .security .item:not(small) {
+    font-weight: 600;
+}
+
+.apps-content .note {
+    margin-top: 2rem;
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: flex-end;
+}
+
+.apps-content .note .s-note i {
+    font-size: 40px;
+}
+
+.apps-content .note .s-note {
+    margin-right: 1rem;
+    color: rgb(241, 243, 244);
+    -webkit-transition: color .4s;
+    -moz-transition: color .4s;
+    -o-transition: color .4s;
+    transition: color .4s;
+}
+
+.apps-content .note .s-note:hover,
+.apps-content .note .s-note:hover~div,
+.apps-content .note .s-note:focus,
+.apps-content .note .s-note:focus~div {
+    color: #01875f;
+    cursor: pointer;
+}
+
+.apps-content .note .s-note:first-child {
+    margin-right: 0;
+}
+
+.apps-content .note .s-note.active {
+    color: #01875f;
+}
+
+.apps-content .note-by-avis {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.apps-content .note-by-avis span {
+    height: 48px;
+    margin-top: 0;
+    margin-bottom: 0;
+    padding: 14px;
+    border-radius: 8px;
+    color: #5f6638;
+    font-size: 14px;
+    font-weight: 500;
+    -webkit-transition: all .4s;
+    -moz-transition: all .4s;
+    -o-transition: all .4s;
+    transition: all .4s;
+    cursor: pointer;
+}
+
+.apps-content .note-by-avis span:hover {
+    background: rgba(218, 218, 218, 0.459);
+    color: black;
+}
+
+.apps-content .grid-coord-dev .item {
+    display: flex;
+    padding: 12px;
+    position: relative;
+    -webkit-transition: all .4s;
+    -moz-transition: all .4s;
+    -o-transition: all .4s;
+    transition: all .4s;
+    cursor: pointer;
+}
+
+.apps-content .grid-coord-dev .item:hover {
+    background: rgba(218, 218, 218, 0.459);
+    border-radius: 8px;
+}
+
+.apps-content .grid-coord-dev .item i {
+    color: rgb(95, 99, 104);
+    font-size: 18px;
+    margin-right: 16px;
+}
+
+.apps-content .grid-coord-dev .item .content div:first-child {
+    color: rgb(32, 33, 36);
+    font-family: "Google Font Light", Roboto, Arial, sans-serif;
+    line-height: 1.25rem;
+    font-size: .875rem;
+    letter-spacing: 0.10rem;
+    font-weight: 600;
+}
+
+.apps-content .grid-coord-dev .item .content div:last-child {
+    color: rgb(95, 99, 104);
+    font-size: .875rem;
+    font-weight: 400;
+    font-family: "Google Font Light", Roboto, Arial, sans-serif;
+    letter-spacing: 0.10rem;
+    line-height: 1.25rem;
+    overflow-wrap: anywhere;
+}
+
+.apps-content .grid-note-avis {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.apps-content .btn-avis {
+    background-color: #01875f;
+    color: #fff;
+    min-width: 160px;
+    padding: 0 16px 0 16px;
+    -webkit-transition: all .4s;
+    -moz-transition: all .4s;
+    -o-transition: all .4s;
+    transition: all .4s;
+    cursor: pointer;
+    border-radius: 8px;
+    font-family: "Google Font Light", Roboto, Arial, sans-serif;
+    letter-spacing: 0.10rem;
+    height: 40px;
+    font-size: .875rem;
+    font-weight: 600;
+    text-transform: none;
+    box-shadow: none;
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    border: none;
+    outline: none;
+    line-height: inherit;
+    user-select: none;
+    overflow: visible;
+    vertical-align: middle;
+}
+
+.apps-content .btn-avis:hover {
+    background-color: #004b34;
+    box-shadow: 0 0 3px #004b3478;
+}
+
+.apps-content .grid-apps {
+    display: grid;
+    grid-gap: 24px;
+    grid-template-columns: repeat(1, 1fr);
+}
+
+.apps-content .grid-apps .before-item {
+    margin: -12px;
+    cursor: pointer;
+    -webkit-transition: all .4s;
+    -moz-transition: all .4s;
+    -o-transition: all .4s;
+    transition: all .4s;
+}
+
+.apps-content .grid-apps .item {
+    border-radius: 8px;
+    column-gap: 16px;
+    margin: 16px 12px;
+    display: grid;
+    grid-template-columns: max-content auto;
+}
+
+.apps-content .grid-apps .before-item:hover {
+    background: rgba(218, 218, 218, 0.459);
+    border-radius: 8px;
+}
+
+.apps-content .grid-apps .item img {
+    border-radius: 12px;
+    border-width: 0;
+    box-shadow: 0 1px 2px 0 rgba(60, 64, 67, .3), 0 1px 3px 1px rgba(60, 64, 67, .15);
+    height: 64px;
+    width: 64px;
+}
+
+.apps-content .grid-apps .item .content {
+    display: grid;
+    grid-template-rows: max-content;
+    height: fit-content;
+    row-gap: 0;
+}
+
+.apps-content .grid-apps .item .content .title {
+    font-size: 1rem;
+    font-weight: 600;
+    font-family: "Google Font Light", Roboto, Arial, sans-serif;
+    letter-spacing: 0.10rem;
+    line-height: 1.5rem;
+    letter-spacing: 0;
+    color: rgb(32, 33, 36);
+}
+
+.apps-content .grid-apps .item .content .author {
+    font-size: .875rem;
+    font-weight: 500;
+    font-family: "Google Font Light", Roboto, Arial, sans-serif;
+    line-height: 1.25rem;
+    letter-spacing: .2px;
+    color: rgb(32, 33, 36);
+}
+
+.apps-content .grid-apps .item .content .note {
+    color: rgb(95, 99, 104);
+    font-size: .875rem;
+    font-weight: 400;
+    font-family: "Google Font Light", Roboto, Arial, sans-serif;
+    line-height: 1.25rem;
+    letter-spacing: .2px;
+    margin-top: 0;
+}
+
+.apps-content .grid-apps .item .content .in-note {
+    display: inline-flex;
+    align-items: center;
+}
+
+.apps-content .grid-apps .item .content .in-note i {
+    color: rgb(95, 99, 104);
+    font-size: 10px;
+    top: -3px;
+    left: 2px;
+    vertical-align: middle;
+    position: relative;
+}
+
+.apps-content .grid-apps .item .content .sp-p {
+    padding-left: 2px;
+}
+
+.apps-content .grid-apps .before-item a {
+    text-decoration: none;
 }

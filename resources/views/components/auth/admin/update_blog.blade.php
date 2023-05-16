@@ -19,7 +19,7 @@
 
                         <div class="image-article-bloc">
 
-                            <img src="{{ URL::asset('/img/news/' . $article->image) }}" class="image-article img-fluid">
+                            <img src="{{ $article->image }}" class="image-article img-fluid">
 
                             <div class="delete-image-article">
                                 <span class="delete-image-article" id="del-1-article">
@@ -43,7 +43,7 @@
 
                         <div class="bandeau-article-bloc">
 
-                            <img src="{{ URL::asset('/img/news/' . $article->image_bandeau) }}"
+                            <img src="{{ $article->image_bandeau }}"
                                 class="bandeau-article img-fluid">
 
                             <div class="delete-bandeau-article">
@@ -102,7 +102,7 @@
 
                                 <div class="author-article-bloc">
 
-                                    <img src="{{ URL::asset('/img/news/avatar/' . $article->avatar) }}"
+                                    <img src="{{ $article->avatar }}"
                                         class="author-article img-fluid">
 
                                     <div class="delete-author-article">

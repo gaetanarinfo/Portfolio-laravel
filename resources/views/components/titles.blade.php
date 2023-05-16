@@ -64,6 +64,21 @@
         <meta name="description" content="{{ config('app.description') }}">
     @break
 
+    @case('forums.users.topics')
+        <title>Sujets du forum démarrés par {{ $user->pseudo }}</title>
+        <meta name="description" content="{{ config('app.description') }}">
+    @break
+
+    @case('forums.users.replies')
+        <title>Réponses du forum créées par {{ $user->pseudo }}</title>
+        <meta name="description" content="{{ config('app.description') }}">
+    @break
+
+    @case('forums.users.favorites')
+        <title>Sujets favoris du forum par {{ $user->pseudo }}</title>
+        <meta name="description" content="{{ config('app.description') }}">
+    @break
+
     @default
         <title>{{ config('app.title') }}</title>
         <meta name="description" content="{{ config('app.description') }}">

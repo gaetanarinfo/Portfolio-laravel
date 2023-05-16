@@ -3920,3 +3920,18 @@ body.disputo .grecaptcha-badge {
 .text-primary {
     color: #364253 !important;
 }
+
+.list-group-item.active {
+    z-index: 2;
+    color: #fff;
+    background-color: #1d84b5;
+    border-color: #1d84b5;
+}
+
+.list-group-item.active a {
+    color: #fff;
+}
+
+.circle.text-success {
+    margin-right: 5px;
+}

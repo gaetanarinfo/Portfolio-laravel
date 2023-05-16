@@ -121,7 +121,7 @@
                     <div class="card-body">
 
                         <div class="card-img">
-                            <img src="{{ URL::asset('img/news/' . $data->image) }}" class="img-fluid">
+                            <img src="{{ $data->image }}" class="img-fluid">
                         </div>
 
                         <p class="mt-3 mb-3 categorie">{{ $data->categorie }}</p>

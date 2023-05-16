@@ -504,9 +504,13 @@ $(document).on('click', '.page-github .nice-select ul li.option', function (e) {
 
     $('.timeline-list').html('');
 
-    $('#loader-github').removeClass('hidden');
-    $('.page-github .page-blog').addClass('hidden');
-    $('.bloc-user-github').fadeOut(300);
+    $('.page-blog .widget-grid').fadeOut(600);
+    $('.page-blog .d-flex-t').fadeOut(600);
+
+    setTimeout(() => {
+        $('#loader-github').removeClass('hidden');
+        $('.page-github .page-blog').addClass('hidden');
+    }, 600);
 
     var input_search = $('#search-blog').val(),
         select_trie = $(this).data('value')
@@ -594,7 +598,8 @@ $(document).on('click', '.page-github .nice-select ul li.option', function (e) {
 
                     $('#loader-github').addClass('hidden');
                     $('.page-github .page-blog').removeClass('hidden');
-                    $('.bloc-user-github').fadeIn(300);
+                    $('.page-blog .widget-grid').fadeIn(300);
+                    $('.page-blog .d-flex-t').fadeIn(300);
                     $('.page-github .widget-grid').fadeIn(300);
 
                     $(document).on('click', '.btn-modal-code', function (e) {
@@ -2189,5 +2194,77 @@ $(document).on('submit', '#bbp-header-search-form', function (e) {
     location.href = $(this).attr('action') + '/' + terms;
 
 });
+
+$(document).on('click', '#favorites-topic', function (e) {
+
+    e.preventDefault();
+
+    var id = $(this).data('id');
+
+    $.ajax({
+        url: $(this).data('action'),
+        method: $(this).data('method'),
+        data: {
+            idTopic: id
+        },
+        dataType: 'json',
+        success: function (data) {
+
+            if (data.status == 0) {
+
+                $('.toast-form-contact .svg').html(data.icone)
+                $('.toast-form-contact .title').html(data.title);
+                $('.toast-form-contact .toast-body').html(data.msg)
+                $('.toast-form-contact').removeClass('toast-success').removeClass('toast-error').addClass(data.toast);
+
+                $('.toast-form-contact').toast({
+                    delay: 10000
+                });
+
+                $('.toast-form-contact').toast('show');
+
+            } else {
+
+                setTimeout(() => {
+
+                    $('.toast-form-contact .svg').html(data.icone)
+                    $('.toast-form-contact .title').html(data.title);
+                    $('.toast-form-contact .toast-body').html(data.msg)
+                    $('.toast-form-contact').removeClass('toast-success').removeClass('toast-error').addClass(data.toast);
+
+                    $('.toast-form-contact').toast({
+                        delay: 10000
+                    });
+
+                    $('.toast-form-contact').toast('show');
+
+                }, 400);
+
+                setTimeout(() => {
+                    location.reload()
+                }, 2100);
+
+            }
+        },
+        error: function (e) {
+            console.log(e);
+        }
+    });
+
+});
+
+// ----------- //
+
+// Page Application
+
+$(document).on('click', '.note .s-note', function(e) {
+
+    e.preventDefault()
+
+    $(this).addClass('active')
+    $(this).nextAll().addClass('active')
+    $(this).prevAll().removeClass('active')
+
+})
 
 // ----------- //

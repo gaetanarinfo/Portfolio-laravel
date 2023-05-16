@@ -37,6 +37,7 @@
                             <option value="Culture">Culture</option>
                             <option value="Financement">Financement</option>
                             <option value="Ethique">Ethique</option>
+                            <option value="Sante">Sante</option>
                         </select>
 
                     </div>

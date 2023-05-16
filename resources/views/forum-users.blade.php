@@ -17,13 +17,22 @@
 
 </head>
 
-<body @if (Cookie::get('theme') !== null) class="{{ Cookie::get('theme') }} disputo" @else class="theme-red disputo" @endif>
+<body
+    @if (Cookie::get('theme') !== null) class="{{ Cookie::get('theme') }} disputo" @else class="theme-red disputo" @endif>
 
     @include('components/settings')
 
     @include('components/header')
 
-    @include('components/forum/users')
+    @if (Route::current()->getName() == 'forums.users.topics')
+        @include('components/forum/users-topics')
+    @elseif (Route::current()->getName() == 'forums.users.favorites')
+        @include('components/forum/users-favorites')
+    @elseif (Route::current()->getName() == 'forums.users.replies')
+        @include('components/forum/users-replies')
+    @else
+        @include('components/forum/users')
+    @endif
 
     @include('components/footer')
 

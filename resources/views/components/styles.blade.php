@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"
         integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI=" crossorigin="" />
 
-    @if (Route::current()->getName() == 'forum' || Route::current()->getName() == 'forums.categorie' || Route::current()->getName() == 'forums.topic' || Route::current()->getName() == 'forums.search' || Route::current()->getName() == 'forums.users')
+    @if (Route::current()->getName() == 'forum' || Route::current()->getName() == 'forums.categorie' || Route::current()->getName() == 'forums.topic' || Route::current()->getName() == 'forums.search' || Route::current()->getName() == 'forums.users' || Route::current()->getName() == 'forums.users.topics' || Route::current()->getName() == 'forums.users.replies' || Route::current()->getName() == 'forums.users.favorites')
         <link rel="stylesheet" type="text/css" href="{{ URL::asset('css/forumbb.css') }}">
         <link rel="stylesheet" type="text/css" href="{{ URL::asset('css/forum.css') }}">
         <link rel="stylesheet" type="text/css" href="{{ URL::asset('css/flags.css') }}">

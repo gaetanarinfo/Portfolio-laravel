@@ -36,43 +36,7 @@
                                         decoding="async"> </a>
                             </div>
 
-                            <div id="bbp-user-navigation" class="bbp-user-navigation-hide">
-
-                                <ul class="list-group">
-
-                                    <li class="list-group-item bg-primary">
-                                        <span class="bbp-user-profile-link">
-                                            <a class="text-white"
-                                                href="https://themes.thememasters.club/disputo/forums/users/egemen/"
-                                                title="{{ $user->pseudo }} Profile" rel="me">Profile</a>
-                                        </span>
-                                    </li>
-
-                                    <li class="list-group-item ">
-                                        <span class="bbp-user-topics-created-link">
-                                            <a href="https://themes.thememasters.club/disputo/forums/users/egemen/topics/"
-                                                title="{{ $user->pseudo }} Sujets commencés">Sujets commencés</a>
-                                        </span>
-
-                                    </li>
-
-                                    <li class="list-group-item ">
-                                        <span class="bbp-user-replies-created-link">
-                                            <a href="https://themes.thememasters.club/disputo/forums/users/egemen/replies/"
-                                                title="{{ $user->pseudo }} Replies Created">Réponses créées</a>
-                                        </span>
-                                    </li>
-
-                                    <li class="list-group-item ">
-                                        <span class="bbp-user-favorites-link">
-                                            <a href="https://themes.thememasters.club/disputo/forums/users/egemen/favorites/"
-                                                title="{{ $user->pseudo }} Favorites">Favoris</a>
-                                        </span>
-                                    </li>
-
-                                </ul>
-
-                            </div>
+                            @include('components/forum/navigation')
 
                         </div>
 
@@ -197,8 +161,8 @@
 
                                         @if (!empty($user->fb_page))
                                             <li><a class="bg-info text-white" href="{{ $user->fb_page }}"
-                                                    target="_blank" rel="nofollow"><i
-                                                        class="fa fa-facebook-f"></i></a></li>
+                                                    target="_blank" rel="nofollow"><i class="fa fa-facebook-f"></i></a>
+                                            </li>
                                         @endif
 
                                         @if (!empty($user->twitter_page))
@@ -209,8 +173,8 @@
 
                                         @if (!empty($user->insta_page))
                                             <li><a class="bg-info text-white" href="{{ $user->insta_page }}"
-                                                    target="_blank" rel="nofollow"><i
-                                                        class="fa fa-instagram"></i></a></li>
+                                                    target="_blank" rel="nofollow"><i class="fa fa-instagram"></i></a>
+                                            </li>
                                         @endif
 
                                         @if (!empty($user->linkedin_page))

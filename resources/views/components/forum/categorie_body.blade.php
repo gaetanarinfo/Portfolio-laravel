@@ -197,7 +197,8 @@
                                                                         </div>
 
                                                                         <div class="disputo-freshness-link">
-                                                                            <a title="Reply To: Main Forum Rules &amp; Policies">{{ $data->created_at->diffForHumans() }}</a>
+                                                                            <a
+                                                                                title="Reply To: Main Forum Rules &amp; Policies">{{ $data->created_at->diffForHumans() }}</a>
                                                                         </div>
 
                                                                     </div>
@@ -291,8 +292,8 @@
                                     <div style="width: 100%;margin-top: 0.25rem;">
                                         <label for="signature">Signature du sujet</label>
                                     </div>
-                                    <input type="text" name="signature" id="signature" class="form-control"
-                                        placeholder="Signature du sujet">
+                                    <input type="text" name="signature" value="{{ $user->signature }}"
+                                        id="signature" class="form-control" placeholder="Signature du sujet">
                                     <div style="width: 100%;margin-top: 0.25rem;">
                                         <span class="error-text text-danger signature_error"></span>
                                     </div>

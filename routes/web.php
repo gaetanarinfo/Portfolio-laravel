@@ -15,12 +15,12 @@ use App\Http\Controllers\Auth\LogsController;
 use App\Http\Controllers\Auth\UsersController;
 use App\Http\Controllers\GithubAuthController;
 use App\Http\Controllers\GoogleAuthController;
-use App\Http\Controllers\GooglePlayController;
 use App\Http\Controllers\NewsletterController;
 use App\Http\Controllers\WhoisDomainController;
 use App\Http\Controllers\NewsScrappingController;
 use App\Http\Controllers\FullCalendarController;
 use App\Http\Controllers\ForumController;
+use App\Http\Controllers\ApplicationsController;
 use App\Http\Controllers\Auth\LoginRegisterController;
 
 /*
@@ -116,6 +116,13 @@ Route::get('/sitemap', function () {
 
     foreach ($forums_topics as $post) {
         $sitemap->add(URL::to('/forums/forum/topic') . '/' . $post->url, date('Y-m-d') . 'T' . date('H:i:s') . '-02:00', '1.0', 'daily');
+    }
+
+    // Forums topics
+    $users = DB::table('users')->orderBy('created_at', 'desc')->get();
+
+    foreach ($users as $post) {
+        $sitemap->add(URL::to('/forums/users') . '/' . $post->pseudo, date('Y-m-d') . 'T' . date('H:i:s') . '-02:00', '1.0', 'daily');
     }
 
     // generate (format, filename)
@@ -244,10 +251,6 @@ Route::controller(GithubAuthController::class)->group(function () {
     Route::get('auth/github/callback', 'handleGithubCallback');
 });
 
-// Google Play
-
-Route::get('/google-play-api', [GooglePlayController::class, 'showGoogleProjets']);
-
 // Whoise Domain
 
 Route::post('/whois-domain', [WhoisDomainController::class, 'showDomain'])->name('domain.search');
@@ -264,6 +267,19 @@ Route::controller(ForumController::class)->group(function () {
     Route::post('/forums/close', 'close_topic')->name('close.topic');
     Route::post('/forums/top', 'top_topic')->name('top.topic');
     Route::post('/forums/close/user', 'close_topic_user')->name('close.topic.user');
+    Route::post('/forums/favorites/user', 'favorites_topic_user')->name('favorites.topic');
     Route::get('/forums/search/{terms?}', 'searchForum')->name('forums.search');
     Route::get('/forums/users/{pseudo?}', 'showUsersForum')->name('forums.users');
+    Route::get('/forums/users/topics/{pseudo?}', 'showUsersTopicsForum')->name('forums.users.topics');
+    Route::get('/forums/users/replies/{pseudo?}', 'showUsersRepliesForum')->name('forums.users.replies');
+    Route::get('/forums/users/favorites/{pseudo?}', 'showUsersFavoritesForum')->name('forums.users.favorites');
+});
+
+// Applications
+
+Route::controller(ApplicationsController::class)->group(function () {
+
+    Route::get('/applications', 'getAllApps')->name('applications');
+    Route::get('/applications/{url?}', 'getSingleApps')->name('application');
+
 });

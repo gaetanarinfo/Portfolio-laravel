@@ -736,18 +736,13 @@ class UsersController extends Controller
     public function edit_article($slug)
     {
 
-        $user_not_admin = User::where('active', 1)
-            ->where('id', Auth::id())
-            ->first();
-
-        $contacts = Contact::where('archive', 0)
-            ->join('users', 'users.email', '=', 'contacts.email')
-            ->where('contacts.to_mail', $user_not_admin->email)
-            ->orderBy('contacts.created_at', 'DESC')
-            ->limit(6)
-            ->get();
+        $pays = $this->repeatModels('pays');
+        $user_not_admin = $this->repeatModels('user_not_admin');
+        $contacts = $this->repeatModels('contacts');
 
         if (Auth::check()) {
+
+            $notifications = LoginRegisterController::Notif();
 
             $user = User::where('active', 1)
                 ->where('id', Auth::id())
@@ -758,12 +753,12 @@ class UsersController extends Controller
                 ->first();
 
             if (isset($user) && isset($article)) {
-                return view('auth.admin.update_blog', compact('user', 'article', 'contacts'));
+                return view('auth.admin.update_blog', compact('user', 'article', 'contacts', 'pays', 'notifications'));
             } else {
                 return redirect()->route('dashboard');
             }
 
-            return view('auth.admin.update_blog', compact('user', 'article', 'contacts'));
+            return view('auth.admin.update_blog', compact('user', 'article', 'contacts', 'pays', 'notifications'));
         }
 
         return redirect()->route('dashboard');

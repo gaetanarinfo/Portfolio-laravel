@@ -60,8 +60,8 @@
                         </div>
                     @else
                         <div class="bbp-pagination">
-                            <div class="bbp-pagination-count">Affichage de {{ count($forums) + count($topics_replies) }}
-                                résultats -
+                            <div class="bbp-pagination-count">Affichage de 1
+                                résultat -
                                 {{ count($forums) + count($topics_replies) }} à
                                 {{ count($forums) + count($topics_replies) }} (sur
                                 {{ count($forums) + count($topics_replies) }} au total)</div>
@@ -167,7 +167,7 @@
 
                         <div class="bbp-pagination">
                             <div class="bbp-pagination-count">Affichage de
-                                {{ count($forums) + count($topics_replies) }} résultats -
+                                1 résultat -
                                 {{ count($forums) + count($topics_replies) }} à
                                 {{ count($forums) + count($topics_replies) }} (sur
                                 {{ count($forums) + count($topics_replies) }} au total)</div>

@@ -11,6 +11,7 @@ use Illuminate\Support\Str;
 use App\Models\TopicsForums;
 use Illuminate\Http\Request;
 use App\Models\TopicsReplies;
+use App\Models\TopicsFavorites;
 use Illuminate\Support\Facades\Auth;
 
 // require_once '../vendor/google/apiclient/autoload.php';
@@ -143,14 +144,21 @@ class ForumController extends Controller
                 ->orderBy('topics_replies.created_at', 'DESC')
                 ->first();
 
+            if (Auth::check()) {
+                $topics_favorites = TopicsFavorites::where('topic_id', $forum_topic->id)
+                    ->where('user_id', Auth::id())
+                    ->first();
+            } else {
+                $topics_favorites = "";
+            }
 
             TopicsForums::where('url', $url)
                 ->update(array('views' => $forum_topic->views + 1));
 
             if (Auth::check()) {
-                return view('forum-topic', compact('forum_topic', 'topics', 'topics_recent', 'forum_categorie', 'forums', 'topics_replies', 'topic_replie_last', 'user'));
+                return view('forum-topic', compact('forum_topic', 'topics', 'topics_recent', 'forum_categorie', 'forums', 'topics_replies', 'topic_replie_last', 'user', 'topics_favorites'));
             } else {
-                return view('forum-topic', compact('forum_topic', 'topics', 'topics_recent', 'forum_categorie', 'forums', 'topics_replies', 'topic_replie_last'));
+                return view('forum-topic', compact('forum_topic', 'topics', 'topics_recent', 'forum_categorie', 'forums', 'topics_replies', 'topic_replie_last', 'topics_favorites'));
             }
         } else {
             return redirect()->route('forum');
@@ -335,6 +343,9 @@ class ForumController extends Controller
         }
     }
 
+    /**
+     * Top topic
+     */
     public function top_topic(Request $request)
     {
         if (Auth::check()) {
@@ -422,17 +433,122 @@ class ForumController extends Controller
         $user = User::where('pseudo', $pseudo)
             ->first();
 
-        $topics = TopicsForums::where('user_id', $user->id)
-            ->select('id')
-            ->get();
+        if (!empty($user->id)) {
 
-        $replies = TopicsReplies::where('user_id', $user->id)
-            ->select('id')
-            ->get();
+            $topics = TopicsForums::where('user_id', $user->id)
+                ->select('id')
+                ->get();
 
-        $pays = Pays::where('alpha2', $user->pays)
+            $replies = TopicsReplies::where('user_id', $user->id)
+                ->select('id')
+                ->get();
+
+            $pays = Pays::where('alpha2', $user->pays)
+                ->first();
+
+            return view('forum-users', compact('user', 'topics', 'replies', 'pays'));
+        } else {
+            return redirect()->route('forum');
+        }
+    }
+
+    /**
+     * Users profil public get topics
+     */
+    public function showUsersTopicsForum($pseudo = null)
+    {
+        $user = User::where('pseudo', $pseudo)
             ->first();
 
-        return view('forum-users', compact('user', 'topics', 'replies', 'pays'));
+        if (!empty($user->id)) {
+
+            $topics = TopicsForums::where('topics_forums.user_id', $user->id)
+                ->orderBy('topics_forums.sticky', 'desc')
+                ->orderBy('topics_forums.id', 'desc')
+                ->join('users', 'users.id', '=', 'topics_forums.user_id')
+                ->select('topics_forums.*', 'users.lastname', 'users.firstname', 'users.avatar', 'users.user_role', 'users.pays', 'users.pseudo', 'users.id AS user_id')
+                ->get();
+
+            return view('forum-users', compact('user', 'topics'));
+        } else {
+            return redirect()->route('forum');
+        }
+    }
+
+    /**
+     * Users profil public get replies
+     */
+    public function showUsersRepliesForum($pseudo = null)
+    {
+        $user = User::where('pseudo', $pseudo)
+            ->first();
+
+        if (!empty($user->id)) {
+
+            $replies = TopicsReplies::where('topics_replies.user_id', $user->id)
+                ->where('topics_replies.status', 1)
+                ->join('users', 'users.id', '=', 'topics_replies.user_id')
+                ->select('topics_replies.*', 'users.lastname', 'users.firstname', 'users.avatar', 'users.user_role', 'users.pays', 'users.pseudo')
+                ->get();
+
+            return view('forum-users', compact('user', 'replies'));
+        } else {
+            return redirect()->route('forum');
+        }
+    }
+
+    /**
+     * Users profil public get favorites
+     */
+    public function showUsersFavoritesForum($pseudo = null)
+    {
+        $user = User::where('pseudo', $pseudo)
+            ->first();
+
+        if (!empty($user->id)) {
+
+            $array = [];
+
+            $topics_favorites_array = TopicsFavorites::where('user_id', $user->id)
+                ->select('topic_id')
+                ->get();
+
+            foreach ($topics_favorites_array as $data) {
+                array_push($array, $data->topic_id);
+            }
+
+            $topics_favorites = TopicsForums::whereIn('topics_forums.id', $array)
+                ->orderBy('topics_forums.sticky', 'desc')
+                ->orderBy('topics_forums.id', 'desc')
+                ->join('users', 'users.id', '=', 'topics_forums.user_id')
+                ->select('topics_forums.*', 'users.lastname', 'users.firstname', 'users.avatar', 'users.pseudo')
+                ->get();
+
+            return view('forum-users', compact('user', 'topics_favorites'));
+        } else {
+            return redirect()->route('forum');
+        }
+    }
+
+    /**
+     * Ajouter le topic aux favoris
+     */
+    public function favorites_topic_user(Request $request)
+    {
+        if (Auth::check()) {
+
+            $forum_topic = TopicsForums::where('id', $request->idTopic)
+                ->first();
+
+            TopicsFavorites::create(array(
+                'user_id' => Auth::id(),
+                'forum_id' => $forum_topic->forum_id,
+                'topic_id' => $forum_topic->id
+            ));
+
+            return response()->json(['status' => 1, 'msg' => 'Le topic a été ajouté à vos favoris', 'title' => 'Vos favoris', 'toast' => 'toast-success', 'icone' => '<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-check mr-2" viewBox="0 0 16 16"><path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z"/></svg>']);
+        } else {
+            return response()->json(['status' => 0, 'title' => 'Vos favoris', 'toast' => 'toast-error', 'msg' => 'Vous devez être connecté pour faire celà !', 'icone' => '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-exclamation-triangle-fill mr-2" viewBox="0 0 16 16"><path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/></svg>']);
+        }
     }
 }

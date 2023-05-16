@@ -134,6 +134,14 @@
                                             </li>
                                         @endif
 
+                                        @if (Auth::check() && empty($topics_favorites))
+                                            <li>
+                                                <a id="favorites-topic" role="button" title="Ajouter au favoris" data-action="{{ route('favorites.topic') }}"
+                                                    data-method="POST" data-id="{{ $forum_topic->id }}"
+                                                    class="text-white font-weight-bold h5"><i class="fa-solid fa-heart text-danger"></i></a>
+                                            </li>
+                                        @endif
+
                                     </ul>
 
                                 </div>
@@ -250,13 +258,8 @@
 
                     @if (count($topics_replies) >= 1)
                         <div class="bbp-pagination">
-                            <div class="bbp-pagination-count">Affichage de {{ count($topics_replies) }}@if (count($topics_replies) <= 1)
-                                    réponse (sur
-                                    {{ count($topics_replies) }} total)
-                                @else
-                                    réponses (sur
-                                    {{ count($topics_replies) }} totals)
-                                @endif
+                            <div class="bbp-pagination-count">Affichage de 1 réponse (sur {{ count($topics_replies) }}
+                                total)
                             </div>
                             <div class="bbp-pagination-links"></div>
                         </div>
@@ -325,8 +328,7 @@
                                                     title="Voir le profil de {{ $data->pseudo }}"
                                                     class="bbp-author-link">
 
-                                                    <span
-                                                        class="bbp-author-name">{{ $data->pseudo }}</span>
+                                                    <span class="bbp-author-name">{{ $data->pseudo }}</span>
 
                                                 </a>
 
@@ -404,13 +406,8 @@
 
                     @if (count($topics_replies) >= 1)
                         <div class="bbp-pagination">
-                            <div class="bbp-pagination-count">Affichage de {{ count($topics_replies) }}@if (count($topics_replies) <= 1)
-                                    réponse (sur
-                                    {{ count($topics_replies) }} total)
-                                @else
-                                    réponses (sur
-                                    {{ count($topics_replies) }} totals)
-                                @endif
+                            <div class="bbp-pagination-count">Affichage de 1 réponse (sur {{ count($topics_replies) }}
+                                total)
                             </div>
                             <div class="bbp-pagination-links"></div>
                         </div>
@@ -454,7 +451,8 @@
                                 <div class="bbp-password mt-3">
 
                                     <label for="signature">Votre signature : </label>
-                                    <input type="text" name="signature" size="20" id="signature">
+                                    <input type="text" name="signature" value="{{ $user->signature }}"
+                                        size="20" id="signature">
                                     <div style="width: 100%;margin-top: 0.25rem;">
                                         <span class="error-text text-danger signature_error"></span>
                                     </div>

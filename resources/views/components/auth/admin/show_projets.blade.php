@@ -104,8 +104,12 @@
                             <th data-sortable="false">Url</th>
                             <th data-sortable="false" class="text-center">Statut du projet</th>
                             <th data-sortable="true">Prix</th>
+                            <th data-sortable="true">Audience</th>
+                            <th data-sortable="true">Acquisition</th>
+                            <th data-sortable="true">Note</th>
+                            <th data-sortable="true">Revenu brut (EUR)</th>
                             <th data-sortable="true">Date de création</th>
-                            <th data-sortable="true">Dernière mise à jour</th>
+                            <th data-sortable="true">Mise à jour</th>
                             <th data-sortable="false">Action</th>
                         </tr>
 
@@ -120,9 +124,13 @@
                             <th>Url</th>
                             <th class="text-center">Statut du projet</th>
                             <th>Prix</th>
-                            <th>Date de création</th>
-                            <th>Dernière mise à jour</th>
+                            <th>Audience</th>
+                            <th>Acquisition</th>
+                            <th>Note</th>
+                            <th>Revenu brut (EUR)</th>
                             <th>Action</th>
+                            <th>Date de création</th>
+                            <th>Mise à jour</th>
                         </tr>
 
                     </tfoot>
@@ -175,7 +183,12 @@
                                 <td><b>{{ number_format($data->prix, 2, ',', '.') }}</b><i
                                         class="ml-1 fa-solid fa-euro-sign"></i></td>
 
-                                <td>{{ date('d/m/Y à H:i', strtotime($data->created_at)) }}</td>
+                                <td>{{ $data->audience }}</td>
+                                <td>{{ $data->acquisition }}</td>
+                                <td>{{ number_format($data->note, 2, ',', '.') }}</td>
+                                <td>{{ number_format($data->revenu_brut, 2, ',', '.') }} €</td>
+
+                                <td>{{ date('d/m/Y', strtotime($data->created_at)) }}</td>
 
                                 <td>
                                     /
