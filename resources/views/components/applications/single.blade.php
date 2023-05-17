@@ -1,3 +1,6 @@
+@php
+    $counter = $sum_avis + $projet->counter_avis;
+@endphp
 <div class="apps" style="background-color: #{{ $projet->color }}">
 
     <div class="apps-container">
@@ -30,7 +33,14 @@
 
                         <div class="col">
 
-                            <p>{{ number_format($projet->note, 2, ',', '') }} <i class="fa-solid fa-star"></i></p>
+                            <p>
+                                @if ($projet->counter_avis !== 0)
+                                    {{ number_format($counter / $projet->counter_avis, 2, ',', '') }}
+                                @else
+                                    0
+                                @endif
+                                <i class="fa-solid fa-star"></i>
+                            </p>
                             <small>{{ $projet->counter_avis }} avis</small>
 
                         </div>
@@ -75,7 +85,11 @@
 
                 <div class="text-end contain-btn">
 
-                    <a href="" class="btn btn-theme ml-0">Acheter l'application</a>
+                    @if ($projet->prix >= 1)
+                        <a href="" class="btn btn-theme ml-0">Acheter l'application</a>
+                    @else
+                        <a href="" class="btn btn-theme ml-0">Télécharger l'application</a>
+                    @endif
 
                 </div>
 
@@ -154,32 +168,83 @@
 
             <div class="grid-note-avis">
 
-                <div class="note mb-5">
+                <div
+                    class="note @if (!Auth::check()) reverse @endif @if (Auth::check() && $user_verif_projet != null) reverse @endif @if (Auth::check() && $user_verif_projet == null) reverse @endif mb-5">
 
-                    <div class="s-note" data-note="5">
-                        <i class="fa-solid fa-star"></i>
-                    </div>
-
-                    <div class="s-note" data-note="4">
-                        <i class="fa-solid fa-star"></i>
-                    </div>
-
-                    <div class="s-note" data-note="3">
-                        <i class="fa-solid fa-star"></i>
-                    </div>
-
-                    <div class="s-note" data-note="2">
-                        <i class="fa-solid fa-star"></i>
-                    </div>
-
-                    <div class="s-note" data-note="1">
-                        <i class="fa-solid fa-star"></i>
-                    </div>
-
+                    @if (Auth::check() && $user_verif_projet == null)
+                        @for ($i = 1; $i <= 5; $i++)
+                            @if ($projet->counter_avis !== 0)
+                                @if ($projet->counter_avis !== 0 && $i >= $counter / $projet->counter_avis)
+                                    <div class="s-note " data-note="{{ $i }}" data-toggle="modal"
+                                        data-target="#modal-avis">
+                                        <i class="fa-solid fa-star"></i>
+                                    </div>
+                                @else
+                                    <div class="s-note active" data-note="{{ $i }}" data-toggle="modal"
+                                        data-target="#modal-avis">
+                                        <i class="fa-solid fa-star"></i>
+                                    </div>
+                                @endif
+                            @else
+                                <div class="s-note" data-note="{{ $i }}" data-toggle="modal"
+                                    data-target="#modal-avis">
+                                    <i class="fa-solid fa-star"></i>
+                                </div>
+                            @endif
+                        @endfor
+                    @elseif($user_verif_projet != null)
+                        @for ($i = 1; $i <= 5; $i++)
+                            @if ($projet->counter_avis !== 0)
+                                @if ($i >= $counter / $projet->counter_avis)
+                                    <div class="s-note  disabled">
+                                        <i class="fa-solid fa-star"></i>
+                                    </div>
+                                @else
+                                    <div class="s-note active disabled">
+                                        <i class="fa-solid fa-star"></i>
+                                    </div>
+                                @endif
+                            @else
+                                <div class="s-note disabled">
+                                    <i class="fa-solid fa-star"></i>
+                                </div>
+                            @endif
+                        @endfor
+                    @else
+                        @for ($i = 1; $i <= 5; $i++)
+                            @if ($projet->counter_avis !== 0)
+                                @if ($i >= $counter / $projet->counter_avis)
+                                    <div class="s-note ">
+                                        <a href="/login">
+                                            <i class="fa-solid fa-star"></i>
+                                        </a>
+                                    </div>
+                                @else
+                                    <div class="s-note active">
+                                        <a href="/login">
+                                            <i class="fa-solid fa-star"></i>
+                                        </a>
+                                    </div>
+                                @endif
+                            @else
+                                <div class="s-note ">
+                                    <a href="/login">
+                                        <i class="fa-solid fa-star"></i>
+                                    </a>
+                                </div>
+                            @endif
+                        @endfor
+                    @endif
                 </div>
 
                 <div>
-                    <a href="" class="btn btn-avis">Rédiger un avis</a>
+                    @if (Auth::check() && $user_verif_projet == null)
+                        <a class="btn btn-avis" data-toggle="modal" data-target="#modal-avis">Rédiger un avis</a>
+                    @elseif($user_verif_projet != null)
+                        <a class="btn btn-avis disabled">Rédiger un avis</a>
+                    @else
+                        <a href="/login" class="btn btn-avis">Rédiger un avis</a>
+                    @endif
                 </div>
 
             </div>
@@ -191,6 +256,147 @@
                 <span>
                     <div>Les notes et les avis sont vérifiés <i class="ml-2 fa-solid fa-exclamation"></i></div>
                 </span>
+
+            </div>
+
+            <div class="mt-3">
+
+                <div>
+
+                    <div class="grid-comments-avis">
+
+                        <div>
+
+                            <div class="comment-note">
+                                @if ($projet->counter_avis !== 0)
+                                    @if ($counter / $projet->counter_avis >= 5)
+                                        5
+                                    @else
+                                        {{ number_format($counter / $projet->counter_avis, 2, ',', '') }}
+                                    @endif
+                                @else
+                                    0
+                                @endif
+                            </div>
+
+                            <div>
+
+                                <div class="note reverse mb-5">
+
+                                    @for ($i = 1; $i <= 5; $i++)
+                                        @if ($projet->counter_avis !== 0)
+                                            @if ($i >= $counter / $projet->counter_avis)
+                                                <div class="s-note disabled">
+                                                    <i class="fa-solid fa-star"></i>
+                                                </div>
+                                            @else
+                                                <div class="s-note active disabled">
+                                                    <i class="fa-solid fa-star"></i>
+                                                </div>
+                                            @endif
+                                        @else
+                                            <div class="s-note disabled">
+                                                <i class="fa-solid fa-star"></i>
+                                            </div>
+                                        @endif
+                                    @endfor
+
+                                </div>
+
+                            </div>
+
+                            <div class="counter-avis">
+                                {{ $projet->counter_avis }} avis
+                            </div>
+
+                        </div>
+
+                        <div>
+
+                            <div class="grid-progress">
+
+                                @for ($i = 5; $i >= 1; $i--)
+                                    <div class="note-t">
+                                        {{ $i }}
+                                    </div>
+
+                                    <div>
+                                        <div class="progress">
+                                            <div class="progress-bar bg-success" role="progressbar"
+                                                style="@if ($projet->counter_avis == 0) width: 0% @elseif($i <= $sum_avis) width: {{ round(($sum_avis * $i) / $projet->counter_avis) }}% @else width: 0% @endif"
+                                                aria-valuenow="{{ $i }}" aria-valuemin="0"
+                                                aria-valuemax="100"></div>
+                                        </div>
+                                    </div>
+                                @endfor
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="mt-5">
+
+                @foreach ($avis as $value)
+                    <div class="grid-comments-all-avis">
+
+                        <div class="grid-comment">
+
+                            <div class="grid-img-text">
+
+                                <img src="{{ URL::asset('img/profil/' . $value->avatar) }}" class="T75of abYEib"
+                                    aria-hidden="true" loading="lazy">
+
+                                <div class="X5PpBb">
+                                    {{ $value->pseudo }}
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <div class="grid-note">
+
+                            <div class="grid-note-in">
+
+                                <div class="note reverse">
+                                    @for ($i = 1; $i <= 5; $i++)
+                                        @if ($value->note !== 0)
+                                            @if ($i <= $value->note)
+                                                <div class="s-note active disabled">
+                                                    <i class="fa-solid fa-star"></i>
+                                                </div>
+                                            @else
+                                                <div class="s-note  disabled">
+                                                    <i class="fa-solid fa-star"></i>
+                                                </div>
+                                            @endif
+                                        @else
+                                            <div class="s-note disabled">
+                                                <i class="fa-solid fa-star"></i>
+                                            </div>
+                                        @endif
+                                    @endfor
+                                </div>
+
+                                <div class="grid-note-date">{{ date('d m Y', strtotime($value->created_at)) }}</div>
+
+                            </div>
+
+                        </div>
+
+                        <div class="grid-desc">
+                            {{ $value->comment }}
+                        </div>
+
+                    </div>
+                @endforeach
+
 
             </div>
 
@@ -289,7 +495,13 @@
                                     </div>
 
                                     <div class="in-note">
-                                        <span class="note">{{ number_format($projet->note, 2, ',', '') }}</span>
+                                        @php
+                                            $sum_avis_projets = ProjetsAvis::where('projets_id', $projet->id)->sum('note');
+
+                                            $counters = $sum_avis_projets + $projet->counter_avis;
+                                        @endphp
+                                        <span
+                                            class="note">{{ number_format($counters / $projet->counter_avis, 2, ',', '') }}</span>
                                         <span class="sp-p"><i class="fa-solid fa-star"></i></span>
                                     </div>
 
@@ -309,3 +521,123 @@
     </div>
 
 </div>
+
+@if (Auth::check() && $user_verif_projet == null)
+    <div class="modal fade" id="modal-avis" tabindex="-1" role="dialog" aria-hidden="true">
+
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+
+            <div class="modal-content">
+
+                <div class="modal-header">
+
+                    <div class="grid-header-modal">
+
+                        <div class="column-1">
+                            <img src="{{ URL::asset('img/projets/icons/' . $projet->icone) }}"
+                                alt="Image de l'icône">
+                        </div>
+
+                        <div>
+                            <h5>{{ $projet->title }}</h5>
+                            <div class="source">Noter cette application</div>
+                        </div>
+
+
+                    </div>
+
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+
+                </div>
+
+                <form id="form-avis-apps" method="post"
+                    action="{{ route('post.application.avis', $projet->url) }}">
+
+                    <div class="modal-body">
+
+                        <input type="hidden" name="noteComments" id="noteComments">
+                        <input type="hidden" name="idProjets" id="idProjets" value="{{ $projet->id }}">
+
+                        <div class="grid-prevent">
+
+                            <div><img src="{{ URL::asset('img/profil/' . $user->avatar) }}" alt="Photo du profil">
+                            </div>
+
+                            <div class="content">
+
+                                <div class="title">{{ $user->pseudo }}</div>
+
+                                <div class="desc">Les avis sont publics et incluent des informations sur votre compte
+                                    et
+                                    votre appareil. Tout
+                                    le monde peut voir le nom et la photo de votre compte Google ainsi que le type
+                                    d'appareil
+                                    associés à votre avis. Les développeurs peuvent aussi voir votre pays et des
+                                    informations
+                                    sur votre appareil (langue, modèle, version de l'OS, etc.), et utiliser ces données
+                                    pour
+                                    vous répondre. Les utilisateurs et le développeur de l'appli peuvent consulter les
+                                    modifications antérieures, à moins que vous ne supprimiez votre avis.</div>
+
+                            </div>
+
+                        </div>
+
+                        <div class="note mb-5">
+
+                            <div class="s-note" data-note="5">
+                                <i class="fa-solid fa-star"></i>
+                            </div>
+
+                            <div class="s-note" data-note="4">
+                                <i class="fa-solid fa-star"></i>
+                            </div>
+
+                            <div class="s-note" data-note="3">
+                                <i class="fa-solid fa-star"></i>
+                            </div>
+
+                            <div class="s-note" data-note="2">
+                                <i class="fa-solid fa-star"></i>
+                            </div>
+
+                            <div class="s-note" data-note="1">
+                                <i class="fa-solid fa-star"></i>
+                            </div>
+
+                            <div style="width: 100%;margin-top: 0.25rem;">
+                                <span class="error-text text-danger noteComments_error"></span>
+                            </div>
+
+                        </div>
+
+                        <div class="add-comment">
+
+                            <textarea name="appsComment" maxlength="500" minlength="2" id="appsComment"
+                                placeholder="Décrivez votre expérience (facultatif)" cols="" rows="1"></textarea>
+                            <span class="text-end counterkey">0 / 500</span>
+
+                            <div style="width: 100%;margin-top: 0.25rem;">
+                                <span class="error-text text-danger appsComment_error"></span>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="modal-footer">
+
+                        <button type="submit" class="btn btn-avis disabled">Valider</button>
+
+                    </div>
+
+                </form>
+
+            </div>
+
+        </div>
+
+    </div>
+@endif

@@ -2257,13 +2257,103 @@ $(document).on('click', '#favorites-topic', function (e) {
 
 // Page Application
 
-$(document).on('click', '.note .s-note', function(e) {
+$(document).on('click', '#modal-avis .note .s-note', function (e) {
 
     e.preventDefault()
+
+    var note = $(this).data('note')
+
+    $('#noteComments').val(note)
 
     $(this).addClass('active')
     $(this).nextAll().addClass('active')
     $(this).prevAll().removeClass('active')
+
+    if ($('#appsComment').val().length >= 2 && $('#noteComments').val().length >= 1) {
+        $('#modal-avis .modal-footer button').removeClass('disabled')
+    } else {
+        $('#modal-avis .modal-footer button').addClass('disabled')
+    }
+
+})
+
+$(document).on('keyup', '#modal-avis #appsComment', function (e) {
+
+    $('#modal-avis .add-comment .counterkey').html($(this).val().length + ' / 500')
+
+    if ($(this).val().length >= 2 && $('#modal-avis #noteComments').val().length >= 1) {
+        $('#modal-avis .modal-footer button').removeClass('disabled')
+    } else {
+        $('#modal-avis .modal-footer button').addClass('disabled')
+    }
+
+})
+
+$('#form-avis-apps').on('submit', function (e) {
+
+    e.preventDefault();
+
+    $.ajax({
+        url: $(this).attr('action'),
+        method: $(this).attr('method'),
+        data: new FormData(this),
+        processData: false,
+        dataType: 'json',
+        contentType: false,
+        beforeSend: function (e) {
+            $(document).find('.error-text').text('');
+        },
+        success: function (data) {
+
+            if (data.status == 0) {
+
+                $.each(data.error, function (prefix, val) {
+                    $('.' + prefix + '_error').text(val[0]);
+                });
+
+                $('.toast-form-contact .svg').html(data.icone)
+                $('.toast-form-contact .title').html(data.title);
+                $('.toast-form-contact .toast-body').html(data.msg)
+                $('.toast-form-contact').removeClass('toast-success').removeClass('toast-error').addClass(data.toast);
+
+                $('.toast-form-contact').toast({
+                    delay: 10000
+                });
+
+                $('.toast-form-contact').toast('show');
+
+            } else {
+
+                $('#modal-avis').modal('hide');
+
+                $('#form-avis-apps')[0].reset();
+
+                setTimeout(() => {
+                    $('.page-forgot #loader-forgot').removeClass('hidden');
+
+                    $('.toast-form-contact .svg').html(data.icone)
+                    $('.toast-form-contact .title').html(data.title);
+                    $('.toast-form-contact .toast-body').html(data.msg)
+                    $('.toast-form-contact').removeClass('toast-success').removeClass('toast-error').addClass(data.toast);
+
+                    $('.toast-form-contact').toast({
+                        delay: 10000
+                    });
+
+                    $('.toast-form-contact').toast('show');
+
+                }, 600);
+
+                setTimeout(() => {
+                    location.reload();
+                }, 2300);
+
+            }
+        },
+        error: function (e) {
+            console.log(e);
+        }
+    });
 
 })
 

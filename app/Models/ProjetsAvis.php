@@ -9,6 +9,6 @@ class ProjetsAvis extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['projets_id', 'note', 'comment'];
+    protected $fillable = ['projets_id', 'user_id', 'note', 'comment', 'active'];
 
 }

@@ -125,6 +125,15 @@ Route::get('/sitemap', function () {
         $sitemap->add(URL::to('/forums/users') . '/' . $post->pseudo, date('Y-m-d') . 'T' . date('H:i:s') . '-02:00', '1.0', 'daily');
     }
 
+    $projets = Projets::where('categorie', 'android')
+        ->where('active', 1)
+        ->orderBy('created_at')
+        ->get();
+
+    foreach ($projets as $post) {
+        $sitemap->add(URL::to('/application') . '/' . $post->url, date('Y-m-d') . 'T' . date('H:i:s') . '-02:00', '1.0', 'daily');
+    }
+
     // generate (format, filename)
     // sitemap.xml is stored within the public folder
     $sitemap->store('xml', 'sitemap');
@@ -279,7 +288,6 @@ Route::controller(ForumController::class)->group(function () {
 
 Route::controller(ApplicationsController::class)->group(function () {
 
-    Route::get('/applications', 'getAllApps')->name('applications');
     Route::get('/applications/{url?}', 'getSingleApps')->name('application');
-
+    Route::post('/applications*/{url?}/avis', 'postCommentSingleApps')->name('post.application.avis');
 });

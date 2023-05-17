@@ -14,9 +14,12 @@ return new class extends Migration
         Schema::create('projets_avis', function (Blueprint $table) {
             $table->id()->unique()->autoIncrement();
             $table->integer('projets_id');
+            $table->integer('user_id');
             $table->decimal('note', 10, 2)->nullable(true);
             $table->longText('comment');
+            $table->integer('active')->default(1);
             $table->timestamp('created_at')->useCurrent();
+            $table->timestamp('updated_at')->nullable(true);
         });
     }
 

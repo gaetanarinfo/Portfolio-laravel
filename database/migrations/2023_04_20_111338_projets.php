@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id()->unique()->autoIncrement();
             $table->string('categorie');
             $table->string('title');
+            $table->string('description')->nullable(true);
             $table->string('image')->default('default.png');
             $table->string('icone')->default('default.png');
             $table->string('url');
@@ -22,7 +23,6 @@ return new class extends Migration
             $table->string('app')->nullable(true);
             $table->integer('audience')->nullable(true);
             $table->integer('acquisition')->nullable(true);
-            $table->integer('note')->nullable();
             $table->decimal('revenu_brut', 10, 2)->nullable(true);
             $table->integer('active')->default(1);
             $table->string('author')->nullable(true);

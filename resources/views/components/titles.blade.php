@@ -79,6 +79,11 @@
         <meta name="description" content="{{ config('app.description') }}">
     @break
 
+    @case('application')
+        <title>{{ $projet->title }} - Applications sur Google Play</title>
+        <meta name="description" content="{{ $projet->description }}">
+    @break
+
     @default
         <title>{{ config('app.title') }}</title>
         <meta name="description" content="{{ config('app.description') }}">
