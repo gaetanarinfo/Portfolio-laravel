@@ -4,9 +4,12 @@ namespace App\Http\Controllers;
 
 use Validator;
 use App\Models\User;
+use App\Mail\OrderApps;
 use App\Models\Projets;
 use Illuminate\View\View;
+use App\Models\OrdersApps;
 use App\Models\ProjetsAvis;
+use App\Mail\OrderAppsError;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
@@ -29,6 +32,11 @@ class ApplicationsController extends Controller
                 ->first();
 
             if ($projet) {
+
+                $projet_id = Projets::where('url', $url)
+                    ->where('categorie', 'android')
+                    ->select('id')
+                    ->first();
 
                 $user = User::where('active', 1)
                     ->where('id', Auth::id())
@@ -57,7 +65,12 @@ class ApplicationsController extends Controller
                     ->orderByDesc('projets_avis.created_at')
                     ->get();
 
-                return view('application', compact('projet', 'projets', 'user', 'user_verif_projet', 'sum_avis', 'avis'));
+                $orders_apps = OrdersApps::where('user_id', Auth::id())
+                    ->where('projets_id', $projet->id)
+                    ->where('status', 'COMPLETED')
+                    ->get();
+
+                return view('application', compact('projet', 'projet_id', 'projets', 'user', 'user_verif_projet', 'sum_avis', 'avis', 'orders_apps'));
             } else {
                 return redirect()->route('home');
             }
@@ -98,5 +111,126 @@ class ApplicationsController extends Controller
         } else {
             return response()->json(['status' => 0, 'title' => 'Avis sur application', 'toast' => 'toast-error', 'msg' => 'Vous devez être connecté pour faire celà !', 'icone' => '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-exclamation-triangle-fill mr-2" viewBox="0 0 16 16"><path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/></svg>']);
         }
+    }
+
+    public function handlePaymentApps(Request $request, $projet_id = null)
+    {
+
+        $projet = Projets::where('id', $projet_id)->first();
+
+        $provider = new PaypalClient;
+        $provider->setApiCredentials(config('paypal'));
+        $paypalToken = $provider->getAccessToken();
+
+        $response = $provider->createOrder([
+            "intent" => "CAPTURE",
+            "application_context" => [
+                "return_url" => route('success.payment.apps', $projet->url),
+                "cancel_url" => route('cancel.payment.apps', $projet->url),
+            ],
+            "purchase_units" => [
+                [
+                    "amount" => [
+                        "currency_code" => "EUR",
+                        "value" => number_format($projet->prix, 2, '.', '')
+                    ]
+                ]
+            ]
+        ]);
+
+        if (isset($response['id']) && $response['id'] != null) {
+
+            foreach ($response['links'] as $links) {
+                if ($links['rel'] == 'approve') {
+                    return redirect()->away($links['href']);
+                }
+            }
+
+            return redirect()
+                ->route('cancel.payment.apps', $projet->url)
+                ->with('error', 'Quelque chose s\'est mal passé.');
+        } else {
+
+            return redirect()
+                ->route('application', $projet->url)
+                ->with('error', $response['message'] ?? 'Quelque chose s\'est mal passé.');
+        }
+    }
+
+    public function paymentSuccessApps(Request $request, $url = null)
+    {
+
+        $provider = new PaypalClient;
+        $provider->setApiCredentials(config('paypal'));
+        $provider->getAccessToken();
+        $response = $provider->capturePaymentOrder($request['token']);
+
+        if (isset($response['status']) && $response['status'] == 'COMPLETED') {
+
+            $projet = Projets::where('url', $url)->first();
+
+            $user = User::where('id', Auth::id())->first();
+
+            $order = OrdersApps::create(array(
+                'projets_id' => $projet->id,
+                'user_id' => Auth::id(),
+                'status' => $response['status'],
+                'order_at' => date('Y-m-d H:i:s'),
+                'order_method' => "Paypal",
+                'transaction_id' => $response['id'],
+                'capture_id' => $response['purchase_units'][0]['payments']['captures'][0]['id'],
+                'price' => $projet->prix
+            ));
+
+            $order->save();
+
+            $orders = OrdersApps::where('id', $order->id)->first();
+
+            Projets::where('id', $projet->id)
+                ->update(array(
+                    'audience' => $projet->audience + 1,
+                    'revenu_brut' => $projet->revenu_brut + $projet->prix
+                ));
+
+            Mail::to($user->email)
+                ->send(new OrderApps($orders, $projet, 'contact@portfolio-gaetan.fr', 'Portefolio', 'Votre paiement n°' . $orders->transaction_id . ' a été accepter'));
+
+            return redirect()
+                ->route('application', $url)
+                ->with('success', $response['message'] ?? 'Merci, votre paiement a été accepté. Merci de vous rendre sur votre espace.');
+        } else {
+
+            $projet = Projets::where('url', $url)->first();
+
+            $user = User::where('id', Auth::id())->first();
+
+            $order = OrdersApps::create(array(
+                'projets_id' => $projet->id,
+                'user_id' => Auth::id(),
+                'status' => "PAYMENT_DECLINED",
+                'order_at' => date('Y-m-d H:i:s'),
+                'order_method' => "Paypal",
+                'transaction_id' => "",
+                'price' => $projet->prix
+            ));
+
+            $order->save();
+
+            $orders = OrdersApps::where('id', $order->id)->first();
+
+            Mail::to($user->email)
+                ->send(new OrderAppsError($orders, $projet, 'contact@portfolio-gaetan.fr', 'Portefolio', 'Votre paiement a été refusé'));
+
+            return redirect()
+                ->route('application', $url)
+                ->with('error', $response['message'] ?? 'Votre paiement n\'a pas été accepté.');
+        }
+    }
+
+    public function paymentCancelApps($url = null)
+    {
+        return redirect()
+            ->route('application', $url)
+            ->with('error', $response['message'] ?? 'Vous avez annulé la transaction.');
     }
 }

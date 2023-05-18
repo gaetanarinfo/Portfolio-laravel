@@ -106,6 +106,22 @@
         <meta property="twitter:image" content="{{ URL::asset('img/news') }}/{{ $article->image }}">
     @break
 
+    @case('application')
+        <!-- Open Graph / Facebook -->
+        <meta property="og:type" content="website">
+        <meta property="og:url" content="{{ url()->full() }}">
+        <meta property="og:title" content="{{ $projet->title }}">
+        <meta property="og:description" content="{{ $projet->description }}">
+        <meta property="og:image" content="{{ URL::asset('img/projets') }}/icons/{{ $projet->icone }}">
+
+        <!-- Twitter -->
+        <meta property="twitter:card" content="summary_large_image">
+        <meta property="twitter:url" content="{{ url()->full() }}">
+        <meta property="twitter:title" content="{{ $projet->title }}">
+        <meta property="twitter:description" content="{{ $projet->description }}">
+        <meta property="twitter:image" content="{{ URL::asset('img/projets') }}/icons/{{ $projet->icone }}">
+    @break
+
     @default
         <!-- Open Graph / Facebook -->
         <meta property="og:type" content="website">

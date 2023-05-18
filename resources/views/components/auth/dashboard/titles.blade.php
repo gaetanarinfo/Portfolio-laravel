@@ -39,6 +39,11 @@
         <meta name="description" content="{{ config('app.description') }}">
     @break
 
+    @case('show-apps')
+        <title>Mes applications achetées</title>
+        <meta name="description" content="{{ config('app.description') }}">
+    @break
+
     @default
         <title>{{ config('app.title') }}</title>
         <meta name="description" content="{{ config('app.description') }}">

@@ -1,9 +1,9 @@
 @php
+    use App\Models\ProjetsAvis;
     $counter = $sum_avis + $projet->counter_avis;
 @endphp
 <div class="apps" style="background-color: #{{ $projet->color }}">
-
-    <div class="apps-container">
+    <div class="apps-container wow fadeIn">
 
         <div class="row"
             style="background: url('{{ URL::asset('img/projets/background/' . $projet->background) }}');background-position: right;background-size: contain;background-repeat: no-repeat;">
@@ -12,13 +12,16 @@
 
                 <h1>{{ $projet->title }}</h1>
 
-                <p class="product">{{ $projet->author }}</p>
+                <p class="product">{{ $projet->author }} @if ($projet->prix >= 1)
+                        - {{ number_format($projet->prix, 2, ',', '') }} €
+                    @endif - Version {{ $projet->version }}
+                </p>
 
                 <small>
                     @if ($projet->prix >= 1)
                         Appli payante
                     @else
-                        Gratuit
+                        Gratuite
                     @endif
                 </small>
 
@@ -83,12 +86,26 @@
                 <p class="desc-smart"><i class="fa-solid fa-mobile-screen mr-2"></i>Cette application est disponible
                     pour certains de vos appareils</p>
 
-                <div class="text-end contain-btn">
+                <div class="contain-btn">
 
-                    @if ($projet->prix >= 1)
-                        <a href="" class="btn btn-theme ml-0">Acheter l'application</a>
+                    @if ($projet->prix >= 1 && count($orders_apps) <= 0)
+                        @if (Auth::check())
+                            <a data-toggle="modal" data-target="#modal-paiement" class="btn btn-theme ml-0">Acheter
+                                l'application</a>
+                        @else
+                            <a href="/login" class="btn btn-theme ml-0">Acheter
+                                l'application</a>
+                        @endif
+                    @elseif(count($orders_apps) >= 1)
+                        <a href="/show-apps" class="btn btn-theme ml-0">Télécharger l'application</a>
                     @else
-                        <a href="" class="btn btn-theme ml-0">Télécharger l'application</a>
+                        @if (Auth::check())
+                            <a href="{{ Route('free.apps', $projet_id->id) }}" class="btn btn-theme ml-0">Télécharger
+                                l'application</a>
+                        @else
+                            <a href="{{ Route('free.apps', $projet_id->id) }}" class="btn btn-theme ml-0">Télécharger
+                                l'application</a>
+                        @endif
                     @endif
 
                 </div>
@@ -107,9 +124,21 @@
 
 <div class="apps-container apps-content">
 
+    @if (session()->has('error'))
+        <div class="alert alert-danger mt-3">
+            <i class="fa-solid fa-xmark mr-1"></i> <span class="message-error">{{ session()->get('error') }}</span>
+        </div>
+    @endif
+
+    @if (session()->has('success'))
+        <div class="alert alert-success">
+            <i class="fa-solid fa-check mr-1"></i> <span class="message-success">{{ session()->get('success') }}</span>
+        </div>
+    @endif
+
     <div class="row">
 
-        <div class="col-lg-7 mr-5">
+        <div class="col-lg-7 mr-5 wow fadeIn">
 
             <h3 class="mb-3">Nouveautés</h3>
 
@@ -402,7 +431,7 @@
 
         </div>
 
-        <div class="col-lg-4">
+        <div class="col-lg-4 wow fadeIn">
 
             <h4 class="mb-3">Coordonnées du développeur</h4>
 
@@ -492,17 +521,6 @@
 
                                     <div>
                                         <span class="author">{{ $projet->author }}</span>
-                                    </div>
-
-                                    <div class="in-note">
-                                        @php
-                                            $sum_avis_projets = ProjetsAvis::where('projets_id', $projet->id)->sum('note');
-
-                                            $counters = $sum_avis_projets + $projet->counter_avis;
-                                        @endphp
-                                        <span
-                                            class="note">{{ number_format($counters / $projet->counter_avis, 2, ',', '') }}</span>
-                                        <span class="sp-p"><i class="fa-solid fa-star"></i></span>
                                     </div>
 
                                 </div>
@@ -634,6 +652,57 @@
                     </div>
 
                 </form>
+
+            </div>
+
+        </div>
+
+    </div>
+@endif
+
+@if (Auth::check())
+    <div class="modal fade" id="modal-paiement" tabindex="-1" role="dialog" aria-hidden="true">
+
+        <div class="modal-dialog modal-dialog-centered">
+
+            <div class="modal-content">
+
+                <div class="modal-header">
+
+                    <h5 class="modal-title">Acheter cette application</h1>
+
+                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                </div>
+
+                <div class="modal-body text-center">
+
+                    <div class="apps-paiements">
+
+                        <p class="font-weight-bold">
+                            En cliquant sur le bouton vous serez redirigée sur la plateforme Paypal
+                            sécurisée, après votre achat vous pourrez télécharger l'application dans votre espace !</p>
+
+                        <div>
+                            <a class="btn btn-success btn-block font-weight-bold"
+                                href="{{ route('make.payment.apps', $projet_id->id) }}">
+
+                                <i class="fa-brands fa-paypal mr-1"></i>
+
+                                <span class="btn-card">Payer avec Paypal</span>
+
+                            </a>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="modal-footer">
+                    <button class="btn btn-warning font-weight-bold" type="button"
+                        data-dismiss="modal">Annuler</button>
+                </div>
 
             </div>
 

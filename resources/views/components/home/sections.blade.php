@@ -392,10 +392,21 @@
 
                             <h5 class="fg-theme text-capitalize">{{ $data->categorie }}</h5>
 
-                            <p class="font-weight-bold"">{{ $data->title }}</p>
+                            @if ($data->version != null)
+                                <p class="font-weight-bold">Package : {{ $data->app }}</p>
 
-                            <div class="mt-2">
-                                <a @if ($data->active == 1) href="{{ $data->url }}" target="_blank" @endif
+                                <p class="font-weight-bold">
+                                    Version : {{ $data->version }}</p>
+
+                                <p class="font-weight-bold">
+                                    {{ $data->title }}</p>
+                            @else
+                                <p class="font-weight-bold"">{{ $data->title }}</p>
+                            @endif
+
+                            <div class="mt-2" style="text-align: end">
+                                <a @if ($data->active == 1 && $data->categorie != 'android') href="{{ $data->url }}" target="_blank" @endif
+                                    @if ($data->active == 1 && $data->categorie == 'android') href="{{ route('application') . '/' . $data->url }}" @endif
                                     class="btn btn-success btn-small font-weight-bold @if ($data->active != 1) disabled @endif">Voir
                                     le projet</a>
                             </div>

@@ -2300,3 +2300,42 @@ img.alignright,
 .apps-container .grid-comments-all-avis:last-child {
     margin-bottom: 0;
 }
+
+#modal-paiement .modal-body {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+#modal-paiement .apps-paiements {
+    max-width: 350px;
+}
+
+.apps-container .paiement-success {
+    max-width: 130px;
+    margin-bottom: 1rem;
+}
+
+.apps-container .paiement-h1 {
+    font-weight: 500;
+}
+
+.apps-container .paiement-lead {
+    font-weight: 500;
+}
+
+.apps-container .message-error {
+    font-weight: 500;
+}
+
+.apps-container .message-success {
+    font-weight: 500;
+}
+
+.apps-container .alert {
+    position: relative !important;
+    padding: 0.75rem 1.25rem !important;
+    margin-bottom: 1rem !important;
+    border: 1px solid transparent !important;
+    border-radius: 0.25rem !important;
+}

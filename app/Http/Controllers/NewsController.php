@@ -40,15 +40,17 @@ class NewsController extends Controller
                 ->offset(($slug - 1) * $limit)
                 ->get();
 
-            $maxPage = ceil((count($news) / 9) + 1);
-            $elements = array();
+            $news_count = News::where('active', 1)
+                ->get();
 
-            for ($i = 1; $i <= (count($news) / 9) + 1; $i++) {
-                array_push($elements, array($i => $i));
-            }
+            // On calcule le nombre de pages total
+            $pages = ceil(count($news_count) / $limit);
+
+            // Calcul du 1er article de la page
+            $premier = ($slug * $limit) - $limit;
 
             if (count($news) >= 1) {
-                return view('blog', compact('news', 'maxPage', 'elements'));
+                return view('blog', compact('news', 'pages'));
             } else {
                 return redirect()->route('blog', ['slug' => 1]);
             }

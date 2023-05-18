@@ -9,6 +9,7 @@ use App\Http\Controllers\NewsController;
 use App\Http\Controllers\GithubController;
 use App\Http\Controllers\GoogleController;
 use App\Http\Controllers\YoutubeController;
+use App\Http\Controllers\UpdateMyBakery;
 use App\Http\Controllers\ContactsController;
 use App\Http\Controllers\FacebookController;
 use App\Http\Controllers\Auth\LogsController;
@@ -93,7 +94,7 @@ Route::get('/sitemap', function () {
     // Article du blog
     $articles = DB::table('news')->orderBy('created_at', 'desc')->get();
 
-    $maxPage = ceil((count($articles) / 9) + 1);
+    $maxPage = ceil((count($articles) / 9));
 
     for ($i = 1; $i <= $maxPage; $i++) {
         # code...
@@ -131,7 +132,7 @@ Route::get('/sitemap', function () {
         ->get();
 
     foreach ($projets as $post) {
-        $sitemap->add(URL::to('/application') . '/' . $post->url, date('Y-m-d') . 'T' . date('H:i:s') . '-02:00', '1.0', 'daily');
+        $sitemap->add(URL::to('/applications') . '/' . $post->url, date('Y-m-d') . 'T' . date('H:i:s') . '-02:00', '1.0', 'daily');
     }
 
     // generate (format, filename)
@@ -216,6 +217,10 @@ Route::controller(UsersController::class)->group(function () {
 
     // Forums
     Route::get('/forums/check/reply/{type?}/{id}', 'check_reply')->name('check.reply');
+
+    // Apps acheté
+    Route::get('/show-apps', 'show_apps')->name('show-apps');
+
 });
 
 // Agenda
@@ -287,7 +292,24 @@ Route::controller(ForumController::class)->group(function () {
 // Applications
 
 Route::controller(ApplicationsController::class)->group(function () {
-
     Route::get('/applications/{url?}', 'getSingleApps')->name('application');
     Route::post('/applications*/{url?}/avis', 'postCommentSingleApps')->name('post.application.avis');
 });
+
+
+// Panier Apps
+Route::controller(ApplicationsController::class)->group(function () {
+    Route::get('/handle-payment-apps/{projets_id}', 'handlePaymentApps')->name('make.payment.apps');
+    Route::get('/cancel-payment-apps/{url?}', 'paymentCancelApps')->name('cancel.payment.apps');
+    Route::get('/payment-success-apps/{url?}', 'paymentSuccessApps')->name('success.payment.apps');
+});
+
+// Apps
+
+Route::get('/encrypt-apps', [UsersController::class, 'encrypt_app']);
+Route::get('/download-apps/{projets_id}', [UsersController::class, 'decrypt_app'])->name('decrypt.apps');
+Route::get('/download-apps-free/{projets_id}', [UsersController::class, 'apps_free'])->name('free.apps');
+
+// Update my bakery
+
+Route::get('/update-mybakery', [UpdateMyBakery::class, 'update']);

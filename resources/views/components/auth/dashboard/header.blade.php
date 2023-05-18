@@ -124,6 +124,18 @@
                 <span>Mes commandes</span>
             </a>
         </li>
+
+        <!-- Heading -->
+        <div class="sidebar-heading">
+            Applications
+        </div>
+
+        <li class="nav-item @if (Route::current()->getName() == 'show-apps') active @endif">
+            <a class="nav-link" href="/show-apps">
+                <i class="fa-regular fa-credit-card"></i>
+                <span>Mes applications</span>
+            </a>
+        </li>
     @endif
 
 </ul>

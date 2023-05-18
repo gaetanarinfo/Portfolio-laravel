@@ -34,6 +34,8 @@ return new class extends Migration
             $table->string('email')->nullable(true);
             $table->string('location')->nullable(true);
             $table->string('regles_url')->nullable(true);
+            $table->integer('encrypted')->default(0);
+            $table->string('version')->nullable(true);
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->nullable(true);
         });

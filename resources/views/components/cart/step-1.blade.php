@@ -93,13 +93,17 @@
                             <i class="fa fa-search"></i>
 
                             <input type="hidden" name="max_domain" id="max_domain"
-                                value="@if (!empty($max_domain['max_domain'])){{ $max_domain['max_domain'] }}@else 0 @endif">
+                                value="@if (!empty($max_domain['max_domain'])) {{ $max_domain['max_domain'] }}@else 0 @endif">
 
                             <input id="domain" name="domain" type="text" class="form-control"
                                 placeholder="Ex: mon-site.fr">
 
                             <span class="domain-count">
-                                0/@if (!empty($max_domain['max_domain'])){{ $max_domain['max_domain'] }}@else 0 @endif
+                                0/@if (!empty($max_domain['max_domain']))
+                                    {{ $max_domain['max_domain'] }}
+                                @else
+                                    0
+                                @endif
                             </span>
 
                             <div class="mb-3 mt-3 bloc-btn contact-form">
@@ -151,7 +155,7 @@
 
                     <input type="hidden" id="productId" name="productId" value="{{ $_COOKIE['product_formule'] }}">
                     <input type="hidden" id="domains" name="domains"
-                        value="@if (!empty($_COOKIE['product_domain'])){{ $_COOKIE['product_domain'] }}@else aucun @endif">
+                        value="@if (!empty($_COOKIE['product_domain'])) {{ $_COOKIE['product_domain'] }}@else aucun @endif">
 
                     <div class="form-row">
 
@@ -159,8 +163,8 @@
 
                             <div>
                                 <label for="firstname">Prénom :</label>
-                                <input autocomplete="false" type="text" name="firstname" id="firstname" class="form-control"
-                                    placeholder="Prénom*">
+                                <input autocomplete="false" type="text" name="firstname" id="firstname"
+                                    class="form-control" placeholder="Prénom*">
 
                                 <span class="error-text text-danger firstname_error"></span>
 
@@ -168,23 +172,24 @@
 
                             <div class="mt-3">
                                 <label for="email">Adresse email :</label>
-                                <input autocomplete="false" type="text" name="email" id="email" class="form-control"
-                                    placeholder="Adresse email*">
+                                <input autocomplete="false" type="text" name="email" id="email"
+                                    class="form-control" placeholder="Adresse email*">
 
                                 <span class="error-text text-danger email_error"></span>
                             </div>
 
                             <div class="mt-3">
                                 <label for="appointment">Mise en place du projet :</label>
-                                <input autocomplete="false" type="text" name="appointment" id="appointment" class="form-control">
+                                <input autocomplete="false" type="text" name="appointment" id="appointment"
+                                    class="form-control">
 
                                 <span class="error-text text-danger appointment_error"></span>
                             </div>
 
                             <div class="mt-3">
                                 <label for="maquette">Votre maquette (PDF) :</label>
-                                <input autocomplete="false" type="file" name="maquette" id="maquette" class="form-control-file"
-                                    accept=".pdf">
+                                <input autocomplete="false" type="file" name="maquette" id="maquette"
+                                    class="form-control-file" accept=".pdf">
                                 <span class="error-text text-danger maquette_error"></span>
                             </div>
 
@@ -195,8 +200,8 @@
                             <div>
 
                                 <label for="lastname">Nom :</label>
-                                <input autocomplete="false" type="text" name="lastname" id="lastname" class="form-control"
-                                    placeholder="Nom*">
+                                <input autocomplete="false" type="text" name="lastname" id="lastname"
+                                    class="form-control" placeholder="Nom*">
 
                                 <span class="error-text text-danger lastname_error"></span>
 
@@ -205,8 +210,8 @@
                             <div class="mt-3">
 
                                 <label for="phone">Téléphone :</label>
-                                <input autocomplete="false" type="text" name="phone" id="phone" class="form-control"
-                                    placeholder="Téléphone*">
+                                <input autocomplete="false" type="text" name="phone" id="phone"
+                                    class="form-control" placeholder="Téléphone*">
 
                                 <span class="error-text text-danger phone_error"></span>
 
@@ -246,7 +251,9 @@
 
     </div>
 
-    @if (!empty($_COOKIE['product_etape']) && $_COOKIE['product_etape'] == 4 && empty($paiement_status) or $paiement_status == 2)
+    @if (
+        !empty($_COOKIE['product_etape']) && $_COOKIE['product_etape'] == 4 && empty($paiement_status) or
+            $paiement_status == 2)
 
         @php
             $TAUX_TVA = 20;

@@ -22,6 +22,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use App\Http\Controllers\Auth\LoginRegisterController;
+use App\Models\OrdersApps;
 use Srmklive\PayPal\Services\PayPal as PaypalClient;
 
 class UsersController extends Controller
@@ -1403,6 +1404,130 @@ class UsersController extends Controller
                 ->update(array('status' => 0, 'archive_dashboard' => 1));
 
             return response()->json(['status' => 1, 'title' => 'Validation du commantaire', 'msg' => 'Le commentaire a bien été rejeté.', 'toast' => 'toast-success', 'icone' => '<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-check mr-2" viewBox="0 0 16 16"><path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z"/></svg>']);
+        }
+    }
+
+    public function show_apps()
+    {
+        $pays = $this->repeatModels('pays');
+        $user_not_admin = $this->repeatModels('user_not_admin');
+        $contacts = $this->repeatModels('contacts');
+
+        $notifications = LoginRegisterController::Notif();
+
+        if (Auth::check()) {
+
+            $user = User::where('active', 1)
+                ->where('id', Auth::id())
+                ->first();
+
+            if (isset($user)) {
+
+                $orders_apps = OrdersApps::where('orders_apps.user_id', Auth::id())
+                    ->join('projets', 'projets.id', '=', 'orders_apps.projets_id')
+                    ->orderBy('orders_apps.created_at', 'DESC')
+                    ->get();
+
+                return view('auth.show_apps', compact('user', 'contacts', 'orders_apps', 'pays', 'notifications'));
+            } else {
+                return redirect()->route('dashboard');
+            }
+
+            return view('auth.show_apps', compact('user', 'contacts', 'pays', 'notifications'));
+        }
+
+        return redirect()->route('dashboard');
+    }
+
+    /**
+     */
+    public function encrypt_app()
+    {
+
+        $projets = Projets::where('categorie', 'android')
+            ->where('projets.prix', '!=', 0)
+            ->where('projets.active', 1)
+            ->where('projets.encrypted', 0)
+            ->orderByDesc('id')
+            ->get();
+
+        foreach ($projets as $value) {
+
+            $content = file_get_contents(public_path('apps/payante/') . $value->url . '.apk');
+            $encrypted = encrypt($content, env('TOKEN_CRYPTED_APPS'));
+            file_put_contents(public_path('apps/payante/encrypted/') . $value->url . '.apk', $encrypted);
+
+            echo "File encrypted !\n";
+        }
+    }
+
+    /**
+     * @param $projets_id Projet id
+     */
+    public function decrypt_app($projets_id)
+    {
+        define('FILE_ENCRYPTION_BLOCKS', 10000);
+
+        $order = OrdersApps::where('projets_id', $projets_id)
+            ->where('user_id', Auth::id())
+            ->first();
+
+        if ($order != null) {
+
+            $projet = Projets::where('projets.id', $order->projets_id)
+                ->first();
+
+            $content = file_get_contents(public_path('apps/payante/encrypted/') . $projet->url . '.apk');
+            $decrypted = decrypt($content, env('TOKEN_CRYPTED_APPS'));
+            file_put_contents(public_path('apps/payante/decrypted/')  . $projet->url . '.apk', $decrypted);
+
+            $file_name = $projet->url . '.apk';
+            $file_path = public_path('apps/payante/decrypted/');
+
+            header("Content-Type: application/octet-stream");
+            header("Content-Transfer-Encoding: Binary");
+            header("Content-Disposition: attachment; filename=$file_name");
+            header('Expires: 0');
+            header('Cache-Control: must-revalidate');
+            header('Pragma: public');
+
+            Projets::where('id', $projet->id)
+                ->update(array(
+                    'acquisition' => $projet->acquisition + 1
+                ));
+
+            readfile($file_path . $file_name);
+
+            unlink($file_path . $file_name);
+        }
+    }
+
+    public function apps_free($projets_id)
+    {
+
+        $projet = Projets::where('projets.id', $projets_id)
+            ->where('prix', '=', 0)
+            ->first();
+
+        if ($projet != null) {
+
+            Projets::where('id', $projet->id)
+                ->update(array(
+                    'acquisition' => $projet->acquisition + 1,
+                    'audience' => $projet->audience + 1,
+                ));
+
+            $file_name = $projet->url . '.apk';
+            $file_path = public_path('apps/gratuite/');
+
+            header("Content-Type: application/octet-stream");
+            header("Content-Transfer-Encoding: Binary");
+            header("Content-Disposition: attachment; filename=$file_name");
+            header('Expires: 0');
+            header('Cache-Control: must-revalidate');
+            header('Pragma: public');
+
+            readfile($file_path . $file_name);
         }
     }
 }

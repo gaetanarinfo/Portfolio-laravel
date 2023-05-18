@@ -18,3 +18,5 @@ yarn-error.log
 /.idea
 /.vscode
 .env.example
+/public/apps
+app/Http/Controllers/ApplicationsController.php
