@@ -1016,7 +1016,7 @@ img.alignright,
 
 @media all and (max-width: 768px) {
     .news-smart-box__item.col-sm-12.col-lg-4.full-type {
-        padding: 0 1.5rem 0 3.5rem;
+        padding: 0 2rem;
         margin-bottom: 1.5rem;
     }
 }
@@ -1492,6 +1492,12 @@ img.alignright,
     margin-top: 20rem;
 }
 
+@media screen and (max-width: 48rem) {
+    .apps-container .contain {
+        margin-top: 0;
+    }
+}
+
 .apps-container .contain h1,
 .apps-container .contain small,
 .apps-container .contain p {
@@ -1504,6 +1510,22 @@ img.alignright,
     font-size: 4rem;
     font-weight: 600;
     letter-spacing: 0.25rem;
+}
+
+.background-img {
+    background-position: right !important;
+    background-size: contain !important;
+    background-repeat: no-repeat !important;
+}
+
+@media screen and (max-width: 48rem) {
+    .apps-container .contain h1 {
+        font-size: 1.5rem;
+    }
+
+    .background-img {
+        background: none !important;
+    }
 }
 
 .apps-container .h-s {
@@ -2338,4 +2360,159 @@ img.alignright,
     margin-bottom: 1rem !important;
     border: 1px solid transparent !important;
     border-radius: 0.25rem !important;
+}
+
+.apps-container .hide-mobile {
+    display: block;
+}
+
+.apps-container .show-mobile {
+    display: none;
+}
+
+.page-application {
+    padding: 0 0;
+    margin-top: 0;
+}
+
+@media all and (max-width: 48rem) {
+
+    .apps-container {
+        width: 100%;
+        padding: 0 1rem;
+    }
+
+    .apps-container .hide-mobile {
+        display: none;
+    }
+
+    .apps-container .show-mobile {
+        display: block;
+        height: auto !important;
+    }
+
+    .apps-container .grid img {
+        border-width: 0;
+        box-shadow: 0 1px 2px 0 rgba(60, 64, 67, .3), 0 1px 3px 1px rgba(60, 64, 67, .15);
+        border-radius: 8px;
+        flex-shrink: 0;
+        width: 48px;
+        margin-bottom: 1rem;
+    }
+
+    .apps-container .grid .row .col:first-child {
+        max-width: 100%;
+        text-align: center;
+    }
+
+    .apps-container .show-mobile .row .col p {
+        margin-bottom: 0;
+    }
+
+    .apps-container .contain small {
+        margin-bottom: 0;
+    }
+
+    .apps-container .background-img {
+        text-align: center;
+    }
+
+    .apps-container .grid .row .col:nth-child(2) {
+        padding: 0 0 0 16px;
+    }
+
+    .apps-container .grid .row .col:nth-child(3) {
+        padding: 0 16px;
+    }
+
+    .apps-container .contain-btn {
+        justify-content: center;
+    }
+
+    .apps-container .product {
+        margin-bottom: 0.5rem !important;
+    }
+
+    .apps-container .contain small {
+        font-weight: 500;
+    }
+
+    .apps-container .grid .row .col:nth-child(3) {
+        color: rgb(232, 234, 237);
+        fill: rgb(232, 234, 237);
+        stop-color: rgb(232, 234, 237);
+    }
+
+    .apps-container .grid-note-avis {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-direction: column;
+    }
+
+    .apps-content .note {
+        margin-bottom: 2rem !important;
+    }
+
+    .apps-content .grid-note-avis {
+        margin-bottom: 2rem
+    }
+
+    .apps-content .note-by-avis {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-direction: column;
+    }
+
+    .apps-container .grid-comments-avis {
+        display: block;
+    }
+
+    .apps-content .note .s-note i {
+        font-size: 30px;
+    }
+
+    .apps-container .grid-comments-avis .counter-avis {
+        margin-bottom: 1rem;
+        margin-top: 1rem;
+    }
+
+    .apps-content .grid-coord-dev .item {
+        padding-left: 0;
+        padding-right: 0;
+
+    }
+
+    .apps-container .col-lg-7 {
+        margin-right: 0 !important;
+    }
+
+    .apps-container .grid .row .col:nth-child(2)::after {
+        background-color: rgb(60, 64, 67);
+        content: "";
+        display: block;
+        height: 24px;
+        left: 0;
+        position: absolute;
+        top: calc(50% - 12px);
+        width: 1px;
+    }
+
+    .apps-container .contain .col small {
+        font-size: 10px;
+    }
+
+    .apps-content .note {
+        margin-bottom: 2rem !important;
+    }
+
+    .apps-content .grid-note-date {
+        margin-bottom: 1rem;
+    }
+
+    .apps-content .col-lg-4 {
+        margin-top: 3rem;
+    }
+
 }

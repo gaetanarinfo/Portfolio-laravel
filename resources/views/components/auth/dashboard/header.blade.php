@@ -101,7 +101,7 @@
 
                 <div class="bg-white py-2 collapse-inner rounded">
 
-                    <a class="collapse-item @if (Route::current()->getName() == 'show-agenda') active @endif" href="/show-blog">Mon
+                    <a class="collapse-item @if (Route::current()->getName() == 'show-agenda') active @endif" href="/show-agenda">Mon
                         agenda</a>
 
                     <a class="collapse-item @if (Route::current()->getName() == 'show-orders') active @endif"

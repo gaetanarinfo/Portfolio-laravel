@@ -61,7 +61,7 @@
                         timeZoneName: 'short'
                     },
                     eventSources: [{
-                            googleCalendarApiKey: 'AIzaSyCPhRM56RFWewuR1Os-2JLL3jkKk5WRc3M',
+                            googleCalendarApiKey: '',
                             googleCalendarId: 'zineddinehamel@gmail.com',
                             className: 'fc-event-email',
                             color: 'yellow', // an option!

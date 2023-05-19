@@ -9,7 +9,7 @@ use App\Http\Controllers\NewsController;
 use App\Http\Controllers\GithubController;
 use App\Http\Controllers\GoogleController;
 use App\Http\Controllers\YoutubeController;
-use App\Http\Controllers\UpdateMyBakery;
+use App\Http\Controllers\UpdateMyBakeryController;
 use App\Http\Controllers\ContactsController;
 use App\Http\Controllers\FacebookController;
 use App\Http\Controllers\Auth\LogsController;
@@ -310,6 +310,7 @@ Route::get('/encrypt-apps', [UsersController::class, 'encrypt_app']);
 Route::get('/download-apps/{projets_id}', [UsersController::class, 'decrypt_app'])->name('decrypt.apps');
 Route::get('/download-apps-free/{projets_id}', [UsersController::class, 'apps_free'])->name('free.apps');
 
-// Update my bakery
+// My bakery
 
-Route::get('/update-mybakery', [UpdateMyBakery::class, 'update']);
+Route::get('/update-mybakery', [UpdateMyBakeryController::class, 'update']);
+Route::get('/scrapping-mybakery', [UpdateMyBakeryController::class, 'getBakerys']);
