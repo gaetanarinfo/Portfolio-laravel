@@ -38,6 +38,9 @@
                             <option value="Financement">Financement</option>
                             <option value="Ethique">Ethique</option>
                             <option value="Sante">Sante</option>
+                            <option value="Éducation">Éducation</option>
+                            <option value="Défense">Défense</option>
+                            <option value="International">International</option>
                         </select>
 
                     </div>
