@@ -983,50 +983,58 @@ $('#form-forgot-new').on('submit', function (e) {
 // Google api
 
 $.ajax({
-    url: '/google-api',
-    type: 'POST',
-    data: {
-        youtubeur: 'bennco',
-        section: 'youtube'
-    },
+    url: '/google-api/UChacdD-3-2CLEGlL24Xj_SQ',
+    type: 'GET',
     success: function (data) {
 
-        var liste = data.latest_from_ben_n_co
+        var liste = data
 
         setTimeout(() => {
 
-            $.each(liste, function (prefix, value) {
+            var newListe = liste.sort(function (a, b) {
+                return new Date(b.published) - new Date(a.published);
+            })
 
-                var views = value.views,
-                    viewsK = '',
-                    published_date = value.published_date
+            $.each(newListe, function (prefix, value) {
 
-                published_date = published_date.replace(['days ago'], ['jours'])
-                published_date = published_date.replace(['weeks ago'], ['semaines'])
-                published_date = published_date.replace(['month ago'], ['mois'])
+                $.ajax({
+                    url: '/google-api-info/' + value['id'].replace('yt:video:', ''),
+                    type: 'GET',
+                    success: function (data2) {
 
-                if (parseInt(views) >= 1000) {
-                    viewsK = 'k';
-                    views = views.toString().substr(3)
-                } else {
-                    viewsK = '';
-                    views = views
-                }
+                        var duration = data2['contentDetails']['duration'],
+                            description = (data2['snippet']['description'] !== "") ? data2['snippet']['description'].substring(0, 300) + '...' : 'Pas de description disponible.',
+                            viewCount = new Intl.NumberFormat('fr-FR', { maximumSignificantDigits: 2 }).format(data2['statistics']['viewCount']),
+                            commentCount = data2['statistics']['commentCount'],
+                            likeCount = data2['statistics']['likeCount']
 
-                $('.youtube-api').append('<div class="d-flex bloc-flex"><div class="col" data-href="' + value.link + '"><img src="' + value.thumbnail.static + '" alt="' + value.title + '"class="fluid thumbnail-youtube"><span class="length">' + value.length + '</span></div><div class="col"><div><h5>' + value.title + '</h5></div><div class="video-info"><span class="views">' + views + viewsK + ' vues - </span><span class="published_date">' + published_date + '</span></div><div class="youtubeur-info"><a href="' + value.channel.link + '" target="_blank"><span class="thumbnail"><img src="' + value.channel.thumbnail + '" alt="' + value.channel.name + '"></span><span class="name">' + value.channel.name + '</span></a></div><p class="description">' + value.description + '</p></div>')
+                        duration = duration.replaceAll('PT', '')
+                        duration = duration.replaceAll('M', ' minutes ')
+                        duration = duration.replaceAll('S', ' secondes')
 
-                $(document).on('click', '.bloc-flex .col:first-child', function (e) {
+                        // Assume the default locale is 'en' (just in case, I'll set it for the snippet)
+                        moment.locale('fr');
 
-                    e.preventDefault();
+                        var youtubeurThumbnail = 'https://yt3.googleusercontent.com/ytc/AGIKgqN_7SeI3GvKRueP-JioWum05DouFLo_ZvOCgensgA=s176-c-k-c0x00ffffff-no-rj'
 
-                    var url = $(this).data('href');
+                        $('.youtube-api').append('<div class="d-flex bloc-flex"><div class="col" data-href="' + value['link']['@attributes']['href'] + '"><img src="' + data2['snippet']['thumbnails']['maxres']['url'] + '"alt="' + data2['snippet']['title'] + '" class="fluid thumbnail-youtube"><span class="length">' + duration + '</span></div><div class="col"><div><h5>' + data2['snippet']['title'] + '</h5></div><div class="video-info"><span class="views">' + viewCount + ' vues - </span><span class="ml-1 like"><i class="fa-solid fa-thumbs-up mr-1"></i>' + likeCount + ' mentions j\'aime - </span><span class="ml-1 like"><i class="fa-solid fa-comment mr-1"></i>' + commentCount + ' commentaires - </span><span class="published_date">' + moment(value['published'], 'YYYYMMDD').fromNow() + '</span></div><div class="youtubeur-info"><a href="' + value['author']['uri'] + '" target="_blank"><span class="thumbnail"><img src="' + youtubeurThumbnail + '" alt="' + value['author']['name'] + '"></span><span class="name">' + value['author']['name'] + '</span></a></div><p class="description">' + description + '</p></div></div>')
 
-                    window.open(url);
+                        $(document).on('click', '.bloc-flex .col:first-child', function (e) {
+
+                            e.preventDefault();
+
+                            var url = $(this).data('href');
+
+                            window.open(url);
+
+                        })
+
+                        $('#loader-youtube').addClass('hidden');
+                        $('.page-youtube .youtube-api').fadeIn(300);
+
+                    }
 
                 })
-
-                $('#loader-youtube').addClass('hidden');
-                $('.page-youtube .youtube-api').fadeIn(300);
             })
 
         }, 1500);

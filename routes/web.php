@@ -10,6 +10,9 @@ use App\Http\Controllers\GithubController;
 use App\Http\Controllers\GoogleController;
 use App\Http\Controllers\YoutubeController;
 use App\Http\Controllers\UpdateMyBakeryController;
+use App\Http\Controllers\FacebookGetBakerysController;
+use App\Http\Controllers\TwitterGetBakerysController;
+use App\Http\Controllers\GetCoordinateGpsController;
 use App\Http\Controllers\ContactsController;
 use App\Http\Controllers\FacebookController;
 use App\Http\Controllers\Auth\LogsController;
@@ -152,7 +155,9 @@ Route::post('/github-api', [GithubController::class, 'showGitProjets']);
 
 //Youtube
 
-Route::post('/google-api', [GoogleController::class, 'showGoogleProjets']);
+Route::get('/google-api/{chanelId}', [GoogleController::class, 'showGoogleProjets']);
+Route::get('/google-api-info/{videoId}', [GoogleController::class, 'YoutubeVideoInfo']);
+Route::get('/google-xml', [GoogleController::class, 'saveXml']);
 
 // User
 
@@ -314,3 +319,12 @@ Route::get('/download-apps-free/{projets_id}', [UsersController::class, 'apps_fr
 
 Route::get('/update-mybakery', [UpdateMyBakeryController::class, 'update']);
 Route::get('/scrapping-mybakery', [UpdateMyBakeryController::class, 'getBakerys']);
+
+// Gouvernement
+
+Route::get('/apis/get-coordinate/{adresse}', [GetCoordinateGpsController::class, 'get']);
+
+// Bakery post
+
+Route::get('/apis/facebook', [FacebookGetBakerysController::class, 'get']);
+Route::get('/apis/twitter', [TwitterGetBakerysController::class, 'get']);
